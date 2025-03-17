@@ -79,6 +79,14 @@ namespace LN
 
         public bool AgregarTasa(ref csORTT objORTT)
         {
+            /*SAPbobsCOM.Recordset oRecordset = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+
+            string query = "INSERT INTO ORTT (\"RateDate\", \"Currency\", \"Rate\", \"DataSource\", \"UserSign\") VALUES ('2025-03-14', 'USD', 25.50, 'O', 7);";
+
+            oRecordset.DoQuery(query);*/
+
+
+
             return true;
         }
     }
