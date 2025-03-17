@@ -42,6 +42,7 @@ namespace GUI
             this.label1 = new System.Windows.Forms.Label();
             this.txtTasa = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.dtpFechaTasa = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,7 +110,7 @@ namespace GUI
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(533, 329);
+            this.label3.Location = new System.Drawing.Point(533, 330);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 22;
@@ -123,7 +124,7 @@ namespace GUI
             this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizar.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnActualizar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnActualizar.Location = new System.Drawing.Point(225, 245);
+            this.btnActualizar.Location = new System.Drawing.Point(225, 285);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(114, 38);
             this.btnActualizar.TabIndex = 21;
@@ -146,15 +147,15 @@ namespace GUI
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(126, 170);
+            this.label1.Location = new System.Drawing.Point(115, 172);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(299, 18);
+            this.label1.Size = new System.Drawing.Size(324, 18);
             this.label1.TabIndex = 19;
-            this.label1.Text = "Ingrese la tasa de cambio para el día de hoy:";
+            this.label1.Text = "Seleccione la fecha e ingrese la tasa de cambio:";
             // 
             // txtTasa
             // 
-            this.txtTasa.Location = new System.Drawing.Point(213, 200);
+            this.txtTasa.Location = new System.Drawing.Point(213, 244);
             this.txtTasa.Name = "txtTasa";
             this.txtTasa.Size = new System.Drawing.Size(139, 22);
             this.txtTasa.TabIndex = 18;
@@ -169,12 +170,23 @@ namespace GUI
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
+            // dtpFechaTasa
+            // 
+            this.dtpFechaTasa.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFechaTasa.Location = new System.Drawing.Point(213, 208);
+            this.dtpFechaTasa.MinDate = new System.DateTime(2025, 3, 17, 16, 52, 7, 119);
+            this.dtpFechaTasa.Name = "dtpFechaTasa";
+            this.dtpFechaTasa.Size = new System.Drawing.Size(139, 22);
+            this.dtpFechaTasa.TabIndex = 29;
+            this.dtpFechaTasa.Value = new System.DateTime(2025, 3, 17, 16, 52, 7, 119);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(581, 352);
+            this.Controls.Add(this.dtpFechaTasa);
             this.Controls.Add(this.txtPwSAP);
             this.Controls.Add(this.txtUserSAP);
             this.Controls.Add(this.txtServerBD);
@@ -188,6 +200,8 @@ namespace GUI
             this.Controls.Add(this.txtTasa);
             this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(599, 399);
+            this.MinimumSize = new System.Drawing.Size(599, 399);
             this.Name = "Form1";
             this.Text = "Grupo Platino";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -210,6 +224,7 @@ namespace GUI
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTasa;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.DateTimePicker dtpFechaTasa;
     }
 }
 

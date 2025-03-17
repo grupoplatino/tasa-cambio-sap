@@ -10,7 +10,8 @@ namespace LN
 {
     public class csSAP
     {
-        public static SAPbobsCOM.Company oCompany;
+        public static Company oCompany;
+        public static SBObob oSBObob;
         public static int iRet = 0;
         public static int iErrCod = 0;
         public static string sErrMsg = "";
@@ -79,13 +80,16 @@ namespace LN
 
         public bool AgregarTasa(ref csORTT objORTT)
         {
-            /*SAPbobsCOM.Recordset oRecordset = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+            try
+            {
+                oSBObob = new SBObob();
+                oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate, objORTT.Rate);
+            }
+            catch (Exception ex)
+            {
 
-            string query = "INSERT INTO ORTT (\"RateDate\", \"Currency\", \"Rate\", \"DataSource\", \"UserSign\") VALUES ('2025-03-14', 'USD', 25.50, 'O', 7);";
-
-            oRecordset.DoQuery(query);*/
-
-
+                throw ex;
+            }
 
             return true;
         }

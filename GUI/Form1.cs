@@ -62,8 +62,9 @@ namespace GUI
             try
             {
                 csORTT objORTT = new csORTT();
+                objORTT.Currency = "USD";
+                objORTT.RateDate = dtpFechaTasa.Value;
                 objORTT.Rate = Double.Parse(txtTasa.Text);
-                objORTT.RateDate = DateTime.Now;
 
                 if (oSAP.AgregarTasa(ref objORTT))
                 {

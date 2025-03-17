@@ -13,5 +13,6 @@ namespace BE
         public double Rate { get; set; }
         public char DataSource { get; set; }
         public int UserSign { get; set; }
+        public bool Update { get; set; }
     }
 }
