@@ -23,6 +23,26 @@ namespace GUI
 
         private void btnActualizar_Click(object sender, EventArgs e)
         {
+            string[] bds = { "DC_0215", "WYM_TEST", "DP_0601" };
+
+            foreach (string bd in bds)
+            {
+                try
+                {
+                    ConectarBD(bd);
+                    ActualizarTasa(bd);
+                    DesconectarBD(bd);
+                }
+                catch (Exception ex)
+                {
+                    lblMensaje.ForeColor = Color.Red;
+                    lblMensaje.Text = ex.Message;
+                }
+            }
+        }
+
+        private void ConectarBD(string bd)
+        {
             try
             {
                 csCompany objCompany = new csCompany();
@@ -30,34 +50,39 @@ namespace GUI
                 objCompany.UserBD = this.txtUserBD.Text;
                 objCompany.PwBD = this.txtPwBD.Text;
                 objCompany.ServerLic = "";
-                objCompany.NameBD = CambiarBD();
+                objCompany.NameBD = bd;
                 objCompany.UserSAP = this.txtUserSAP.Text;
                 objCompany.PwSAP = this.txtPwSAP.Text;
 
                 if (oSAP.ConectarSAP(objCompany))
                 {
                     string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015");
-                    csConexion.IniciarConexionHANA(Server, objCompany.UserBD, objCompany.PwBD, CambiarBD());
+                    csConexion.IniciarConexionHANA(Server, objCompany.UserBD, objCompany.PwBD, bd);
 
                     lblMensaje.ForeColor = Color.Green;
-                    lblMensaje.Text = "Conexión exitosa";
+                    lblMensaje.Text = "Conexión exitosa a " + bd;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                ActualizarTasa();
+        private void DesconectarBD(string bd)
+        {
+            try
+            {
+                csCompany objCompany = new csCompany();
                 oSAP.DesconectarSAP(objCompany);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                throw ex;
             }
         }
 
-        private string CambiarBD()
-        {
-            return "DC_0215";
-        }
-
-        private void ActualizarTasa()
+        private void ActualizarTasa(string bd)
         {
             try
             {
@@ -69,7 +94,7 @@ namespace GUI
                 if (oSAP.AgregarTasa(ref objORTT))
                 {
                     lblMensaje.ForeColor = Color.Green;
-                    lblMensaje.Text = "Se agregó la tasa exitosamente";
+                    lblMensaje.Text = "Se agregó la tasa exitosamente para " + bd;
                 }
             }
             catch (Exception ex)

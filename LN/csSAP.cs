@@ -53,7 +53,6 @@ namespace LN
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -82,16 +81,15 @@ namespace LN
         {
             try
             {
-                oSBObob = new SBObob();
+                oSBObob = (SAPbobsCOM.SBObob)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoBridge);
                 oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate, objORTT.Rate);
+
+                return true;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
-            return true;
         }
     }
 }

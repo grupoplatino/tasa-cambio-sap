@@ -101,7 +101,7 @@ namespace GUI
             // lblMensaje
             // 
             this.lblMensaje.AutoSize = true;
-            this.lblMensaje.Location = new System.Drawing.Point(225, 296);
+            this.lblMensaje.Location = new System.Drawing.Point(12, 345);
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(0, 17);
             this.lblMensaje.TabIndex = 23;
@@ -110,7 +110,7 @@ namespace GUI
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(533, 330);
+            this.label3.Location = new System.Drawing.Point(532, 349);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 22;
@@ -124,7 +124,7 @@ namespace GUI
             this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizar.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnActualizar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnActualizar.Location = new System.Drawing.Point(225, 285);
+            this.btnActualizar.Location = new System.Drawing.Point(227, 278);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(114, 38);
             this.btnActualizar.TabIndex = 21;
@@ -155,7 +155,7 @@ namespace GUI
             // 
             // txtTasa
             // 
-            this.txtTasa.Location = new System.Drawing.Point(213, 244);
+            this.txtTasa.Location = new System.Drawing.Point(213, 242);
             this.txtTasa.Name = "txtTasa";
             this.txtTasa.Size = new System.Drawing.Size(139, 22);
             this.txtTasa.TabIndex = 18;
@@ -174,18 +174,18 @@ namespace GUI
             // 
             this.dtpFechaTasa.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFechaTasa.Location = new System.Drawing.Point(213, 208);
-            this.dtpFechaTasa.MinDate = new System.DateTime(2025, 3, 17, 16, 52, 7, 119);
+            this.dtpFechaTasa.MinDate = new System.DateTime(2025, 3, 18, 13, 36, 21, 257);
             this.dtpFechaTasa.Name = "dtpFechaTasa";
             this.dtpFechaTasa.Size = new System.Drawing.Size(139, 22);
             this.dtpFechaTasa.TabIndex = 29;
-            this.dtpFechaTasa.Value = new System.DateTime(2025, 3, 17, 16, 52, 7, 119);
+            this.dtpFechaTasa.Value = new System.DateTime(2025, 3, 18, 13, 36, 21, 257);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(581, 352);
+            this.ClientSize = new System.Drawing.Size(581, 371);
             this.Controls.Add(this.dtpFechaTasa);
             this.Controls.Add(this.txtPwSAP);
             this.Controls.Add(this.txtUserSAP);
@@ -200,7 +200,7 @@ namespace GUI
             this.Controls.Add(this.txtTasa);
             this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(599, 399);
+            this.MaximumSize = new System.Drawing.Size(599, 418);
             this.MinimumSize = new System.Drawing.Size(599, 399);
             this.Name = "Form1";
             this.Text = "Grupo Platino";
