@@ -41,25 +41,5 @@ namespace LN
                 throw ex;
             }
         }
-
-        public static DataTable ConsultaHANA(string query)
-        {
-            try
-            {
-                OdbcCommand cmd = new OdbcCommand(query, HanaCnn);
-
-                OdbcDataAdapter dad = new OdbcDataAdapter(cmd);
-
-                DataTable dt = new DataTable();
-                dad.Fill(dt);
-
-                return dt;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
     }
 }

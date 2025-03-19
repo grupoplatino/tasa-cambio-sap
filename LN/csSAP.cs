@@ -12,6 +12,7 @@ namespace LN
     {
         public static Company oCompany;
         public static SBObob oSBObob;
+        public static Recordset oRecordSet;
         public static int iRet = 0;
         public static int iErrCod = 0;
         public static string sErrMsg = "";
@@ -90,6 +91,37 @@ namespace LN
             {
                 throw ex;
             }
+        }
+
+        public bool ObtenerTasa(ref csORTT objORTT)
+        {
+            try
+            {
+                oSBObob = (SAPbobsCOM.SBObob)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoBridge);
+                oRecordSet = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+                try
+                {
+                    oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate);
+                }
+                catch
+                {
+                    return false;
+                }
+
+                if (oRecordSet.RecordCount == 0 || oRecordSet.Fields.Item(0).Value == null)
+                    return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string ObtenerSociedad(ref csCompany objCompany_)
+        {
+            return "";
         }
     }
 }
