@@ -13,6 +13,7 @@ namespace LN
         public static Company oCompany;
         public static SBObob oSBObob;
         public static Recordset oRecordSet;
+        public static Users oUsers;
         public static int iRet = 0;
         public static int iErrCod = 0;
         public static string sErrMsg = "";
@@ -82,7 +83,7 @@ namespace LN
         {
             try
             {
-                oSBObob = (SAPbobsCOM.SBObob)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoBridge);
+                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate, objORTT.Rate);
 
                 return true;
@@ -97,8 +98,8 @@ namespace LN
         {
             try
             {
-                oSBObob = (SAPbobsCOM.SBObob)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoBridge);
-                oRecordSet = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
                 try
                 {
                     oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate);
@@ -117,6 +118,25 @@ namespace LN
             {
                 throw ex;
             }
+        }
+
+        public bool ValidarUsuario(string usersap)
+        {
+            bool existe = false;
+
+            try
+            {
+                oUsers = (Users)oCompany.GetBusinessObject(BoObjectTypes.oUsers);
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return existe;
         }
 
         public string ObtenerSociedad(ref csCompany objCompany_)

@@ -12,20 +12,23 @@ using LN;
 
 namespace GUI
 {
-    public partial class Form1 : Form
+    public partial class PantallaTasa : Form
     {
         public csSAP oSAP = new csSAP();
+        private string _usersap, _pwsap;
 
-        public Form1()
+        public PantallaTasa()
         {
             InitializeComponent();
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
+
+            dtpFechaTasa.Value = DateTime.Now;
+            dtpFechaTasaFiltro.Value = DateTime.Now;
             dtpFechaTasa.Enabled = false;
             txtTasa.Enabled = false;
             btnActualizar.Enabled = false;
             pbCarga.Visible = false;
+
+            pnTasa.Hide();
         }
 
         private void ConectarBD(string bd)
@@ -169,7 +172,7 @@ namespace GUI
         private void HabilitarControles()
         {
             pbCarga.Visible = false;
-            btnRefrescar.Enabled = true;
+            btnValidar.Enabled = true;
             btnActualizar.Enabled = true;
             btnCerrar.Enabled = true;
             dtpFechaTasaFiltro.Enabled = true;
@@ -229,7 +232,7 @@ namespace GUI
         {
             pbCarga.Style = ProgressBarStyle.Marquee;
             pbCarga.Visible = true;
-            btnRefrescar.Enabled = false;
+            btnValidar.Enabled = false;
             btnActualizar.Enabled = false;
             btnCerrar.Enabled = false;
             dtpFechaTasaFiltro.Enabled = false;
@@ -302,7 +305,7 @@ namespace GUI
             HabilitarControles();
         }
 
-        private async void btnRefrescar_Click(object sender, EventArgs e)
+        private async void btnValidar_Click(object sender, EventArgs e)
         {
             DeshabilitarControles();
 
@@ -311,10 +314,26 @@ namespace GUI
             HabilitarControles();
         }
 
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            if(this.txtUserSAP.Text == "")
+                MessageBox.Show("El campo de usuario no puede quedar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+            else if (this.txtPwSAP.Text == "")
+                MessageBox.Show("El campo de contraseña no puede quedar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            else
+            {
+                pnLogin.Hide();
+                pnTasa.Show();
+            }
+        }
+
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             DesconectarBD();
-            Application.Exit();
+            pnTasa.Hide();
+            pnLogin.Show();
         }
     }
 }
