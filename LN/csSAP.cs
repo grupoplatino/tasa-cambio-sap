@@ -127,8 +127,6 @@ namespace LN
             try
             {
                 oUsers = (Users)oCompany.GetBusinessObject(BoObjectTypes.oUsers);
-                
-
             }
             catch (Exception ex)
             {
