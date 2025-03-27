@@ -29,3 +29,15 @@
 27/3/2025 02:21:49: Se inició sesión con el usuario de aaaaaaa
 27/3/2025 02:22:37: Se cierra la sesión.
 27/3/2025 02:22:47: Se sale de la aplicación.
+27/3/2025 03:56:17: Se inicia la aplicación.
+27/3/2025 03:56:20: Se inició sesión con el usuario de uyfu
+27/3/2025 03:56:21: Se valida la tasa para el 27/3/2025 12:00:00
+27/3/2025 03:57:59: Se cierra la sesión.
+27/3/2025 03:58:00: Se sale de la aplicación.
+27/3/2025 04:13:50: Se inicia la aplicación.
+27/3/2025 04:13:52: Se inició sesión con el usuario de adasd
+27/3/2025 04:13:53: Se valida la tasa para el 27/3/2025 12:00:00
+27/3/2025 04:14:48: Se agregó la tasa exitosamente de Inmobiliaria Platino para el 27/3/2025 12:00:00.
+27/3/2025 04:15:10: Se valida la tasa para el 27/3/2025 12:00:00
+27/3/2025 04:15:42: Se cierra la sesión.
+27/3/2025 04:15:43: Se sale de la aplicación.

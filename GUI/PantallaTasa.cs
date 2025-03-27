@@ -18,10 +18,31 @@ namespace GUI
     {
         public csSAP oSAP = new csSAP();
         private static string logPath = @"C:\Aplicaciones SAP\TasaCambio\LogTasaCambio.txt";
+        private readonly Dictionary<string, csEmpresas> Empresas; 
 
         public PantallaTasa()
         {
             InitializeComponent();
+
+            Empresas = new Dictionary<string, csEmpresas>
+            {
+                { "DC_0215", new csEmpresas("DC_0215", "Duracreto", chbDuracreto) },
+                { "WYM_TEST", new csEmpresas("WYM_TEST", "William & Molina", chbWYM) },
+                { "DP_0601", new csEmpresas("DP_0601", "Distribuidora Platino", chbDP) },
+                { "TEST_IP2103", new csEmpresas("TEST_IP2103", "Inmobiliaria Platino", chbIP) }
+            };
+
+            /*Empresas = new Dictionary<string, csEmpresas>
+            {
+                { "SBO_DURACRETO1", new csEmpresas("SBO_DURACRETO1", "Duracreto", chbDuracreto) },
+                { "SBO_WILLIAM_Y_MOLINA", new csEmpresas("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
+                { "SBO_DP", new csEmpresas("SBO_DP", "Distribuidora Platino", chbDP) },
+                { "SBO_TRANSPORTE_PLATINO", new csEmpresas("SBO_TRANSPORTE_PLATINO", "Transportes Platino", chbTP) },
+                { "SBO_INMOBILIARIA_PLATINO", new csEmpresas("SBO_INMOBILIARIA_PLATINO", "Inmobiliaria Platino", chbIP) },
+                { "SBO_INOPSA", new csEmpresas("SBO_INOPSA", "INOPSA", chbINOPSA) },
+                { "SBO_AMSA", new csEmpresas("SBO_AMSA", "AMSA", chbAMSA) },
+                { "SBO_SPS_SIGLO_XXI", new csEmpresas("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) }
+            };*/
 
             EscribirLog("Se inicia la aplicación.");
 
@@ -117,21 +138,16 @@ namespace GUI
                 objORTT.RateDate = dtpFechaTasa.Value;
                 objORTT.Rate = Double.Parse(txtTasa.Text);
 
-                string bd_name = "";
-
-                if (bd == "DC_0215")
-                    bd_name = "Duracreto";
-                else if (bd == "WYM_TEST")
-                    bd_name = "William & Molina";
-                else if (bd == "DP_0601")
-                    bd_name = "Distribuidora Platino";
-                else if (bd == "TEST_IP2103")
-                    bd_name = "Inmobiliaria Platino";
-
-                if (oSAP.AgregarTasa(ref objORTT))
+                if(Empresas.ContainsKey(bd))
                 {
-                    MessageBox.Show($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    EscribirLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpFechaTasa.Value.Date}.");
+                    csEmpresas empresa = Empresas[bd];
+                    string bd_name = empresa.nombreDB;
+
+                    if (oSAP.AgregarTasa(ref objORTT))
+                    {
+                        MessageBox.Show($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EscribirLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpFechaTasa.Value.Date}.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -148,55 +164,8 @@ namespace GUI
                 objORTT.Currency = "USD";
                 objORTT.RateDate = dtpFechaTasaFiltro.Value;
 
-                if (oSAP.ObtenerTasa(ref objORTT))
-                {
-                    Invoke(new Action(() =>
-                    {
-                        switch (bd)
-                        {
-                            case "DC_0215":
-                                chbDuracreto.Checked = true;
-                                chbDuracreto.Enabled = false;
-                                break;
-                            case "WYM_TEST":
-                                chbWYM.Checked = true;
-                                chbWYM.Enabled = false;
-                                break;
-                            case "DP_0601":
-                                chbDP.Checked = true;
-                                chbDP.Enabled = false;
-                                break;
-                            case "TEST_IP2103":
-                                chbIP.Checked = true;
-                                chbIP.Enabled = false;
-                                break;
-                        }
-                    }));
-                }else
-                {
-                    Invoke(new Action(() =>
-                    {
-                        switch (bd)
-                        {
-                            case "DC_0215":
-                                chbDuracreto.Checked = false;
-                                chbDuracreto.Enabled = true;
-                                break;
-                            case "WYM_TEST":
-                                chbWYM.Checked = false;
-                                chbWYM.Enabled = true;
-                                break;
-                            case "DP_0601":
-                                chbDP.Checked = false;
-                                chbDP.Enabled = true;
-                                break;
-                            case "TEST_IP2103":
-                                chbIP.Checked = false;
-                                chbIP.Enabled = true;
-                                break;
-                        }
-                    }));
-                }
+                bool tieneTasa = oSAP.ObtenerTasa(ref objORTT);
+                ActualizarCheckboxes(bd, tieneTasa);
             }
             catch (Exception ex)
             {
@@ -206,22 +175,12 @@ namespace GUI
 
         private void ObtenerTasaSimplificado()
         {
-            string[] bds_t = { "DC_0215", "WYM_TEST", "DP_0601", "TEST_IP2103" };
-            //string[] bds_p = { "SBO_DURACRETO1", "SBO_WILLIAM_Y_MOLINA", "SBO_DP", "SBO_TRANSPORTE_PLATINO", "SBO_INMOBILIARIA_PLATINO", "SBO_INOPSA", "SBO_AMSA", "SBO_SPS_SIGLO_XXI"};
-
-            foreach (string bd in bds_t)
+            foreach (var empresa in Empresas)
             {
                 try
                 {
+                    string bd = empresa.Key;
                     ConectarBD(bd);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                try
-                {
                     ObtenerTasa(bd);
                 }
                 catch (Exception ex)
@@ -229,6 +188,19 @@ namespace GUI
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void ActualizarCheckboxes(string bd, bool tieneTasa)
+        {
+            Invoke(new Action(() => {
+                if (Empresas.ContainsKey(bd))
+                {
+                    csEmpresas empresa = Empresas[bd];
+
+                    empresa.checkBoxDB.Checked = tieneTasa;
+                    empresa.checkBoxDB.Enabled = !tieneTasa;
+                }
+            }));
         }
 
         private void HabilitarControles()
@@ -246,53 +218,10 @@ namespace GUI
             btnValidar.BackColor = System.Drawing.Color.OliveDrab;
             btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
 
-            //Duracreto
-            if (chbDuracreto.Checked)
-                chbDuracreto.Enabled = false;
-            else
-                chbDuracreto.Enabled = true;
-
-            //William & Molina
-            if (chbWYM.Checked)
-                chbWYM.Enabled = false;
-            else
-                chbWYM.Enabled = true;
-
-            //Distribuidora Platino
-            if (chbDP.Checked)
-                chbDP.Enabled = false;
-            else
-                chbDP.Enabled = true;
-
-            //Transporte Platino
-            if (chbTP.Checked)
-                chbTP.Enabled = false;
-            else
-                chbTP.Enabled = true;
-
-            //Inmobiliaria Platino
-            if (chbIP.Checked)
-                chbIP.Enabled = false;
-            else
-                chbIP.Enabled = true;
-
-            //INOPSA
-            if (chbINOPSA.Checked)
-                chbINOPSA.Enabled = false;
-            else
-                chbINOPSA.Enabled = true;
-
-            //AMSA
-            if (chbAMSA.Checked)
-                chbAMSA.Enabled = false;
-            else
-                chbAMSA.Enabled = true;
-
-            //Siglo XXI
-            if (chbSXXI.Checked)
-                chbSXXI.Enabled = false;
-            else
-                chbSXXI.Enabled = true;
+            foreach(var empresa in Empresas)
+            {
+                empresa.Value.checkBoxDB.Enabled = !empresa.Value.checkBoxDB.Checked;
+            }
         }
 
         private void DeshabilitarControles()
@@ -324,22 +253,11 @@ namespace GUI
         {
             List<string> bds = new List<string> { };
 
-            if (chbDuracreto.Checked && chbDuracreto.Enabled)
-                bds.Add("DC_0215");
-            else if (chbWYM.Checked && chbWYM.Enabled)
-                bds.Add("WYM_TEST");
-            else if (chbDP.Checked && chbDP.Enabled)
-                bds.Add("DP_0601");
-            else if (chbTP.Checked && chbTP.Enabled)
-                bds.Add("");
-            else if (chbIP.Checked && chbIP.Enabled)
-                bds.Add("TEST_IP2103");
-            else if (chbINOPSA.Checked && chbINOPSA.Enabled)
-                bds.Add("");
-            else if (chbAMSA.Checked && chbAMSA.Enabled)
-                bds.Add("");
-            else if (chbSXXI.Checked && chbSXXI.Enabled)
-                bds.Add("");
+            foreach(var empresa in Empresas)
+            {
+                if (empresa.Value.checkBoxDB.Checked && empresa.Value.checkBoxDB.Enabled)
+                    bds.Add(empresa.Key);
+            }
 
             if (dtpFechaTasa.Value.Date < DateTime.Now.Date)
                 MessageBox.Show("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -351,26 +269,20 @@ namespace GUI
             {
                 DeshabilitarControles();
 
-                foreach (string bd in bds)
+                var tareas = bds.Select(bd => Task.Run(() =>
                 {
                     try
                     {
-                        await Task.Run(() => ConectarBD(bd));
+                        ConectarBD(bd);
+                        ActualizarTasa(bd);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                })).ToList();
 
-                    try
-                    {
-                        await Task.Run(() => ActualizarTasa(bd));
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
+                await Task.WhenAll(tareas);
 
                 dtpFechaTasaFiltro.Value = dtpFechaTasa.Value;
                 txtTasa.Text = "";
