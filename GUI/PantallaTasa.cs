@@ -61,36 +61,7 @@ namespace GUI
             pnTasa.Hide();
         }
 
-        private static string ObtenerSerie() 
-        {
-            string serie = string.Empty;
-
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS"))
-            {
-                foreach (ManagementObject obj in searcher.Get())
-                {
-                    return obj["SerialNumber"]?.ToString() ?? "No disponible";
-                }
-            }
-
-            return serie;
-        }
-
-        private static void EscribirLog(string log)
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(logPath, true))
-                {
-                    writer.WriteLine($"{DateTime.Now}: {log}");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        //Métodos principales
         private void ConectarBD(string bd)
         {
             try
@@ -166,6 +137,37 @@ namespace GUI
 
                 bool tieneTasa = oSAP.ObtenerTasa(ref objORTT);
                 ActualizarCheckboxes(bd, tieneTasa);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //Métodos auxiliares
+        private static string ObtenerSerie()
+        {
+            string serie = string.Empty;
+
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS"))
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    return obj["SerialNumber"]?.ToString() ?? "No disponible";
+                }
+            }
+
+            return serie;
+        }
+
+        private static void EscribirLog(string log)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(logPath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now}: {log}");
+                }
             }
             catch (Exception ex)
             {
@@ -249,6 +251,7 @@ namespace GUI
             btnCerrarSesion.BackColor = System.Drawing.Color.LightGray;
         }
 
+        //Botones
         private async void btnActualizar_Click(object sender, EventArgs e)
         {
             List<string> bds = new List<string> { };
