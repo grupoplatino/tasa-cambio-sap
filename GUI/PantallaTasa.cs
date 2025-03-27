@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Management;
 using BE;
 using LN;
 
@@ -15,19 +17,57 @@ namespace GUI
     public partial class PantallaTasa : Form
     {
         public csSAP oSAP = new csSAP();
+        private static string logPath = @"C:\Aplicaciones SAP\TasaCambio\LogTasaCambio.txt";
 
         public PantallaTasa()
         {
             InitializeComponent();
 
+            EscribirLog("Se inicia la aplicación.");
+
+            lblHost.Text = Environment.MachineName;
+            lblSerie.Text = ObtenerSerie();
+
             dtpFechaTasa.Value = DateTime.Now;
             dtpFechaTasaFiltro.Value = DateTime.Now;
+            lblDescripcion2.ForeColor = Color.Gray;
             dtpFechaTasa.Enabled = false;
             txtTasa.Enabled = false;
             btnActualizar.Enabled = false;
+            btnActualizar.BackColor = System.Drawing.Color.LightGray;
             pbCarga.Visible = false;
 
             pnTasa.Hide();
+        }
+
+        private static string ObtenerSerie() 
+        {
+            string serie = string.Empty;
+
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS"))
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    return obj["SerialNumber"]?.ToString() ?? "No disponible";
+                }
+            }
+
+            return serie;
+        }
+
+        private static void EscribirLog(string log)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(logPath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now}: {log}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ConectarBD(string bd)
@@ -35,13 +75,13 @@ namespace GUI
             try
             {
                 csCompany objCompany = new csCompany();
-                objCompany.ServerBD = this.txtServerBD.Text;
-                objCompany.UserBD = this.txtUserBD.Text;
-                objCompany.PwBD = this.txtPwBD.Text;
+                objCompany.ServerBD = txtServerBD.Text;
+                objCompany.UserBD = txtUserBD.Text;
+                objCompany.PwBD = txtPwBD.Text;
                 objCompany.ServerLic = "";
                 objCompany.NameBD = bd;
-                objCompany.UserSAP = this.txtUserSAP.Text;
-                objCompany.PwSAP = this.txtPwSAP.Text;
+                objCompany.UserSAP = txtUserSAP.Text;
+                objCompany.PwSAP = txtPwSAP.Text;
 
                 if (oSAP.ConectarSAP(objCompany))
                 {
@@ -89,7 +129,10 @@ namespace GUI
                     bd_name = "Inmobiliaria Platino";
 
                 if (oSAP.AgregarTasa(ref objORTT))
-                    MessageBox.Show("Se agregó la tasa exitosamente para " + bd_name, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    MessageBox.Show($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    EscribirLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpFechaTasa.Value.Date}.");
+                }
             }
             catch (Exception ex)
             {
@@ -107,49 +150,49 @@ namespace GUI
 
                 if (oSAP.ObtenerTasa(ref objORTT))
                 {
-                    this.Invoke(new Action(() =>
+                    Invoke(new Action(() =>
                     {
                         switch (bd)
                         {
                             case "DC_0215":
-                                this.chbDuracreto.Checked = true;
-                                this.chbDuracreto.Enabled = false;
+                                chbDuracreto.Checked = true;
+                                chbDuracreto.Enabled = false;
                                 break;
                             case "WYM_TEST":
-                                this.chbWYM.Checked = true;
-                                this.chbWYM.Enabled = false;
+                                chbWYM.Checked = true;
+                                chbWYM.Enabled = false;
                                 break;
                             case "DP_0601":
-                                this.chbDP.Checked = true;
-                                this.chbDP.Enabled = false;
+                                chbDP.Checked = true;
+                                chbDP.Enabled = false;
                                 break;
                             case "TEST_IP2103":
-                                this.chbIP.Checked = true;
-                                this.chbIP.Enabled = false;
+                                chbIP.Checked = true;
+                                chbIP.Enabled = false;
                                 break;
                         }
                     }));
                 }else
                 {
-                    this.Invoke(new Action(() =>
+                    Invoke(new Action(() =>
                     {
                         switch (bd)
                         {
                             case "DC_0215":
-                                this.chbDuracreto.Checked = false;
-                                this.chbDuracreto.Enabled = true;
+                                chbDuracreto.Checked = false;
+                                chbDuracreto.Enabled = true;
                                 break;
                             case "WYM_TEST":
-                                this.chbWYM.Checked = false;
-                                this.chbWYM.Enabled = true;
+                                chbWYM.Checked = false;
+                                chbWYM.Enabled = true;
                                 break;
                             case "DP_0601":
-                                this.chbDP.Checked = false;
-                                this.chbDP.Enabled = true;
+                                chbDP.Checked = false;
+                                chbDP.Enabled = true;
                                 break;
                             case "TEST_IP2103":
-                                this.chbIP.Checked = false;
-                                this.chbIP.Enabled = true;
+                                chbIP.Checked = false;
+                                chbIP.Enabled = true;
                                 break;
                         }
                     }));
@@ -197,6 +240,11 @@ namespace GUI
             dtpFechaTasaFiltro.Enabled = true;
             dtpFechaTasa.Enabled = true;
             txtTasa.Enabled = true;
+            lblDescripcion1.ForeColor = Color.Black;
+            lblDescripcion2.ForeColor = Color.Black;
+            btnActualizar.BackColor = System.Drawing.Color.SteelBlue;
+            btnValidar.BackColor = System.Drawing.Color.OliveDrab;
+            btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
 
             //Duracreto
             if (chbDuracreto.Checked)
@@ -257,6 +305,8 @@ namespace GUI
             dtpFechaTasaFiltro.Enabled = false;
             dtpFechaTasa.Enabled = false;
             txtTasa.Enabled = false;
+            lblDescripcion1.ForeColor = Color.Gray;
+            lblDescripcion2.ForeColor = Color.Gray;
             chbDuracreto.Enabled = false;
             chbWYM.Enabled = false;
             chbDP.Enabled = false;
@@ -265,6 +315,9 @@ namespace GUI
             chbINOPSA.Enabled = false;
             chbAMSA.Enabled = false;
             chbSXXI.Enabled = false;
+            btnActualizar.BackColor = System.Drawing.Color.LightGray;
+            btnValidar.BackColor = System.Drawing.Color.LightGray;
+            btnCerrarSesion.BackColor = System.Drawing.Color.LightGray;
         }
 
         private async void btnActualizar_Click(object sender, EventArgs e)
@@ -288,14 +341,16 @@ namespace GUI
             else if (chbSXXI.Checked && chbSXXI.Enabled)
                 bds.Add("");
 
-            DeshabilitarControles();
-
             if (dtpFechaTasa.Value.Date < DateTime.Now.Date)
-                MessageBox.Show("La fecha no puede ser anterior a hoy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else if (txtTasa.Text == null || txtTasa.Text == "")
-                MessageBox.Show("El campo de tasa no puede ir vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else if(bds.Count == 0)
+                MessageBox.Show("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else
             {
+                DeshabilitarControles();
+
                 foreach (string bd in bds)
                 {
                     try
@@ -316,15 +371,21 @@ namespace GUI
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
 
-            await Task.Run(() => ObtenerTasaSimplificado());
-            txtTasa.Text = "";
-            HabilitarControles();
+                dtpFechaTasaFiltro.Value = dtpFechaTasa.Value;
+                txtTasa.Text = "";
+
+                await Task.Run(() => ObtenerTasaSimplificado());
+
+                HabilitarControles();
+            }
         }
 
         private async void btnValidar_Click(object sender, EventArgs e)
         {
+
+            EscribirLog($"Se valida la tasa para el {dtpFechaTasaFiltro.Value.Date}");
+
             DeshabilitarControles();
 
             await Task.Run(() => ObtenerTasaSimplificado());
@@ -334,26 +395,31 @@ namespace GUI
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if(this.txtUserSAP.Text == "")
-                MessageBox.Show("El campo de usuario no puede quedar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            
-            else if (this.txtPwSAP.Text == "")
-                MessageBox.Show("El campo de contraseña no puede quedar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+            if(txtUserSAP2.Text == "")
+                MessageBox.Show("El campo de usuario no puede quedar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else if(lblSerie.Text != "DFPP044")
+            {
+                MessageBox.Show("No se puede utilizar la aplicación en este ambiente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie}");
+            }
             else
             {
                 pnLogin.Hide();
                 pnTasa.Show();
+
+                EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
             }
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
+            EscribirLog("Se sale de la aplicación.");
             Application.Exit();
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
+            EscribirLog("Se cierra la sesión.");
             DesconectarBD();
             pnTasa.Hide();
             pnLogin.Show();
