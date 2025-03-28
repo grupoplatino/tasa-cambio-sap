@@ -117,15 +117,15 @@ namespace GUI
             // 
             // btnSalir
             // 
-            this.btnSalir.BackColor = System.Drawing.Color.Brown;
+            this.btnSalir.BackColor = System.Drawing.Color.Firebrick;
             this.btnSalir.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSalir.FlatAppearance.BorderSize = 0;
             this.btnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnSalir.Location = new System.Drawing.Point(459, 448);
+            this.btnSalir.Location = new System.Drawing.Point(216, 458);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(97, 30);
+            this.btnSalir.Size = new System.Drawing.Size(143, 30);
             this.btnSalir.TabIndex = 65;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = false;
@@ -134,7 +134,7 @@ namespace GUI
             // pbxLogoSAP1
             // 
             this.pbxLogoSAP1.Image = global::GUI.Properties.Resources.logo_sap;
-            this.pbxLogoSAP1.Location = new System.Drawing.Point(234, 456);
+            this.pbxLogoSAP1.Location = new System.Drawing.Point(10, 466);
             this.pbxLogoSAP1.Name = "pbxLogoSAP1";
             this.pbxLogoSAP1.Size = new System.Drawing.Size(99, 22);
             this.pbxLogoSAP1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -147,7 +147,7 @@ namespace GUI
             this.lblVersion.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.lblVersion.Location = new System.Drawing.Point(10, 478);
+            this.lblVersion.Location = new System.Drawing.Point(535, 478);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(37, 13);
             this.lblVersion.TabIndex = 41;
@@ -156,11 +156,12 @@ namespace GUI
             // lblUserSAP2
             // 
             this.lblUserSAP2.AutoSize = true;
+            this.lblUserSAP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserSAP2.Location = new System.Drawing.Point(214, 198);
             this.lblUserSAP2.Name = "lblUserSAP2";
-            this.lblUserSAP2.Size = new System.Drawing.Size(87, 16);
+            this.lblUserSAP2.Size = new System.Drawing.Size(95, 16);
             this.lblUserSAP2.TabIndex = 39;
-            this.lblUserSAP2.Text = "Usuario SAP:";
+            this.lblUserSAP2.Text = "Usuario SAP";
             // 
             // btnLogin
             // 
@@ -436,8 +437,8 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnTasa);
             this.Controls.Add(this.pnLogin);
+            this.Controls.Add(this.pnTasa);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
