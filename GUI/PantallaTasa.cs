@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
+using CredentialManagement;
 using BE;
 using LN;
 
@@ -19,7 +18,13 @@ namespace GUI
         public csSAP oSAP = new csSAP();
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
-        private readonly Dictionary<string, csEmpresas> Empresas; 
+        private readonly Dictionary<string, csEmpresas> Empresas;
+
+        private string _serverBD;
+        private string _userBD;
+        private string _pwBD;
+        private string _userSAP;
+        private string _pwSAP;
 
         public PantallaTasa()
         {
@@ -60,21 +65,61 @@ namespace GUI
             pbCarga.Visible = false;
 
             pnTasa.Hide();
+
+            CargarCredenciales();
         }
 
         //Métodos principales
+        private void CargarCredenciales()
+        {
+            try
+            {
+                using (var cred = new Credential { Target = "TasaCambio_HANA" })
+                {
+                    if (cred.Load())
+                    {
+                        _userBD = cred.Username;
+                        _pwBD = cred.Password;
+                    }
+                }
+
+                using (var cred = new Credential { Target = "TasaCambio_SAP" })
+                {
+                    if (cred.Load())
+                    {
+                        _userSAP = cred.Username;
+                        _pwSAP = cred.Password;
+                    }
+                }
+
+                using (var cred = new Credential { Target = "TasaCambio_Server" })
+                {
+                    if (cred.Load())
+                    {
+                        _serverBD = cred.Username;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se encontraron las credenciales en el Administrador de Credenciales de Windows.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ConectarBD(string bd)
         {
             try
             {
-                csCompany objCompany = new csCompany();
-                objCompany.ServerBD = txtServerBD.Text;
-                objCompany.UserBD = txtUserBD.Text;
-                objCompany.PwBD = txtPwBD.Text;
-                objCompany.ServerLic = "";
-                objCompany.NameBD = bd;
-                objCompany.UserSAP = txtUserSAP.Text;
-                objCompany.PwSAP = txtPwSAP.Text;
+                csCompany objCompany = new csCompany
+                {
+                    ServerBD = _serverBD,
+                    UserBD = _userBD,
+                    PwBD = _pwBD,
+                    ServerLic = "",
+                    NameBD = bd,
+                    UserSAP = _userSAP,
+                    PwSAP = _pwSAP
+                };
 
                 if (oSAP.ConectarSAP(objCompany))
                 {

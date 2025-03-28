@@ -41,8 +41,6 @@ namespace GUI
             this.btnLogin = new System.Windows.Forms.Button();
             this.pbxLogoGP1 = new System.Windows.Forms.PictureBox();
             this.pnTasa = new System.Windows.Forms.Panel();
-            this.txtPwSAP = new System.Windows.Forms.TextBox();
-            this.txtUserSAP = new System.Windows.Forms.TextBox();
             this.pbcLogoSAP2 = new System.Windows.Forms.PictureBox();
             this.pbCarga = new System.Windows.Forms.ProgressBar();
             this.dtpFechaTasaFiltro = new System.Windows.Forms.DateTimePicker();
@@ -58,9 +56,6 @@ namespace GUI
             this.lblDescripcion1 = new System.Windows.Forms.Label();
             this.chbDuracreto = new System.Windows.Forms.CheckBox();
             this.dtpFechaTasa = new System.Windows.Forms.DateTimePicker();
-            this.txtServerBD = new System.Windows.Forms.TextBox();
-            this.txtPwBD = new System.Windows.Forms.TextBox();
-            this.txtUserBD = new System.Windows.Forms.TextBox();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblDescripcion2 = new System.Windows.Forms.Label();
@@ -195,8 +190,6 @@ namespace GUI
             // 
             // pnTasa
             // 
-            this.pnTasa.Controls.Add(this.txtPwSAP);
-            this.pnTasa.Controls.Add(this.txtUserSAP);
             this.pnTasa.Controls.Add(this.pbcLogoSAP2);
             this.pnTasa.Controls.Add(this.pbCarga);
             this.pnTasa.Controls.Add(this.dtpFechaTasaFiltro);
@@ -212,9 +205,6 @@ namespace GUI
             this.pnTasa.Controls.Add(this.lblDescripcion1);
             this.pnTasa.Controls.Add(this.chbDuracreto);
             this.pnTasa.Controls.Add(this.dtpFechaTasa);
-            this.pnTasa.Controls.Add(this.txtServerBD);
-            this.pnTasa.Controls.Add(this.txtPwBD);
-            this.pnTasa.Controls.Add(this.txtUserBD);
             this.pnTasa.Controls.Add(this.btnActualizar);
             this.pnTasa.Controls.Add(this.lblTitulo);
             this.pnTasa.Controls.Add(this.lblDescripcion2);
@@ -224,29 +214,6 @@ namespace GUI
             this.pnTasa.Name = "pnTasa";
             this.pnTasa.Size = new System.Drawing.Size(579, 498);
             this.pnTasa.TabIndex = 43;
-            // 
-            // txtPwSAP
-            // 
-            this.txtPwSAP.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtPwSAP.Location = new System.Drawing.Point(474, 38);
-            this.txtPwSAP.Name = "txtPwSAP";
-            this.txtPwSAP.ReadOnly = true;
-            this.txtPwSAP.Size = new System.Drawing.Size(100, 22);
-            this.txtPwSAP.TabIndex = 71;
-            this.txtPwSAP.Text = "Kalak0as";
-            this.txtPwSAP.UseSystemPasswordChar = true;
-            this.txtPwSAP.Visible = false;
-            // 
-            // txtUserSAP
-            // 
-            this.txtUserSAP.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtUserSAP.Location = new System.Drawing.Point(474, 10);
-            this.txtUserSAP.Name = "txtUserSAP";
-            this.txtUserSAP.ReadOnly = true;
-            this.txtUserSAP.Size = new System.Drawing.Size(100, 22);
-            this.txtUserSAP.TabIndex = 70;
-            this.txtUserSAP.Text = "psoftware";
-            this.txtUserSAP.Visible = false;
             // 
             // pbcLogoSAP2
             // 
@@ -406,37 +373,6 @@ namespace GUI
             this.dtpFechaTasa.TabIndex = 54;
             this.dtpFechaTasa.Value = new System.DateTime(2025, 3, 19, 11, 41, 4, 705);
             // 
-            // txtServerBD
-            // 
-            this.txtServerBD.Location = new System.Drawing.Point(10, 10);
-            this.txtServerBD.Name = "txtServerBD";
-            this.txtServerBD.ReadOnly = true;
-            this.txtServerBD.Size = new System.Drawing.Size(100, 22);
-            this.txtServerBD.TabIndex = 53;
-            this.txtServerBD.Text = "NDB@192.168.1.9:30013";
-            this.txtServerBD.Visible = false;
-            // 
-            // txtPwBD
-            // 
-            this.txtPwBD.Location = new System.Drawing.Point(10, 66);
-            this.txtPwBD.Name = "txtPwBD";
-            this.txtPwBD.ReadOnly = true;
-            this.txtPwBD.Size = new System.Drawing.Size(100, 22);
-            this.txtPwBD.TabIndex = 52;
-            this.txtPwBD.Text = "Sap5erver";
-            this.txtPwBD.UseSystemPasswordChar = true;
-            this.txtPwBD.Visible = false;
-            // 
-            // txtUserBD
-            // 
-            this.txtUserBD.Location = new System.Drawing.Point(10, 38);
-            this.txtUserBD.Name = "txtUserBD";
-            this.txtUserBD.ReadOnly = true;
-            this.txtUserBD.Size = new System.Drawing.Size(100, 22);
-            this.txtUserBD.TabIndex = 51;
-            this.txtUserBD.Text = "SYSTEM";
-            this.txtUserBD.Visible = false;
-            // 
             // btnActualizar
             // 
             this.btnActualizar.BackColor = System.Drawing.Color.SteelBlue;
@@ -500,8 +436,8 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnLogin);
             this.Controls.Add(this.pnTasa);
+            this.Controls.Add(this.pnLogin);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
@@ -542,9 +478,6 @@ namespace GUI
         private System.Windows.Forms.Label lblDescripcion1;
         private System.Windows.Forms.CheckBox chbDuracreto;
         private System.Windows.Forms.DateTimePicker dtpFechaTasa;
-        private System.Windows.Forms.TextBox txtServerBD;
-        private System.Windows.Forms.TextBox txtPwBD;
-        private System.Windows.Forms.TextBox txtUserBD;
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblDescripcion2;
@@ -552,8 +485,6 @@ namespace GUI
         private System.Windows.Forms.PictureBox pbxLogoGP2;
         private System.Windows.Forms.PictureBox pbcLogoSAP2;
         private System.Windows.Forms.Button btnSalir;
-        private System.Windows.Forms.TextBox txtPwSAP;
-        private System.Windows.Forms.TextBox txtUserSAP;
         private System.Windows.Forms.TextBox txtUserSAP2;
         private System.Windows.Forms.Label lblHost;
         private System.Windows.Forms.Label lblSerie;
