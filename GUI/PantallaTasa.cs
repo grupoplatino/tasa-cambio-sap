@@ -17,7 +17,8 @@ namespace GUI
     public partial class PantallaTasa : Form
     {
         public csSAP oSAP = new csSAP();
-        private static string logPath = @"C:\Aplicaciones SAP\TasaCambio\LogTasaCambio.txt";
+        private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
+        private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
         private readonly Dictionary<string, csEmpresas> Empresas; 
 
         public PantallaTasa()
@@ -164,6 +165,8 @@ namespace GUI
         {
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+
                 using (StreamWriter writer = new StreamWriter(logPath, true))
                 {
                     writer.WriteLine($"{DateTime.Now}: {log}");
@@ -299,13 +302,13 @@ namespace GUI
         private async void btnValidar_Click(object sender, EventArgs e)
         {
 
-            EscribirLog($"Se valida la tasa para el {dtpFechaTasaFiltro.Value.Date}");
-
             DeshabilitarControles();
 
             await Task.Run(() => ObtenerTasaSimplificado());
 
             HabilitarControles();
+
+            EscribirLog($"Se valida la tasa para el {dtpFechaTasaFiltro.Value.Date}");
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

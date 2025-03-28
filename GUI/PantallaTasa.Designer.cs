@@ -163,7 +163,7 @@ namespace GUI
             this.lblUserSAP2.AutoSize = true;
             this.lblUserSAP2.Location = new System.Drawing.Point(214, 198);
             this.lblUserSAP2.Name = "lblUserSAP2";
-            this.lblUserSAP2.Size = new System.Drawing.Size(92, 17);
+            this.lblUserSAP2.Size = new System.Drawing.Size(87, 16);
             this.lblUserSAP2.TabIndex = 39;
             this.lblUserSAP2.Text = "Usuario SAP:";
             // 
@@ -186,7 +186,7 @@ namespace GUI
             // pbxLogoGP1
             // 
             this.pbxLogoGP1.Image = global::GUI.Properties.Resources.logo_gp;
-            this.pbxLogoGP1.Location = new System.Drawing.Point(164, 21);
+            this.pbxLogoGP1.Location = new System.Drawing.Point(167, 21);
             this.pbxLogoGP1.Name = "pbxLogoGP1";
             this.pbxLogoGP1.Size = new System.Drawing.Size(239, 78);
             this.pbxLogoGP1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -312,7 +312,7 @@ namespace GUI
             this.chbIP.AutoSize = true;
             this.chbIP.Location = new System.Drawing.Point(26, 329);
             this.chbIP.Name = "chbIP";
-            this.chbIP.Size = new System.Drawing.Size(148, 21);
+            this.chbIP.Size = new System.Drawing.Size(142, 20);
             this.chbIP.TabIndex = 63;
             this.chbIP.Text = "Inmobiliaria Platino";
             this.chbIP.UseVisualStyleBackColor = true;
@@ -322,7 +322,7 @@ namespace GUI
             this.chbAMSA.AutoSize = true;
             this.chbAMSA.Location = new System.Drawing.Point(26, 383);
             this.chbAMSA.Name = "chbAMSA";
-            this.chbAMSA.Size = new System.Drawing.Size(68, 21);
+            this.chbAMSA.Size = new System.Drawing.Size(67, 20);
             this.chbAMSA.TabIndex = 62;
             this.chbAMSA.Text = "AMSA";
             this.chbAMSA.UseVisualStyleBackColor = true;
@@ -332,7 +332,7 @@ namespace GUI
             this.chbINOPSA.AutoSize = true;
             this.chbINOPSA.Location = new System.Drawing.Point(26, 356);
             this.chbINOPSA.Name = "chbINOPSA";
-            this.chbINOPSA.Size = new System.Drawing.Size(81, 21);
+            this.chbINOPSA.Size = new System.Drawing.Size(79, 20);
             this.chbINOPSA.TabIndex = 61;
             this.chbINOPSA.Text = "INOPSA";
             this.chbINOPSA.UseVisualStyleBackColor = true;
@@ -342,7 +342,7 @@ namespace GUI
             this.chbSXXI.AutoSize = true;
             this.chbSXXI.Location = new System.Drawing.Point(26, 410);
             this.chbSXXI.Name = "chbSXXI";
-            this.chbSXXI.Size = new System.Drawing.Size(86, 21);
+            this.chbSXXI.Size = new System.Drawing.Size(82, 20);
             this.chbSXXI.TabIndex = 60;
             this.chbSXXI.Text = "Siglo XXI";
             this.chbSXXI.UseVisualStyleBackColor = true;
@@ -352,7 +352,7 @@ namespace GUI
             this.chbTP.AutoSize = true;
             this.chbTP.Location = new System.Drawing.Point(26, 302);
             this.chbTP.Name = "chbTP";
-            this.chbTP.Size = new System.Drawing.Size(147, 21);
+            this.chbTP.Size = new System.Drawing.Size(139, 20);
             this.chbTP.TabIndex = 59;
             this.chbTP.Text = "Transporte Platino";
             this.chbTP.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@ namespace GUI
             this.chbDP.AutoSize = true;
             this.chbDP.Location = new System.Drawing.Point(26, 275);
             this.chbDP.Name = "chbDP";
-            this.chbDP.Size = new System.Drawing.Size(157, 21);
+            this.chbDP.Size = new System.Drawing.Size(149, 20);
             this.chbDP.TabIndex = 58;
             this.chbDP.Text = "Distribuidora Platino";
             this.chbDP.UseVisualStyleBackColor = true;
@@ -372,7 +372,7 @@ namespace GUI
             this.chbWYM.AutoSize = true;
             this.chbWYM.Location = new System.Drawing.Point(26, 248);
             this.chbWYM.Name = "chbWYM";
-            this.chbWYM.Size = new System.Drawing.Size(132, 21);
+            this.chbWYM.Size = new System.Drawing.Size(128, 20);
             this.chbWYM.TabIndex = 57;
             this.chbWYM.Text = "William && Molina";
             this.chbWYM.UseVisualStyleBackColor = true;
@@ -392,7 +392,7 @@ namespace GUI
             this.chbDuracreto.AutoSize = true;
             this.chbDuracreto.Location = new System.Drawing.Point(26, 221);
             this.chbDuracreto.Name = "chbDuracreto";
-            this.chbDuracreto.Size = new System.Drawing.Size(93, 21);
+            this.chbDuracreto.Size = new System.Drawing.Size(88, 20);
             this.chbDuracreto.TabIndex = 55;
             this.chbDuracreto.Text = "Duracreto";
             this.chbDuracreto.UseVisualStyleBackColor = true;
@@ -500,8 +500,8 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnTasa);
             this.Controls.Add(this.pnLogin);
+            this.Controls.Add(this.pnTasa);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
