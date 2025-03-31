@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SAPbobsCOM;
 using BE;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace LN
 {
@@ -120,14 +121,14 @@ namespace LN
             }
         }
 
-        public async Task<bool> ValidarUsuario(string usersap)
+        public bool ValidarUsuario(string usersap)
         {
             bool existe = false;
 
             try
             {
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-                string query = "SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '" + usersap + "'";
+                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
 
                 if (oRecordSet.RecordCount > 0)
@@ -135,16 +136,31 @@ namespace LN
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 
             return existe;
         }
 
-        public string ObtenerSociedad(ref csCompany objCompany_)
+        public bool ValidarSerie(string serie)
         {
-            return "";
+            bool existe = false;
+
+            try
+            {
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Serie\" = '{serie}'";
+                oRecordSet.DoQuery(query);
+                                        
+                if (oRecordSet.RecordCount > 0)
+                    existe = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return existe;
         }
     }
 }

@@ -57,11 +57,6 @@ namespace GUI
 
             dtpFechaTasa.Value = DateTime.Now;
             dtpFechaTasaFiltro.Value = DateTime.Now;
-            lblDescripcion2.ForeColor = Color.Gray;
-            dtpFechaTasa.Enabled = false;
-            txtTasa.Enabled = false;
-            btnActualizar.Enabled = false;
-            btnActualizar.BackColor = System.Drawing.Color.LightGray;
             pbTasa.Visible = false;
             pbLogin.Visible = false;
 
@@ -103,11 +98,11 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se encontraron las credenciales en el Administrador de Credenciales de Windows.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage("No se encontraron las credenciales en el Administrador de Credenciales de Windows.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private async void ConectarBD(string bd)
+        private void ConectarBD(string bd)
         {
             try
             {
@@ -130,7 +125,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -143,7 +138,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -163,14 +158,14 @@ namespace GUI
 
                     if (oSAP.AgregarTasa(ref objORTT))
                     {
-                        MessageBox.Show($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ShowMessage($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EscribirLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpFechaTasa.Value.Date}.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -187,16 +182,25 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         //Métodos auxiliares
+
+        private void ShowMessage(string message, string title, MessageBoxButtons button, MessageBoxIcon icon)
+        {
+            if (InvokeRequired)
+                Invoke(new Action(() => MessageBox.Show(this, message, title, button, icon)));
+            else
+                MessageBox.Show(this, message, title, button, icon);
+        }
+
         private static string ObtenerSerie()
         {
             string serie = string.Empty;
 
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS"))
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROSM Win32_BIOS"))
             {
                 foreach (ManagementObject obj in searcher.Get())
                 {
@@ -207,7 +211,7 @@ namespace GUI
             return serie;
         }
 
-        private static void EscribirLog(string log)
+        private void EscribirLog(string log)
         {
             try
             {
@@ -220,7 +224,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -236,7 +240,7 @@ namespace GUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -316,44 +320,53 @@ namespace GUI
         {
             List<string> bds = new List<string> { };
 
-            foreach(var empresa in Empresas)
+            foreach (var empresa in Empresas)
             {
                 if (empresa.Value.checkBoxDB.Checked && empresa.Value.checkBoxDB.Enabled)
                     bds.Add(empresa.Key);
             }
 
             if (dtpFechaTasa.Value.Date < DateTime.Now.Date)
-                MessageBox.Show("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else if (txtTasa.Text == null || txtTasa.Text == "")
-                MessageBox.Show("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else if(bds.Count == 0)
-                MessageBox.Show("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else
             {
-                DeshabilitarControles();
-
-                var tareas = bds.Select(bd => Task.Run(() =>
-                {
-                    try
-                    {
-                        ConectarBD(bd);
-                        ActualizarTasa(bd);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                })).ToList();
-
-                await Task.WhenAll(tareas);
-
-                dtpFechaTasaFiltro.Value = dtpFechaTasa.Value;
-                txtTasa.Text = "";
-
-                await Task.Run(() => ObtenerTasaSimplificado());
-
-                HabilitarControles();
+                ShowMessage("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            if (txtTasa.Text == null || txtTasa.Text == "")
+            {
+                ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if(bds.Count == 0)
+            {
+                ShowMessage("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            DeshabilitarControles();
+
+            var tareas = bds.Select(bd => Task.Run(() =>
+            {
+                try
+                {
+                    ConectarBD(bd);
+                    ActualizarTasa(bd);
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            })).ToList();
+
+            await Task.WhenAll(tareas);
+
+            dtpFechaTasaFiltro.Value = dtpFechaTasa.Value;
+            txtTasa.Text = "";
+
+            await Task.Run(() => ObtenerTasaSimplificado());
+
+            HabilitarControles();
         }
 
         private async void btnValidar_Click(object sender, EventArgs e)
@@ -370,42 +383,51 @@ namespace GUI
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
-
             if (txtUserSAP2.Text == "")
             {
-                MessageBox.Show("El campo de usuario no puede quedar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowMessage("El campo de usuario no puede quedar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else if (lblSerie.Text != "DFPP044")
+
+            DeshabilitarControles();
+            await Task.Run(() => ConectarBD("DP_0601"));
+
+            bool serieExiste = await Task.Run(() => oSAP.ValidarSerie(lblSerie.Text));
+            if (!serieExiste)
             {
-                MessageBox.Show("No se puede utilizar la aplicación en este ambiente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
+                HabilitarControles();
+
+                return;
             }
-            else
+
+            bool usuarioExiste = await Task.Run(() => oSAP.ValidarUsuario(txtUserSAP2.Text));
+            if (!usuarioExiste)
             {
-                DeshabilitarControles();
+                ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
+                HabilitarControles();
 
-                await Task.Run(() => ConectarBD("DP_0601"));
-                bool usuarioExiste = await Task.Run(() => oSAP.ValidarUsuario(txtUserSAP2.Text));
-
-                if (!usuarioExiste)
-                {
-                    MessageBox.Show("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie}");
-                    HabilitarControles();
-                }
-                else
-                {
-                    pnLogin.Hide();
-                    pnTasa.Show();
-
-                    EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
-                    HabilitarControles();
-                }
+                return;
             }
+
+            pnLogin.Hide();
+            pnTasa.Show();
+
+            EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
+            HabilitarControles();
+
+            lblDescripcion2.ForeColor = Color.Gray;
+            dtpFechaTasa.Enabled = false;
+            txtTasa.Enabled = false;
+            btnActualizar.Enabled = false;
+            btnActualizar.BackColor = System.Drawing.Color.LightGray;
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
+            DesconectarBD();
             EscribirLog("Se sale de la aplicación.");
             Application.Exit();
         }
@@ -413,9 +435,9 @@ namespace GUI
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             EscribirLog("Se cierra la sesión.");
-            DesconectarBD();
             pnTasa.Hide();
             pnLogin.Show();
+            txtUserSAP2.Text = "";
         }
     }
 }

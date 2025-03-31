@@ -31,6 +31,7 @@ namespace GUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PantallaTasa));
             this.pnLogin = new System.Windows.Forms.Panel();
+            this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.lblSerie = new System.Windows.Forms.Label();
             this.lblHost = new System.Windows.Forms.Label();
             this.txtUserSAP2 = new System.Windows.Forms.TextBox();
@@ -61,7 +62,6 @@ namespace GUI
             this.lblDescripcion2 = new System.Windows.Forms.Label();
             this.txtTasa = new System.Windows.Forms.TextBox();
             this.pbxLogoGP2 = new System.Windows.Forms.PictureBox();
-            this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoGP1)).BeginInit();
@@ -86,6 +86,14 @@ namespace GUI
             this.pnLogin.Name = "pnLogin";
             this.pnLogin.Size = new System.Drawing.Size(579, 498);
             this.pnLogin.TabIndex = 46;
+            // 
+            // pbLogin
+            // 
+            this.pbLogin.Location = new System.Drawing.Point(217, 421);
+            this.pbLogin.Name = "pbLogin";
+            this.pbLogin.Size = new System.Drawing.Size(142, 20);
+            this.pbLogin.TabIndex = 74;
+            this.pbLogin.UseWaitCursor = true;
             // 
             // lblSerie
             // 
@@ -433,22 +441,14 @@ namespace GUI
             this.pbxLogoGP2.TabIndex = 46;
             this.pbxLogoGP2.TabStop = false;
             // 
-            // pbLogin
-            // 
-            this.pbLogin.Location = new System.Drawing.Point(217, 421);
-            this.pbLogin.Name = "pbLogin";
-            this.pbLogin.Size = new System.Drawing.Size(142, 20);
-            this.pbLogin.TabIndex = 74;
-            this.pbLogin.UseWaitCursor = true;
-            // 
             // PantallaTasa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnLogin);
             this.Controls.Add(this.pnTasa);
+            this.Controls.Add(this.pnLogin);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
