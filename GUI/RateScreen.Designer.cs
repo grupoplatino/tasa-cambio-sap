@@ -1,7 +1,7 @@
 ﻿
 namespace GUI
 {
-    partial class PantallaTasa
+    partial class RateScreen
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -29,7 +29,7 @@ namespace GUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PantallaTasa));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RateScreen));
             this.pnLogin = new System.Windows.Forms.Panel();
             this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.lblSerie = new System.Windows.Forms.Label();

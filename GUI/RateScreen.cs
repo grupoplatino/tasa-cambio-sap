@@ -13,7 +13,7 @@ using LN;
 
 namespace GUI
 {
-    public partial class PantallaTasa : Form
+    public partial class RateScreen : Form
     {
         public csSAP oSAP = new csSAP();
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
@@ -26,7 +26,7 @@ namespace GUI
         private string _userSAP;
         private string _pwSAP;
 
-        public PantallaTasa()
+        public RateScreen()
         {
             InitializeComponent();
 
