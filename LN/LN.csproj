@@ -81,8 +81,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="csConexion.cs" />
-    <Compile Include="csEmpresas.cs" />
+    <Compile Include="csConnection.cs" />
+    <Compile Include="csCompanies.cs" />
     <Compile Include="csSAP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -18,7 +18,7 @@ namespace GUI
         public csSAP oSAP = new csSAP();
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
-        private readonly Dictionary<string, csEmpresas> Empresas;
+        private readonly Dictionary<string, csCompanies> Companies;
 
         private string _serverBD;
         private string _userBD;
@@ -30,43 +30,43 @@ namespace GUI
         {
             InitializeComponent();
 
-            Empresas = new Dictionary<string, csEmpresas>
+            Companies = new Dictionary<string, csCompanies>
             {
-                { "DC_0215", new csEmpresas("DC_0215", "Duracreto", chbDuracreto) },
-                { "WYM_TEST", new csEmpresas("WYM_TEST", "William & Molina", chbWYM) },
-                { "DP_0601", new csEmpresas("DP_0601", "Distribuidora Platino", chbDP) },
-                { "TEST_IP2103", new csEmpresas("TEST_IP2103", "Inmobiliaria Platino", chbIP) }
+                { "DC_0215", new csCompanies("DC_0215", "Duracreto", chbDuracreto) },
+                { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
+                { "DP_0601", new csCompanies("DP_0601", "Distribuidora Platino", chbDP) },
+                { "TEST_IP2103", new csCompanies("TEST_IP2103", "Inmobiliaria Platino", chbIP) }
             };
 
-            /*Empresas = new Dictionary<string, csEmpresas>
+            /*Companies = new Dictionary<string, csCompanies>
             {
-                { "SBO_DURACRETO1", new csEmpresas("SBO_DURACRETO1", "Duracreto", chbDuracreto) },
-                { "SBO_WILLIAM_Y_MOLINA", new csEmpresas("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
-                { "SBO_DP", new csEmpresas("SBO_DP", "Distribuidora Platino", chbDP) },
-                { "SBO_TRANSPORTE_PLATINO", new csEmpresas("SBO_TRANSPORTE_PLATINO", "Transportes Platino", chbTP) },
-                { "SBO_INMOBILIARIA_PLATINO", new csEmpresas("SBO_INMOBILIARIA_PLATINO", "Inmobiliaria Platino", chbIP) },
-                { "SBO_INOPSA", new csEmpresas("SBO_INOPSA", "INOPSA", chbINOPSA) },
-                { "SBO_AMSA", new csEmpresas("SBO_AMSA", "AMSA", chbAMSA) },
-                { "SBO_SPS_SIGLO_XXI", new csEmpresas("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) }
+                { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDuracreto) },
+                { "SBO_WILLIAM_Y_MOLINA", new csCompanies("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
+                { "SBO_DP", new csCompanies("SBO_DP", "Distribuidora Platino", chbDP) },
+                { "SBO_TRANSPORTE_PLATINO", new csCompanies("SBO_TRANSPORTE_PLATINO", "Transportes Platino", chbTP) },
+                { "SBO_INMOBILIARIA_PLATINO", new csCompanies("SBO_INMOBILIARIA_PLATINO", "Inmobiliaria Platino", chbIP) },
+                { "SBO_INOPSA", new csCompanies("SBO_INOPSA", "INOPSA", chbINOPSA) },
+                { "SBO_AMSA", new csCompanies("SBO_AMSA", "AMSA", chbAMSA) },
+                { "SBO_SPS_SIGLO_XXI", new csCompanies("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) }
             };*/
 
-            EscribirLog("Se inicia la aplicación.");
+            WriteLog("Se inicia la aplicación.");
 
             lblHost.Text = Environment.MachineName;
-            lblSerie.Text = ObtenerSerie();
+            lblSerie.Text = GetSeries();
 
-            dtpFechaTasa.Value = DateTime.Now;
-            dtpFechaTasaFiltro.Value = DateTime.Now;
-            pbTasa.Visible = false;
+            dtpRateDate.Value = DateTime.Now;
+            dtpFilterRateDate.Value = DateTime.Now;
+            pbRate.Visible = false;
             pbLogin.Visible = false;
 
             pnTasa.Hide();
 
-            CargarCredenciales();
+            LoadCredentials();
         }
 
         //Métodos principales
-        private void CargarCredenciales()
+        private void LoadCredentials()
         {
             try
             {
@@ -98,7 +98,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                ShowMessage("No se encontraron las credenciales en el Administrador de Credenciales de Windows.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -117,10 +117,10 @@ namespace GUI
                     PwSAP = _pwSAP
                 };
 
-                if (oSAP.ConectarSAP(objCompany))
+                if (oSAP.ConnectSAP(objCompany))
                 {
                     string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015");
-                    csConexion.IniciarConexionHANA(Server, objCompany.UserBD, objCompany.PwBD, bd);
+                    csConnection.StartConnection(Server, objCompany.UserBD, objCompany.PwBD, bd);
                 }
             }
             catch (Exception ex)
@@ -129,12 +129,12 @@ namespace GUI
             }
         }
 
-        private void DesconectarBD()
+        private void DisconnectBD()
         {
             try
             {
                 csCompany objCompany = new csCompany();
-                oSAP.DesconectarSAP(objCompany);
+                oSAP.DisconnectSAP(objCompany);
             }
             catch (Exception ex)
             {
@@ -142,24 +142,24 @@ namespace GUI
             }
         }
 
-        private void ActualizarTasa(string bd)
+        private void UpdateRate(string bd)
         {
             try
             {
                 csORTT objORTT = new csORTT();
                 objORTT.Currency = "USD";
-                objORTT.RateDate = dtpFechaTasa.Value;
-                objORTT.Rate = Double.Parse(txtTasa.Text);
+                objORTT.RateDate = dtpRateDate.Value;
+                objORTT.Rate = Double.Parse(txtRate.Text);
 
-                if(Empresas.ContainsKey(bd))
+                if(Companies.ContainsKey(bd))
                 {
-                    csEmpresas empresa = Empresas[bd];
-                    string bd_name = empresa.nombreDB;
+                    csCompanies company = Companies[bd];
+                    string bd_name = company.nameDB;
 
-                    if (oSAP.AgregarTasa(ref objORTT))
+                    if (oSAP.AddRate(ref objORTT))
                     {
                         ShowMessage($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        EscribirLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpFechaTasa.Value.Date}.");
+                        WriteLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpRateDate.Value.Date}.");
                     }
                 }
             }
@@ -169,16 +169,16 @@ namespace GUI
             }
         }
 
-        private void ObtenerTasa(string bd)
+        private void GetRate(string bd)
         {
             try
             {
                 csORTT objORTT = new csORTT();
                 objORTT.Currency = "USD";
-                objORTT.RateDate = dtpFechaTasaFiltro.Value;
+                objORTT.RateDate = dtpFilterRateDate.Value;
 
-                bool tieneTasa = oSAP.ObtenerTasa(ref objORTT);
-                ActualizarCheckboxes(bd, tieneTasa);
+                bool tieneTasa = oSAP.GetRate(ref objORTT);
+                UpdateCheckboxes(bd, tieneTasa);
             }
             catch (Exception ex)
             {
@@ -187,7 +187,6 @@ namespace GUI
         }
 
         //Métodos auxiliares
-
         private void ShowMessage(string message, string title, MessageBoxButtons button, MessageBoxIcon icon)
         {
             if (InvokeRequired)
@@ -196,11 +195,11 @@ namespace GUI
                 MessageBox.Show(this, message, title, button, icon);
         }
 
-        private static string ObtenerSerie()
+        private static string GetSeries()
         {
-            string serie = string.Empty;
+            string series = string.Empty;
 
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROSM Win32_BIOS"))
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS"))
             {
                 foreach (ManagementObject obj in searcher.Get())
                 {
@@ -208,10 +207,10 @@ namespace GUI
                 }
             }
 
-            return serie;
+            return series;
         }
 
-        private void EscribirLog(string log)
+        private void WriteLog(string log)
         {
             try
             {
@@ -228,15 +227,15 @@ namespace GUI
             }
         }
 
-        private void ObtenerTasaSimplificado()
+        private void GetRateSimplificado()
         {
-            foreach (var empresa in Empresas)
+            foreach (var company in Companies)
             {
                 try
                 {
-                    string bd = empresa.Key;
+                    string bd = company.Key;
                     ConectarBD(bd);
-                    ObtenerTasa(bd);
+                    GetRate(bd);
                 }
                 catch (Exception ex)
                 {
@@ -245,61 +244,61 @@ namespace GUI
             }
         }
 
-        private void ActualizarCheckboxes(string bd, bool tieneTasa)
+        private void UpdateCheckboxes(string bd, bool tieneTasa)
         {
             Invoke(new Action(() => {
-                if (Empresas.ContainsKey(bd))
+                if (Companies.ContainsKey(bd))
                 {
-                    csEmpresas empresa = Empresas[bd];
+                    csCompanies company = Companies[bd];
 
-                    empresa.checkBoxDB.Checked = tieneTasa;
-                    empresa.checkBoxDB.Enabled = !tieneTasa;
+                    company.checkBoxDB.Checked = tieneTasa;
+                    company.checkBoxDB.Enabled = !tieneTasa;
                 }
             }));
         }
 
-        private void HabilitarControles()
+        private void EnableControls()
         {
-            pbTasa.Visible = false;
+            pbRate.Visible = false;
             pbLogin.Visible = false;
             btnLogin.Enabled = true;
-            btnSalir.Enabled = true;
-            btnValidar.Enabled = true;
-            btnActualizar.Enabled = true;
-            btnCerrarSesion.Enabled = true;
-            dtpFechaTasaFiltro.Enabled = true;
-            dtpFechaTasa.Enabled = true;
-            txtTasa.Enabled = true;
-            lblDescripcion1.ForeColor = Color.Black;
-            lblDescripcion2.ForeColor = Color.Black;
-            btnActualizar.BackColor = System.Drawing.Color.SteelBlue;
-            btnValidar.BackColor = System.Drawing.Color.OliveDrab;
-            btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
+            btnExit.Enabled = true;
+            btnValidate.Enabled = true;
+            btnUpdate.Enabled = true;
+            btnLogout.Enabled = true;
+            dtpFilterRateDate.Enabled = true;
+            dtpRateDate.Enabled = true;
+            txtRate.Enabled = true;
+            lblDescription1.ForeColor = Color.Black;
+            lblDescription2.ForeColor = Color.Black;
+            btnUpdate.BackColor = System.Drawing.Color.SteelBlue;
+            btnValidate.BackColor = System.Drawing.Color.OliveDrab;
+            btnLogout.BackColor = System.Drawing.Color.Brown;
             btnLogin.BackColor = System.Drawing.Color.SteelBlue;
-            btnSalir.BackColor = System.Drawing.Color.Firebrick;
+            btnExit.BackColor = System.Drawing.Color.Firebrick;
 
-            foreach (var empresa in Empresas)
+            foreach (var company in Companies)
             {
-                empresa.Value.checkBoxDB.Enabled = !empresa.Value.checkBoxDB.Checked;
+                company.Value.checkBoxDB.Enabled = !company.Value.checkBoxDB.Checked;
             }
         }
 
-        private void DeshabilitarControles()
+        private void DisableControls()
         {
-            pbTasa.Style = ProgressBarStyle.Marquee;
+            pbRate.Style = ProgressBarStyle.Marquee;
             pbLogin.Style = ProgressBarStyle.Marquee;
-            pbTasa.Visible = true;
+            pbRate.Visible = true;
             pbLogin.Visible = true;
             btnLogin.Enabled = false;
-            btnSalir.Enabled = false;
-            btnValidar.Enabled = false;
-            btnActualizar.Enabled = false;
-            btnCerrarSesion.Enabled = false;
-            dtpFechaTasaFiltro.Enabled = false;
-            dtpFechaTasa.Enabled = false;
-            txtTasa.Enabled = false;
-            lblDescripcion1.ForeColor = Color.Gray;
-            lblDescripcion2.ForeColor = Color.Gray;
+            btnExit.Enabled = false;
+            btnValidate.Enabled = false;
+            btnUpdate.Enabled = false;
+            btnLogout.Enabled = false;
+            dtpFilterRateDate.Enabled = false;
+            dtpRateDate.Enabled = false;
+            txtRate.Enabled = false;
+            lblDescription1.ForeColor = Color.Gray;
+            lblDescription2.ForeColor = Color.Gray;
             chbDuracreto.Enabled = false;
             chbWYM.Enabled = false;
             chbDP.Enabled = false;
@@ -308,31 +307,31 @@ namespace GUI
             chbINOPSA.Enabled = false;
             chbAMSA.Enabled = false;
             chbSXXI.Enabled = false;
-            btnActualizar.BackColor = System.Drawing.Color.LightGray;
-            btnValidar.BackColor = System.Drawing.Color.LightGray;
-            btnCerrarSesion.BackColor = System.Drawing.Color.LightGray;
+            btnUpdate.BackColor = System.Drawing.Color.LightGray;
+            btnValidate.BackColor = System.Drawing.Color.LightGray;
+            btnLogout.BackColor = System.Drawing.Color.LightGray;
             btnLogin.BackColor = System.Drawing.Color.LightGray;
-            btnSalir.BackColor = System.Drawing.Color.LightGray;
+            btnExit.BackColor = System.Drawing.Color.LightGray;
         }
 
         //Botones
-        private async void btnActualizar_Click(object sender, EventArgs e)
+        private async void btnUpdate_Click(object sender, EventArgs e)
         {
             List<string> bds = new List<string> { };
 
-            foreach (var empresa in Empresas)
+            foreach (var company in Companies)
             {
-                if (empresa.Value.checkBoxDB.Checked && empresa.Value.checkBoxDB.Enabled)
-                    bds.Add(empresa.Key);
+                if (company.Value.checkBoxDB.Checked && company.Value.checkBoxDB.Enabled)
+                    bds.Add(company.Key);
             }
 
-            if (dtpFechaTasa.Value.Date < DateTime.Now.Date)
+            if (dtpRateDate.Value.Date < DateTime.Now.Date)
             {
                 ShowMessage("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (txtTasa.Text == null || txtTasa.Text == "")
+            if (txtRate.Text == null || txtRate.Text == "")
             {
                 ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -344,14 +343,14 @@ namespace GUI
                 return;
             }
             
-            DeshabilitarControles();
+            DisableControls();
 
             var tareas = bds.Select(bd => Task.Run(() =>
             {
                 try
                 {
                     ConectarBD(bd);
-                    ActualizarTasa(bd);
+                    UpdateRate(bd);
                 }
                 catch (Exception ex)
                 {
@@ -361,24 +360,24 @@ namespace GUI
 
             await Task.WhenAll(tareas);
 
-            dtpFechaTasaFiltro.Value = dtpFechaTasa.Value;
-            txtTasa.Text = "";
+            dtpFilterRateDate.Value = dtpRateDate.Value;
+            txtRate.Text = "";
 
-            await Task.Run(() => ObtenerTasaSimplificado());
+            await Task.Run(() => GetRateSimplificado());
 
-            HabilitarControles();
+            EnableControls();
         }
 
-        private async void btnValidar_Click(object sender, EventArgs e)
+        private async void btnValidate_Click(object sender, EventArgs e)
         {
 
-            DeshabilitarControles();
+            DisableControls();
 
-            await Task.Run(() => ObtenerTasaSimplificado());
+            await Task.Run(() => GetRateSimplificado());
 
-            HabilitarControles();
+            EnableControls();
 
-            EscribirLog($"Se valida la tasa para el {dtpFechaTasaFiltro.Value.Date}");
+            WriteLog($"Se valida la tasa para el {dtpFilterRateDate.Value.Date}");
         }
 
         private async void btnLogin_Click(object sender, EventArgs e)
@@ -389,25 +388,25 @@ namespace GUI
                 return;
             }
 
-            DeshabilitarControles();
+            DisableControls();
             await Task.Run(() => ConectarBD("DP_0601"));
 
-            bool serieExiste = await Task.Run(() => oSAP.ValidarSerie(lblSerie.Text));
+            bool serieExiste = await Task.Run(() => oSAP.ValidateSeries(lblSerie.Text));
             if (!serieExiste)
             {
                 ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
-                HabilitarControles();
+                WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
+                EnableControls();
 
                 return;
             }
 
-            bool usuarioExiste = await Task.Run(() => oSAP.ValidarUsuario(txtUserSAP2.Text));
+            bool usuarioExiste = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
             if (!usuarioExiste)
             {
                 ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
-                HabilitarControles();
+                WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
+                EnableControls();
 
                 return;
             }
@@ -415,26 +414,26 @@ namespace GUI
             pnLogin.Hide();
             pnTasa.Show();
 
-            EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
-            HabilitarControles();
+            WriteLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
+            EnableControls();
 
-            lblDescripcion2.ForeColor = Color.Gray;
-            dtpFechaTasa.Enabled = false;
-            txtTasa.Enabled = false;
-            btnActualizar.Enabled = false;
-            btnActualizar.BackColor = System.Drawing.Color.LightGray;
+            lblDescription2.ForeColor = Color.Gray;
+            dtpRateDate.Enabled = false;
+            txtRate.Enabled = false;
+            btnUpdate.Enabled = false;
+            btnUpdate.BackColor = System.Drawing.Color.LightGray;
         }
 
-        private void btnSalir_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
-            DesconectarBD();
-            EscribirLog("Se sale de la aplicación.");
+            DisconnectBD();
+            WriteLog("Se sale de la aplicación.");
             Application.Exit();
         }
 
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e)
         {
-            EscribirLog("Se cierra la sesión.");
+            WriteLog("Se cierra la sesión.");
             pnTasa.Hide();
             pnLogin.Show();
             txtUserSAP2.Text = "";

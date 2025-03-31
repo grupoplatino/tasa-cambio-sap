@@ -35,7 +35,7 @@ namespace GUI
             this.lblSerie = new System.Windows.Forms.Label();
             this.lblHost = new System.Windows.Forms.Label();
             this.txtUserSAP2 = new System.Windows.Forms.TextBox();
-            this.btnSalir = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.pbxLogoSAP1 = new System.Windows.Forms.PictureBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblUserSAP2 = new System.Windows.Forms.Label();
@@ -43,10 +43,10 @@ namespace GUI
             this.pbxLogoGP1 = new System.Windows.Forms.PictureBox();
             this.pnTasa = new System.Windows.Forms.Panel();
             this.pbcLogoSAP2 = new System.Windows.Forms.PictureBox();
-            this.pbTasa = new System.Windows.Forms.ProgressBar();
-            this.dtpFechaTasaFiltro = new System.Windows.Forms.DateTimePicker();
-            this.btnValidar = new System.Windows.Forms.Button();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
+            this.pbRate = new System.Windows.Forms.ProgressBar();
+            this.dtpFilterRateDate = new System.Windows.Forms.DateTimePicker();
+            this.btnValidate = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.chbIP = new System.Windows.Forms.CheckBox();
             this.chbAMSA = new System.Windows.Forms.CheckBox();
             this.chbINOPSA = new System.Windows.Forms.CheckBox();
@@ -54,13 +54,13 @@ namespace GUI
             this.chbTP = new System.Windows.Forms.CheckBox();
             this.chbDP = new System.Windows.Forms.CheckBox();
             this.chbWYM = new System.Windows.Forms.CheckBox();
-            this.lblDescripcion1 = new System.Windows.Forms.Label();
+            this.lblDescription1 = new System.Windows.Forms.Label();
             this.chbDuracreto = new System.Windows.Forms.CheckBox();
-            this.dtpFechaTasa = new System.Windows.Forms.DateTimePicker();
-            this.btnActualizar = new System.Windows.Forms.Button();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblDescripcion2 = new System.Windows.Forms.Label();
-            this.txtTasa = new System.Windows.Forms.TextBox();
+            this.dtpRateDate = new System.Windows.Forms.DateTimePicker();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblDescription2 = new System.Windows.Forms.Label();
+            this.txtRate = new System.Windows.Forms.TextBox();
             this.pbxLogoGP2 = new System.Windows.Forms.PictureBox();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).BeginInit();
@@ -76,7 +76,7 @@ namespace GUI
             this.pnLogin.Controls.Add(this.lblSerie);
             this.pnLogin.Controls.Add(this.lblHost);
             this.pnLogin.Controls.Add(this.txtUserSAP2);
-            this.pnLogin.Controls.Add(this.btnSalir);
+            this.pnLogin.Controls.Add(this.btnExit);
             this.pnLogin.Controls.Add(this.pbxLogoSAP1);
             this.pnLogin.Controls.Add(this.lblVersion);
             this.pnLogin.Controls.Add(this.lblUserSAP2);
@@ -125,21 +125,21 @@ namespace GUI
             this.txtUserSAP2.Size = new System.Drawing.Size(143, 22);
             this.txtUserSAP2.TabIndex = 71;
             // 
-            // btnSalir
+            // btnExit
             // 
-            this.btnSalir.BackColor = System.Drawing.Color.Firebrick;
-            this.btnSalir.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSalir.FlatAppearance.BorderSize = 0;
-            this.btnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnSalir.Location = new System.Drawing.Point(216, 458);
-            this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(143, 30);
-            this.btnSalir.TabIndex = 65;
-            this.btnSalir.Text = "Salir";
-            this.btnSalir.UseVisualStyleBackColor = false;
-            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            this.btnExit.BackColor = System.Drawing.Color.Firebrick;
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.FlatAppearance.BorderSize = 0;
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExit.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnExit.Location = new System.Drawing.Point(216, 458);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(143, 30);
+            this.btnExit.TabIndex = 65;
+            this.btnExit.Text = "Salir";
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // pbxLogoSAP1
             // 
@@ -202,10 +202,10 @@ namespace GUI
             // pnTasa
             // 
             this.pnTasa.Controls.Add(this.pbcLogoSAP2);
-            this.pnTasa.Controls.Add(this.pbTasa);
-            this.pnTasa.Controls.Add(this.dtpFechaTasaFiltro);
-            this.pnTasa.Controls.Add(this.btnValidar);
-            this.pnTasa.Controls.Add(this.btnCerrarSesion);
+            this.pnTasa.Controls.Add(this.pbRate);
+            this.pnTasa.Controls.Add(this.dtpFilterRateDate);
+            this.pnTasa.Controls.Add(this.btnValidate);
+            this.pnTasa.Controls.Add(this.btnLogout);
             this.pnTasa.Controls.Add(this.chbIP);
             this.pnTasa.Controls.Add(this.chbAMSA);
             this.pnTasa.Controls.Add(this.chbINOPSA);
@@ -213,13 +213,13 @@ namespace GUI
             this.pnTasa.Controls.Add(this.chbTP);
             this.pnTasa.Controls.Add(this.chbDP);
             this.pnTasa.Controls.Add(this.chbWYM);
-            this.pnTasa.Controls.Add(this.lblDescripcion1);
+            this.pnTasa.Controls.Add(this.lblDescription1);
             this.pnTasa.Controls.Add(this.chbDuracreto);
-            this.pnTasa.Controls.Add(this.dtpFechaTasa);
-            this.pnTasa.Controls.Add(this.btnActualizar);
-            this.pnTasa.Controls.Add(this.lblTitulo);
-            this.pnTasa.Controls.Add(this.lblDescripcion2);
-            this.pnTasa.Controls.Add(this.txtTasa);
+            this.pnTasa.Controls.Add(this.dtpRateDate);
+            this.pnTasa.Controls.Add(this.btnUpdate);
+            this.pnTasa.Controls.Add(this.lblTitle);
+            this.pnTasa.Controls.Add(this.lblDescription2);
+            this.pnTasa.Controls.Add(this.txtRate);
             this.pnTasa.Controls.Add(this.pbxLogoGP2);
             this.pnTasa.Location = new System.Drawing.Point(2, 2);
             this.pnTasa.Name = "pnTasa";
@@ -236,54 +236,54 @@ namespace GUI
             this.pbcLogoSAP2.TabIndex = 69;
             this.pbcLogoSAP2.TabStop = false;
             // 
-            // pbTasa
+            // pbRate
             // 
-            this.pbTasa.Location = new System.Drawing.Point(217, 421);
-            this.pbTasa.Name = "pbTasa";
-            this.pbTasa.Size = new System.Drawing.Size(135, 20);
-            this.pbTasa.TabIndex = 67;
-            this.pbTasa.UseWaitCursor = true;
+            this.pbRate.Location = new System.Drawing.Point(217, 421);
+            this.pbRate.Name = "pbRate";
+            this.pbRate.Size = new System.Drawing.Size(135, 20);
+            this.pbRate.TabIndex = 67;
+            this.pbRate.UseWaitCursor = true;
             // 
-            // dtpFechaTasaFiltro
+            // dtpFilterRateDate
             // 
-            this.dtpFechaTasaFiltro.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFechaTasaFiltro.Location = new System.Drawing.Point(26, 185);
-            this.dtpFechaTasaFiltro.Name = "dtpFechaTasaFiltro";
-            this.dtpFechaTasaFiltro.Size = new System.Drawing.Size(139, 22);
-            this.dtpFechaTasaFiltro.TabIndex = 66;
-            this.dtpFechaTasaFiltro.Value = new System.DateTime(2025, 3, 19, 11, 41, 4, 705);
+            this.dtpFilterRateDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFilterRateDate.Location = new System.Drawing.Point(26, 185);
+            this.dtpFilterRateDate.Name = "dtpFilterRateDate";
+            this.dtpFilterRateDate.Size = new System.Drawing.Size(139, 22);
+            this.dtpFilterRateDate.TabIndex = 66;
+            this.dtpFilterRateDate.Value = new System.DateTime(2025, 3, 19, 11, 41, 4, 705);
             // 
-            // btnValidar
+            // btnValidate
             // 
-            this.btnValidar.BackColor = System.Drawing.Color.OliveDrab;
-            this.btnValidar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnValidar.FlatAppearance.BorderSize = 0;
-            this.btnValidar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnValidar.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnValidar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnValidar.Location = new System.Drawing.Point(26, 448);
-            this.btnValidar.Name = "btnValidar";
-            this.btnValidar.Size = new System.Drawing.Size(110, 30);
-            this.btnValidar.TabIndex = 65;
-            this.btnValidar.Text = "Validar";
-            this.btnValidar.UseVisualStyleBackColor = false;
-            this.btnValidar.Click += new System.EventHandler(this.btnValidar_Click);
+            this.btnValidate.BackColor = System.Drawing.Color.OliveDrab;
+            this.btnValidate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnValidate.FlatAppearance.BorderSize = 0;
+            this.btnValidate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnValidate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnValidate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnValidate.Location = new System.Drawing.Point(26, 448);
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.Size = new System.Drawing.Size(110, 30);
+            this.btnValidate.TabIndex = 65;
+            this.btnValidate.Text = "Validar";
+            this.btnValidate.UseVisualStyleBackColor = false;
+            this.btnValidate.Click += new System.EventHandler(this.btnValidate_Click);
             // 
-            // btnCerrarSesion
+            // btnLogout
             // 
-            this.btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
-            this.btnCerrarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
-            this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCerrarSesion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCerrarSesion.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(431, 448);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(125, 30);
-            this.btnCerrarSesion.TabIndex = 64;
-            this.btnCerrarSesion.Text = "Cerrar sesión";
-            this.btnCerrarSesion.UseVisualStyleBackColor = false;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            this.btnLogout.BackColor = System.Drawing.Color.Brown;
+            this.btnLogout.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLogout.FlatAppearance.BorderSize = 0;
+            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogout.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnLogout.Location = new System.Drawing.Point(431, 448);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(125, 30);
+            this.btnLogout.TabIndex = 64;
+            this.btnLogout.Text = "Cerrar sesión";
+            this.btnLogout.UseVisualStyleBackColor = false;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // chbIP
             // 
@@ -355,15 +355,15 @@ namespace GUI
             this.chbWYM.Text = "William && Molina";
             this.chbWYM.UseVisualStyleBackColor = true;
             // 
-            // lblDescripcion1
+            // lblDescription1
             // 
-            this.lblDescripcion1.AutoSize = true;
-            this.lblDescripcion1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescripcion1.Location = new System.Drawing.Point(23, 152);
-            this.lblDescripcion1.Name = "lblDescripcion1";
-            this.lblDescripcion1.Size = new System.Drawing.Size(214, 18);
-            this.lblDescripcion1.TabIndex = 56;
-            this.lblDescripcion1.Text = "Empresas con tasa de cambio:";
+            this.lblDescription1.AutoSize = true;
+            this.lblDescription1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescription1.Location = new System.Drawing.Point(23, 152);
+            this.lblDescription1.Name = "lblDescription1";
+            this.lblDescription1.Size = new System.Drawing.Size(214, 18);
+            this.lblDescription1.TabIndex = 56;
+            this.lblDescription1.Text = "Empresas con tasa de cambio:";
             // 
             // chbDuracreto
             // 
@@ -375,61 +375,61 @@ namespace GUI
             this.chbDuracreto.Text = "Duracreto";
             this.chbDuracreto.UseVisualStyleBackColor = true;
             // 
-            // dtpFechaTasa
+            // dtpRateDate
             // 
-            this.dtpFechaTasa.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFechaTasa.Location = new System.Drawing.Point(312, 221);
-            this.dtpFechaTasa.Name = "dtpFechaTasa";
-            this.dtpFechaTasa.Size = new System.Drawing.Size(139, 22);
-            this.dtpFechaTasa.TabIndex = 54;
-            this.dtpFechaTasa.Value = new System.DateTime(2025, 3, 19, 11, 41, 4, 705);
+            this.dtpRateDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpRateDate.Location = new System.Drawing.Point(312, 221);
+            this.dtpRateDate.Name = "dtpRateDate";
+            this.dtpRateDate.Size = new System.Drawing.Size(139, 22);
+            this.dtpRateDate.TabIndex = 54;
+            this.dtpRateDate.Value = new System.DateTime(2025, 3, 19, 11, 41, 4, 705);
             // 
-            // btnActualizar
+            // btnUpdate
             // 
-            this.btnActualizar.BackColor = System.Drawing.Color.SteelBlue;
-            this.btnActualizar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnActualizar.FlatAppearance.BorderSize = 0;
-            this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnActualizar.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnActualizar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnActualizar.Location = new System.Drawing.Point(312, 302);
-            this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(114, 30);
-            this.btnActualizar.TabIndex = 50;
-            this.btnActualizar.Text = "Actualizar";
-            this.btnActualizar.UseVisualStyleBackColor = false;
-            this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click);
+            this.btnUpdate.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUpdate.FlatAppearance.BorderSize = 0;
+            this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnUpdate.Location = new System.Drawing.Point(312, 302);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(114, 30);
+            this.btnUpdate.TabIndex = 50;
+            this.btnUpdate.Text = "Actualizar";
+            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
-            // lblTitulo
+            // lblTitle
             // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(97, 111);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(338, 20);
-            this.lblTitulo.TabIndex = 49;
-            this.lblTitulo.Text = "Actualización de tasa de cambio global";
-            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(97, 111);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(338, 20);
+            this.lblTitle.TabIndex = 49;
+            this.lblTitle.Text = "Actualización de tasa de cambio global";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblDescripcion2
+            // lblDescription2
             // 
-            this.lblDescripcion2.AutoSize = true;
-            this.lblDescripcion2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescripcion2.Location = new System.Drawing.Point(309, 152);
-            this.lblDescripcion2.MaximumSize = new System.Drawing.Size(250, 0);
-            this.lblDescripcion2.Name = "lblDescripcion2";
-            this.lblDescripcion2.Size = new System.Drawing.Size(247, 54);
-            this.lblDescripcion2.TabIndex = 48;
-            this.lblDescripcion2.Text = "Seleccione la fecha e ingrese el tipo de cambio para las empresas seleccionadas:";
+            this.lblDescription2.AutoSize = true;
+            this.lblDescription2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescription2.Location = new System.Drawing.Point(309, 152);
+            this.lblDescription2.MaximumSize = new System.Drawing.Size(250, 0);
+            this.lblDescription2.Name = "lblDescription2";
+            this.lblDescription2.Size = new System.Drawing.Size(247, 54);
+            this.lblDescription2.TabIndex = 48;
+            this.lblDescription2.Text = "Seleccione la fecha e ingrese el tipo de cambio para las empresas seleccionadas:";
             // 
-            // txtTasa
+            // txtRate
             // 
-            this.txtTasa.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtTasa.Location = new System.Drawing.Point(312, 260);
-            this.txtTasa.Name = "txtTasa";
-            this.txtTasa.Size = new System.Drawing.Size(139, 22);
-            this.txtTasa.TabIndex = 47;
+            this.txtRate.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.txtRate.Location = new System.Drawing.Point(312, 260);
+            this.txtRate.Name = "txtRate";
+            this.txtRate.Size = new System.Drawing.Size(139, 22);
+            this.txtRate.TabIndex = 47;
             // 
             // pbxLogoGP2
             // 
@@ -475,10 +475,10 @@ namespace GUI
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.PictureBox pbxLogoGP1;
         private System.Windows.Forms.Panel pnTasa;
-        private System.Windows.Forms.ProgressBar pbTasa;
-        private System.Windows.Forms.DateTimePicker dtpFechaTasaFiltro;
-        private System.Windows.Forms.Button btnValidar;
-        private System.Windows.Forms.Button btnCerrarSesion;
+        private System.Windows.Forms.ProgressBar pbRate;
+        private System.Windows.Forms.DateTimePicker dtpFilterRateDate;
+        private System.Windows.Forms.Button btnValidate;
+        private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.CheckBox chbIP;
         private System.Windows.Forms.CheckBox chbAMSA;
         private System.Windows.Forms.CheckBox chbINOPSA;
@@ -486,16 +486,16 @@ namespace GUI
         private System.Windows.Forms.CheckBox chbTP;
         private System.Windows.Forms.CheckBox chbDP;
         private System.Windows.Forms.CheckBox chbWYM;
-        private System.Windows.Forms.Label lblDescripcion1;
+        private System.Windows.Forms.Label lblDescription1;
         private System.Windows.Forms.CheckBox chbDuracreto;
-        private System.Windows.Forms.DateTimePicker dtpFechaTasa;
-        private System.Windows.Forms.Button btnActualizar;
-        private System.Windows.Forms.Label lblTitulo;
-        private System.Windows.Forms.Label lblDescripcion2;
-        private System.Windows.Forms.TextBox txtTasa;
+        private System.Windows.Forms.DateTimePicker dtpRateDate;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblDescription2;
+        private System.Windows.Forms.TextBox txtRate;
         private System.Windows.Forms.PictureBox pbxLogoGP2;
         private System.Windows.Forms.PictureBox pbcLogoSAP2;
-        private System.Windows.Forms.Button btnSalir;
+        private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.TextBox txtUserSAP2;
         private System.Windows.Forms.Label lblHost;
         private System.Windows.Forms.Label lblSerie;

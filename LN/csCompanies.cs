@@ -7,16 +7,16 @@ using System.Windows.Forms;
 
 namespace LN
 {
-    public class csEmpresas
+    public class csCompanies
     {
-        public string codigoDB { get; set; }
-        public string nombreDB { get; set; }
+        public string codeDB { get; set; }
+        public string nameDB { get; set; }
         public CheckBox checkBoxDB { get; set; }
 
-        public csEmpresas(string _codigoDB, string _nombreDB, CheckBox _checkBoxDB)
+        public csCompanies(string _codeDB, string _nameDB, CheckBox _checkBoxDB)
         {
-            codigoDB = _codigoDB;
-            nombreDB = _nombreDB;
+            codeDB = _codeDB;
+            nameDB = _nameDB;
             checkBoxDB = _checkBoxDB;
         }
     }

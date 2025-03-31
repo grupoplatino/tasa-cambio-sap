@@ -19,7 +19,7 @@ namespace LN
         public static int iErrCod = 0;
         public static string sErrMsg = "";
 
-        public bool ConectarSAP(csCompany objCompany)
+        public bool ConnectSAP(csCompany objCompany)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace LN
             }
         }
 
-        public bool DesconectarSAP(csCompany objCompany)
+        public bool DisconnectSAP(csCompany objCompany)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace LN
             }
         }
 
-        public bool AgregarTasa(ref csORTT objORTT)
+        public bool AddRate(ref csORTT objORTT)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace LN
             }
         }
 
-        public bool ObtenerTasa(ref csORTT objORTT)
+        public bool GetRate(ref csORTT objORTT)
         {
             try
             {
@@ -121,9 +121,9 @@ namespace LN
             }
         }
 
-        public bool ValidarUsuario(string usersap)
+        public bool ValidateUser(string usersap)
         {
-            bool existe = false;
+            bool exists = false;
 
             try
             {
@@ -132,19 +132,19 @@ namespace LN
                 oRecordSet.DoQuery(query);
 
                 if (oRecordSet.RecordCount > 0)
-                    existe = true;
+                    exists = true;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            return existe;
+            return exists;
         }
 
-        public bool ValidarSerie(string serie)
+        public bool ValidateSeries(string serie)
         {
-            bool existe = false;
+            bool exists = false;
 
             try
             {
@@ -153,14 +153,14 @@ namespace LN
                 oRecordSet.DoQuery(query);
                                         
                 if (oRecordSet.RecordCount > 0)
-                    existe = true;
+                    exists = true;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            return existe;
+            return exists;
         }
     }
 }

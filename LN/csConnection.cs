@@ -9,18 +9,18 @@ using System.Data.Odbc;
 
 namespace LN
 {
-    public class csConexion
+    public class csConnection
     {
-        public static string Cadena = "";
+        public static string ConString = "";
         public static OdbcConnection HanaCnn;
 
-        public static void IniciarConexionHANA(string servidor, string user, string pw, string bd)
+        public static void StartConnection(string servidor, string user, string pw, string bd)
         {
             try
             {
-                Cadena = "DRIVER={HDBODBC};UID=" + user + ";PWD=" + pw + ";SERVERNODE=" + servidor + ";CS=" + bd;
+                ConString = "DRIVER={HDBODBC};UID=" + user + ";PWD=" + pw + ";SERVERNODE=" + servidor + ";CS=" + bd;
 
-                HanaCnn = new OdbcConnection(Cadena);
+                HanaCnn = new OdbcConnection(ConString);
 
                 try
                 {
