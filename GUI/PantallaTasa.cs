@@ -62,7 +62,8 @@ namespace GUI
             txtTasa.Enabled = false;
             btnActualizar.Enabled = false;
             btnActualizar.BackColor = System.Drawing.Color.LightGray;
-            pbCarga.Visible = false;
+            pbTasa.Visible = false;
+            pbLogin.Visible = false;
 
             pnTasa.Hide();
 
@@ -106,7 +107,7 @@ namespace GUI
             }
         }
 
-        private void ConectarBD(string bd)
+        private async void ConectarBD(string bd)
         {
             try
             {
@@ -255,7 +256,10 @@ namespace GUI
 
         private void HabilitarControles()
         {
-            pbCarga.Visible = false;
+            pbTasa.Visible = false;
+            pbLogin.Visible = false;
+            btnLogin.Enabled = true;
+            btnSalir.Enabled = true;
             btnValidar.Enabled = true;
             btnActualizar.Enabled = true;
             btnCerrarSesion.Enabled = true;
@@ -267,8 +271,10 @@ namespace GUI
             btnActualizar.BackColor = System.Drawing.Color.SteelBlue;
             btnValidar.BackColor = System.Drawing.Color.OliveDrab;
             btnCerrarSesion.BackColor = System.Drawing.Color.Brown;
+            btnLogin.BackColor = System.Drawing.Color.SteelBlue;
+            btnSalir.BackColor = System.Drawing.Color.Firebrick;
 
-            foreach(var empresa in Empresas)
+            foreach (var empresa in Empresas)
             {
                 empresa.Value.checkBoxDB.Enabled = !empresa.Value.checkBoxDB.Checked;
             }
@@ -276,8 +282,12 @@ namespace GUI
 
         private void DeshabilitarControles()
         {
-            pbCarga.Style = ProgressBarStyle.Marquee;
-            pbCarga.Visible = true;
+            pbTasa.Style = ProgressBarStyle.Marquee;
+            pbLogin.Style = ProgressBarStyle.Marquee;
+            pbTasa.Visible = true;
+            pbLogin.Visible = true;
+            btnLogin.Enabled = false;
+            btnSalir.Enabled = false;
             btnValidar.Enabled = false;
             btnActualizar.Enabled = false;
             btnCerrarSesion.Enabled = false;
@@ -297,6 +307,8 @@ namespace GUI
             btnActualizar.BackColor = System.Drawing.Color.LightGray;
             btnValidar.BackColor = System.Drawing.Color.LightGray;
             btnCerrarSesion.BackColor = System.Drawing.Color.LightGray;
+            btnLogin.BackColor = System.Drawing.Color.LightGray;
+            btnSalir.BackColor = System.Drawing.Color.LightGray;
         }
 
         //Botones
@@ -356,21 +368,39 @@ namespace GUI
             EscribirLog($"Se valida la tasa para el {dtpFechaTasaFiltro.Value.Date}");
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
-            if(txtUserSAP2.Text == "")
+
+            if (txtUserSAP2.Text == "")
+            {
                 MessageBox.Show("El campo de usuario no puede quedar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else if(lblSerie.Text != "DFPP044")
+            }
+            else if (lblSerie.Text != "DFPP044")
             {
                 MessageBox.Show("No se puede utilizar la aplicación en este ambiente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie}");
+                EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
             }
             else
             {
-                pnLogin.Hide();
-                pnTasa.Show();
+                DeshabilitarControles();
 
-                EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
+                await Task.Run(() => ConectarBD("DP_0601"));
+                bool usuarioExiste = await Task.Run(() => oSAP.ValidarUsuario(txtUserSAP2.Text));
+
+                if (!usuarioExiste)
+                {
+                    MessageBox.Show("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    EscribirLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie}");
+                    HabilitarControles();
+                }
+                else
+                {
+                    pnLogin.Hide();
+                    pnTasa.Show();
+
+                    EscribirLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
+                    HabilitarControles();
+                }
             }
         }
 

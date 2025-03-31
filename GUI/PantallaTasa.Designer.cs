@@ -42,7 +42,7 @@ namespace GUI
             this.pbxLogoGP1 = new System.Windows.Forms.PictureBox();
             this.pnTasa = new System.Windows.Forms.Panel();
             this.pbcLogoSAP2 = new System.Windows.Forms.PictureBox();
-            this.pbCarga = new System.Windows.Forms.ProgressBar();
+            this.pbTasa = new System.Windows.Forms.ProgressBar();
             this.dtpFechaTasaFiltro = new System.Windows.Forms.DateTimePicker();
             this.btnValidar = new System.Windows.Forms.Button();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
@@ -61,6 +61,7 @@ namespace GUI
             this.lblDescripcion2 = new System.Windows.Forms.Label();
             this.txtTasa = new System.Windows.Forms.TextBox();
             this.pbxLogoGP2 = new System.Windows.Forms.PictureBox();
+            this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoGP1)).BeginInit();
@@ -71,6 +72,7 @@ namespace GUI
             // 
             // pnLogin
             // 
+            this.pnLogin.Controls.Add(this.pbLogin);
             this.pnLogin.Controls.Add(this.lblSerie);
             this.pnLogin.Controls.Add(this.lblHost);
             this.pnLogin.Controls.Add(this.txtUserSAP2);
@@ -192,7 +194,7 @@ namespace GUI
             // pnTasa
             // 
             this.pnTasa.Controls.Add(this.pbcLogoSAP2);
-            this.pnTasa.Controls.Add(this.pbCarga);
+            this.pnTasa.Controls.Add(this.pbTasa);
             this.pnTasa.Controls.Add(this.dtpFechaTasaFiltro);
             this.pnTasa.Controls.Add(this.btnValidar);
             this.pnTasa.Controls.Add(this.btnCerrarSesion);
@@ -226,13 +228,13 @@ namespace GUI
             this.pbcLogoSAP2.TabIndex = 69;
             this.pbcLogoSAP2.TabStop = false;
             // 
-            // pbCarga
+            // pbTasa
             // 
-            this.pbCarga.Location = new System.Drawing.Point(217, 421);
-            this.pbCarga.Name = "pbCarga";
-            this.pbCarga.Size = new System.Drawing.Size(135, 20);
-            this.pbCarga.TabIndex = 67;
-            this.pbCarga.UseWaitCursor = true;
+            this.pbTasa.Location = new System.Drawing.Point(217, 421);
+            this.pbTasa.Name = "pbTasa";
+            this.pbTasa.Size = new System.Drawing.Size(135, 20);
+            this.pbTasa.TabIndex = 67;
+            this.pbTasa.UseWaitCursor = true;
             // 
             // dtpFechaTasaFiltro
             // 
@@ -431,6 +433,14 @@ namespace GUI
             this.pbxLogoGP2.TabIndex = 46;
             this.pbxLogoGP2.TabStop = false;
             // 
+            // pbLogin
+            // 
+            this.pbLogin.Location = new System.Drawing.Point(217, 421);
+            this.pbLogin.Name = "pbLogin";
+            this.pbLogin.Size = new System.Drawing.Size(142, 20);
+            this.pbLogin.TabIndex = 74;
+            this.pbLogin.UseWaitCursor = true;
+            // 
             // PantallaTasa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -465,7 +475,7 @@ namespace GUI
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.PictureBox pbxLogoGP1;
         private System.Windows.Forms.Panel pnTasa;
-        private System.Windows.Forms.ProgressBar pbCarga;
+        private System.Windows.Forms.ProgressBar pbTasa;
         private System.Windows.Forms.DateTimePicker dtpFechaTasaFiltro;
         private System.Windows.Forms.Button btnValidar;
         private System.Windows.Forms.Button btnCerrarSesion;
@@ -489,6 +499,7 @@ namespace GUI
         private System.Windows.Forms.TextBox txtUserSAP2;
         private System.Windows.Forms.Label lblHost;
         private System.Windows.Forms.Label lblSerie;
+        private System.Windows.Forms.ProgressBar pbLogin;
     }
 }
 

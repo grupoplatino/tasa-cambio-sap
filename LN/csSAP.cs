@@ -120,13 +120,18 @@ namespace LN
             }
         }
 
-        public bool ValidarUsuario(string usersap)
+        public async Task<bool> ValidarUsuario(string usersap)
         {
             bool existe = false;
 
             try
             {
-                oUsers = (Users)oCompany.GetBusinessObject(BoObjectTypes.oUsers);
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+                string query = "SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '" + usersap + "'";
+                oRecordSet.DoQuery(query);
+
+                if (oRecordSet.RecordCount > 0)
+                    existe = true;
             }
             catch (Exception ex)
             {
