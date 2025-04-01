@@ -35,7 +35,10 @@ namespace GUI
                 { "DC_0215", new csCompanies("DC_0215", "Duracreto", chbDuracreto) },
                 { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
                 { "DP_0601", new csCompanies("DP_0601", "Distribuidora Platino", chbDP) },
-                { "TEST_IP2103", new csCompanies("TEST_IP2103", "Inmobiliaria Platino", chbIP) }
+                { "TP_TEST_TOMMY", new csCompanies("TP_TEST_TOMMY", "Transportes Platino", chbTP) },
+                { "TEST_IP2103", new csCompanies("TEST_IP2103", "Inmobiliaria Platino", chbIP) },
+                { "INOPSA_TEST_TOMMY", new csCompanies("INOPSA_TEST_TOMMY", "INOPSA", chbINOPSA) },
+                { "SIGLO_TEST_TOMMY", new csCompanies("SIGLO_TEST_TOMMY", "SIGLO XXI", chbSXXI) }
             };
 
             /*Companies = new Dictionary<string, csCompanies>
@@ -177,8 +180,8 @@ namespace GUI
                 objORTT.Currency = "USD";
                 objORTT.RateDate = dtpFilterRateDate.Value;
 
-                bool tieneTasa = oSAP.GetRate(ref objORTT);
-                UpdateCheckboxes(bd, tieneTasa);
+                bool hasRate = oSAP.GetRate(ref objORTT);
+                UpdateCheckboxes(bd, hasRate);
             }
             catch (Exception ex)
             {
@@ -227,7 +230,7 @@ namespace GUI
             }
         }
 
-        private void GetRateSimplificado()
+        private void GetRateSimplified()
         {
             foreach (var company in Companies)
             {
@@ -244,15 +247,15 @@ namespace GUI
             }
         }
 
-        private void UpdateCheckboxes(string bd, bool tieneTasa)
+        private void UpdateCheckboxes(string bd, bool hasRate)
         {
             Invoke(new Action(() => {
                 if (Companies.ContainsKey(bd))
                 {
                     csCompanies company = Companies[bd];
 
-                    company.checkBoxDB.Checked = tieneTasa;
-                    company.checkBoxDB.Enabled = !tieneTasa;
+                    company.checkBoxDB.Checked = hasRate;
+                    company.checkBoxDB.Enabled = !hasRate;
                 }
             }));
         }
@@ -345,25 +348,23 @@ namespace GUI
             
             DisableControls();
 
-            var tareas = bds.Select(bd => Task.Run(() =>
+            foreach (var bd in bds)
             {
                 try
                 {
-                    ConectarBD(bd);
-                    UpdateRate(bd);
+                    await Task.Run(() => ConectarBD(bd));
+                    await Task.Run(() => UpdateRate(bd));
                 }
                 catch (Exception ex)
                 {
                     ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            })).ToList();
-
-            await Task.WhenAll(tareas);
+            }
 
             dtpFilterRateDate.Value = dtpRateDate.Value;
             txtRate.Text = "";
 
-            await Task.Run(() => GetRateSimplificado());
+            await Task.Run(() => GetRateSimplified());
 
             EnableControls();
         }
@@ -373,7 +374,7 @@ namespace GUI
 
             DisableControls();
 
-            await Task.Run(() => GetRateSimplificado());
+            await Task.Run(() => GetRateSimplified());
 
             EnableControls();
 
@@ -391,8 +392,8 @@ namespace GUI
             DisableControls();
             await Task.Run(() => ConectarBD("DP_0601"));
 
-            bool serieExiste = await Task.Run(() => oSAP.ValidateSeries(lblSerie.Text));
-            if (!serieExiste)
+            bool seriesExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text));
+            if (!seriesExist)
             {
                 ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
@@ -401,8 +402,8 @@ namespace GUI
                 return;
             }
 
-            bool usuarioExiste = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
-            if (!usuarioExiste)
+            bool userExist = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
+            if (!userExist)
             {
                 ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");

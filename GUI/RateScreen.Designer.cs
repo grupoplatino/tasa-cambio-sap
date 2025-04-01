@@ -441,7 +441,7 @@ namespace GUI
             this.pbxLogoGP2.TabIndex = 46;
             this.pbxLogoGP2.TabStop = false;
             // 
-            // PantallaTasa
+            // RateScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -452,7 +452,7 @@ namespace GUI
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
-            this.Name = "PantallaTasa";
+            this.Name = "RateScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Actualización de tasa de cambio global";
             this.pnLogin.ResumeLayout(false);

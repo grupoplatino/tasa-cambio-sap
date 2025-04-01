@@ -142,14 +142,14 @@ namespace LN
             return exists;
         }
 
-        public bool ValidateSeries(string serie)
+        public bool ValidateComputer(string host)
         {
             bool exists = false;
 
             try
             {
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Serie\" = '{serie}'";
+                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}'";
                 oRecordSet.DoQuery(query);
                                         
                 if (oRecordSet.RecordCount > 0)
