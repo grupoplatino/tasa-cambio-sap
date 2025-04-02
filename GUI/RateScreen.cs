@@ -10,6 +10,7 @@ using System.Management;
 using CredentialManagement;
 using BE;
 using LN;
+using System.Web;
 
 namespace GUI
 {
@@ -19,6 +20,7 @@ namespace GUI
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
         private readonly Dictionary<string, csCompanies> Companies;
+        private static string initialDB = "SBO_DP";
 
         private string _serverBD;
         private string _userBD;
@@ -30,7 +32,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            Companies = new Dictionary<string, csCompanies>
+            /*Companies = new Dictionary<string, csCompanies>
             {
                 { "DC_0215", new csCompanies("DC_0215", "Duracreto", chbDuracreto) },
                 { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
@@ -39,9 +41,9 @@ namespace GUI
                 { "TEST_IP2103", new csCompanies("TEST_IP2103", "Inmobiliaria Platino", chbIP) },
                 { "INOPSA_TEST_TOMMY", new csCompanies("INOPSA_TEST_TOMMY", "INOPSA", chbINOPSA) },
                 { "SIGLO_TEST_TOMMY", new csCompanies("SIGLO_TEST_TOMMY", "SIGLO XXI", chbSXXI) }
-            };
+            };*/
 
-            /*Companies = new Dictionary<string, csCompanies>
+            Companies = new Dictionary<string, csCompanies>
             {
                 { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDuracreto) },
                 { "SBO_WILLIAM_Y_MOLINA", new csCompanies("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
@@ -51,7 +53,7 @@ namespace GUI
                 { "SBO_INOPSA", new csCompanies("SBO_INOPSA", "INOPSA", chbINOPSA) },
                 { "SBO_AMSA", new csCompanies("SBO_AMSA", "AMSA", chbAMSA) },
                 { "SBO_SPS_SIGLO_XXI", new csCompanies("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) }
-            };*/
+            };
 
             WriteLog("Se inicia la aplicación.");
 
@@ -64,6 +66,8 @@ namespace GUI
             pbLogin.Visible = false;
 
             pnTasa.Hide();
+
+            txtRate.KeyPress += TxtRate_KeyPress;
 
             LoadCredentials();
         }
@@ -94,9 +98,7 @@ namespace GUI
                 using (var cred = new Credential { Target = "TasaCambio_Server" })
                 {
                     if (cred.Load())
-                    {
                         _serverBD = cred.Username;
-                    }
                 }
             }
             catch (Exception ex)
@@ -105,7 +107,7 @@ namespace GUI
             }
         }
 
-        private void ConectarBD(string bd)
+        private void ConnectDB(string bd)
         {
             try
             {
@@ -132,7 +134,7 @@ namespace GUI
             }
         }
 
-        private void DisconnectBD()
+        private void DisconnectDB()
         {
             try
             {
@@ -198,7 +200,20 @@ namespace GUI
                 MessageBox.Show(this, message, title, button, icon);
         }
 
-        private static string GetSeries()
+        private void TxtRate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private string GetSeries()
         {
             string series = string.Empty;
 
@@ -237,7 +252,7 @@ namespace GUI
                 try
                 {
                     string bd = company.Key;
-                    ConectarBD(bd);
+                    ConnectDB(bd);
                     GetRate(bd);
                 }
                 catch (Exception ex)
@@ -264,21 +279,21 @@ namespace GUI
         {
             pbRate.Visible = false;
             pbLogin.Visible = false;
-            btnLogin.Enabled = true;
-            btnExit.Enabled = true;
-            btnValidate.Enabled = true;
-            btnUpdate.Enabled = true;
-            btnLogout.Enabled = true;
             dtpFilterRateDate.Enabled = true;
             dtpRateDate.Enabled = true;
             txtRate.Enabled = true;
             lblDescription1.ForeColor = Color.Black;
             lblDescription2.ForeColor = Color.Black;
-            btnUpdate.BackColor = System.Drawing.Color.SteelBlue;
-            btnValidate.BackColor = System.Drawing.Color.OliveDrab;
-            btnLogout.BackColor = System.Drawing.Color.Brown;
-            btnLogin.BackColor = System.Drawing.Color.SteelBlue;
-            btnExit.BackColor = System.Drawing.Color.Firebrick;
+            btnLogin.Enabled = true;
+            btnExit.Enabled = true;
+            btnValidate.Enabled = true;
+            btnUpdate.Enabled = true;
+            btnLogout.Enabled = true;
+            btnUpdate.BackColor = Color.SteelBlue;
+            btnValidate.BackColor = Color.OliveDrab;
+            btnLogout.BackColor = Color.Brown;
+            btnLogin.BackColor = Color.SteelBlue;
+            btnExit.BackColor = Color.Firebrick;
 
             foreach (var company in Companies)
             {
@@ -292,32 +307,38 @@ namespace GUI
             pbLogin.Style = ProgressBarStyle.Marquee;
             pbRate.Visible = true;
             pbLogin.Visible = true;
-            btnLogin.Enabled = false;
-            btnExit.Enabled = false;
-            btnValidate.Enabled = false;
-            btnUpdate.Enabled = false;
-            btnLogout.Enabled = false;
-            dtpFilterRateDate.Enabled = false;
-            dtpRateDate.Enabled = false;
             txtRate.Enabled = false;
             lblDescription1.ForeColor = Color.Gray;
             lblDescription2.ForeColor = Color.Gray;
-            chbDuracreto.Enabled = false;
-            chbWYM.Enabled = false;
-            chbDP.Enabled = false;
-            chbTP.Enabled = false;
-            chbIP.Enabled = false;
-            chbINOPSA.Enabled = false;
-            chbAMSA.Enabled = false;
-            chbSXXI.Enabled = false;
-            btnUpdate.BackColor = System.Drawing.Color.LightGray;
-            btnValidate.BackColor = System.Drawing.Color.LightGray;
-            btnLogout.BackColor = System.Drawing.Color.LightGray;
-            btnLogin.BackColor = System.Drawing.Color.LightGray;
-            btnExit.BackColor = System.Drawing.Color.LightGray;
+
+            DisableAllControls(this);
         }
 
-        //Botones
+        private void DisableAllControls(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is Button)
+                {
+                    control.Enabled = false;
+                    control.BackColor = Color.LightGray;
+                }
+                else if (control is CheckBox)
+                {
+                    control.Enabled = false;
+                }
+                else if (control is DateTimePicker)
+                {
+                    control.Enabled = false;
+                }
+                else if (control.HasChildren)
+                {
+                    DisableAllControls(control);
+                }
+            }
+        }
+
+        //Eventos
         private async void btnUpdate_Click(object sender, EventArgs e)
         {
             List<string> bds = new List<string> { };
@@ -334,13 +355,19 @@ namespace GUI
                 return;
             }
 
-            if (txtRate.Text == null || txtRate.Text == "")
+            if (string.IsNullOrEmpty(txtRate.Text))
             {
                 ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if(bds.Count == 0)
+            if (!decimal.TryParse(txtRate.Text, out _))
+            {
+                ShowMessage("El campo de tasa debe ser un valor numérico decimal.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (bds.Count == 0)
             {
                 ShowMessage("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -352,7 +379,7 @@ namespace GUI
             {
                 try
                 {
-                    await Task.Run(() => ConectarBD(bd));
+                    await Task.Run(() => ConnectDB(bd));
                     await Task.Run(() => UpdateRate(bd));
                 }
                 catch (Exception ex)
@@ -371,7 +398,6 @@ namespace GUI
 
         private async void btnValidate_Click(object sender, EventArgs e)
         {
-
             DisableControls();
 
             await Task.Run(() => GetRateSimplified());
@@ -390,7 +416,7 @@ namespace GUI
             }
 
             DisableControls();
-            await Task.Run(() => ConectarBD("DP_0601"));
+            await Task.Run(() => ConnectDB(initialDB));
 
             bool seriesExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text));
             if (!seriesExist)
@@ -422,12 +448,20 @@ namespace GUI
             dtpRateDate.Enabled = false;
             txtRate.Enabled = false;
             btnUpdate.Enabled = false;
-            btnUpdate.BackColor = System.Drawing.Color.LightGray;
+            btnUpdate.BackColor = Color.LightGray;
+            chbDuracreto.Enabled = false;
+            chbWYM.Enabled = false;
+            chbDP.Enabled = false;
+            chbTP.Enabled = false;
+            chbIP.Enabled = false;
+            chbINOPSA.Enabled = false;
+            chbAMSA.Enabled = false;
+            chbSXXI.Enabled = false;
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DisconnectBD();
+            DisconnectDB();
             WriteLog("Se sale de la aplicación.");
             Application.Exit();
         }
