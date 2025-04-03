@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("GUI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Tasa de Cambio")]
+[assembly: AssemblyDescription("Actualización global de tasa de cambio")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GUI")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
+[assembly: AssemblyCompany("Grupo Platino")]
+[assembly: AssemblyProduct("Tasa de Cambio")]
+[assembly: AssemblyCopyright("Copyright © Grupo Platino 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
