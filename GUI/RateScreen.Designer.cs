@@ -102,9 +102,9 @@ namespace GUI
             this.lblSerie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblSerie.Location = new System.Drawing.Point(7, 22);
             this.lblSerie.Name = "lblSerie";
-            this.lblSerie.Size = new System.Drawing.Size(50, 13);
+            this.lblSerie.Size = new System.Drawing.Size(86, 13);
             this.lblSerie.TabIndex = 73;
-            this.lblSerie.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSerie.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHost
             // 
@@ -113,9 +113,9 @@ namespace GUI
             this.lblHost.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblHost.Location = new System.Drawing.Point(7, 7);
             this.lblHost.Name = "lblHost";
-            this.lblHost.Size = new System.Drawing.Size(50, 13);
+            this.lblHost.Size = new System.Drawing.Size(86, 13);
             this.lblHost.TabIndex = 72;
-            this.lblHost.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblHost.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtUserSAP2
             // 
@@ -447,8 +447,8 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnTasa);
             this.Controls.Add(this.pnLogin);
+            this.Controls.Add(this.pnTasa);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);

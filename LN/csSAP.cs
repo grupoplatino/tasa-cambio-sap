@@ -23,15 +23,21 @@ namespace LN
         {
             try
             {
-                if (oCompany == null || oCompany.Connected)
+                if (oCompany == null)
                 {
                     oCompany = new Company();
+                }
+
+                if (!oCompany.Connected)
+                {
                     oCompany.Server = objCompany.ServerBD;
                     oCompany.DbUserName = objCompany.UserBD;
                     oCompany.DbPassword = objCompany.PwBD;
                     oCompany.CompanyDB = objCompany.NameBD;
-                    if (objCompany.ServerLic != "")
+                    if (!string.IsNullOrEmpty(objCompany.ServerLic))
+                    {
                         oCompany.LicenseServer = objCompany.ServerLic;
+                    }
                     oCompany.UserName = objCompany.UserSAP;
                     oCompany.Password = objCompany.PwSAP;
                     oCompany.DbServerType = BoDataServerTypes.dst_HANADB;
@@ -46,12 +52,12 @@ namespace LN
                     else
                     {
                         oCompany.GetLastError(out iErrCod, out sErrMsg);
-                        throw new Exception(String.Concat(iErrCod, ": ", sErrMsg));
+                        throw new Exception($"Error {iErrCod}: {sErrMsg}");
                     }
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -142,14 +148,14 @@ namespace LN
             return exists;
         }
 
-        public bool ValidateComputer(string host)
+        public bool ValidateComputer(string host, string usersap)
         {
             bool exists = false;
 
             try
             {
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}'";
+                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
                                         
                 if (oRecordSet.RecordCount > 0)
@@ -161,6 +167,11 @@ namespace LN
             }
 
             return exists;
+        }
+
+        public string GetErrorMessage(Exception ex)
+        {
+            return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}";
         }
     }
 }

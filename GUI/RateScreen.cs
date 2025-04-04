@@ -107,7 +107,7 @@ namespace GUI
             }
         }
 
-        private void ConnectDB(string bd)
+        private bool ConnectDB(string bd)
         {
             try
             {
@@ -126,11 +126,18 @@ namespace GUI
                 {
                     string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015");
                     csConnection.StartConnection(Server, objCompany.UserBD, objCompany.PwBD, bd);
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception ex)
             {
+                WriteLog(oSAP.GetErrorMessage(ex));
                 ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
@@ -416,10 +423,17 @@ namespace GUI
             }
 
             DisableControls();
-            await Task.Run(() => ConnectDB(initialDB));
 
-            bool seriesExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text));
-            if (!seriesExist)
+            bool isConnected = await Task.Run(() => ConnectDB(initialDB));
+            if (!isConnected)
+            {
+                ShowMessage("No se pudo conectar a la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EnableControls();
+                return;
+            }
+
+            bool hostExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text, txtUserSAP2.Text));
+            if (!hostExist)
             {
                 ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
