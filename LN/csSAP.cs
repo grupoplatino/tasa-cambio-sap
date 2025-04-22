@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SAPbobsCOM;
 using BE;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace LN
 {
@@ -30,6 +25,7 @@ namespace LN
 
                 if (!oCompany.Connected)
                 {
+                    oCompany.SLDServer = objCompany.SLDServer;
                     oCompany.Server = objCompany.ServerBD;
                     oCompany.DbUserName = objCompany.UserBD;
                     oCompany.DbPassword = objCompany.PwBD;
@@ -91,7 +87,7 @@ namespace LN
             try
             {
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
-                oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate, objORTT.Rate);
+                oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date, objORTT.Rate);
 
                 return true;
             }
@@ -107,23 +103,46 @@ namespace LN
             {
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                int howmany = 0;
+
+                howmany = oRecordSet.RecordCount;
+
                 try
                 {
-                    oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate);
+                    oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date);
                 }
                 catch
                 {
+                    CleanRecordset();
                     return false;
                 }
 
-                if (oRecordSet.RecordCount == 0 || oRecordSet.Fields.Item(0).Value == null)
-                    return false;
+                howmany = oRecordSet.RecordCount;
 
+                if (oRecordSet.RecordCount == 0 || oRecordSet.Fields.Item(0).Value == null)
+                {
+                    CleanRecordset();
+                    return false;
+                }
+
+                double rate;
+                if (!double.TryParse(oRecordSet.Fields.Item(0).Value.ToString(), out rate) || rate <= 0)
+                {
+                    CleanRecordset();
+                    return false;
+                }
+
+                objORTT.Rate = rate;
                 return true;
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                CleanRecordset();
             }
         }
 
@@ -144,6 +163,10 @@ namespace LN
             {
                 throw ex;
             }
+            finally
+            {
+                CleanRecordset();
+            }
 
             return exists;
         }
@@ -157,13 +180,17 @@ namespace LN
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
                 string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
-                                        
+
                 if (oRecordSet.RecordCount > 0)
                     exists = true;
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                CleanRecordset();
             }
 
             return exists;
@@ -172,6 +199,16 @@ namespace LN
         public string GetErrorMessage(Exception ex)
         {
             return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}";
+        }
+
+        private void CleanRecordset()
+        {
+            if (oRecordSet != null)
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet);
+                oRecordSet = null;
+                GC.Collect();
+            }
         }
     }
 }

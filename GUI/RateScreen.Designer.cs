@@ -1,5 +1,4 @@
-﻿
-namespace GUI
+﻿namespace GUI
 {
     partial class RateScreen
     {
@@ -31,7 +30,6 @@ namespace GUI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RateScreen));
             this.pnLogin = new System.Windows.Forms.Panel();
-            this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.lblSerie = new System.Windows.Forms.Label();
             this.lblHost = new System.Windows.Forms.Label();
             this.txtUserSAP2 = new System.Windows.Forms.TextBox();
@@ -41,7 +39,12 @@ namespace GUI
             this.lblUserSAP2 = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
             this.pbxLogoGP1 = new System.Windows.Forms.PictureBox();
+            this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.pnTasa = new System.Windows.Forms.Panel();
+            this.verticalSeparator1 = new GUI.VerticalSeparator();
+            this.chbESMV = new System.Windows.Forms.CheckBox();
+            this.chbINVP = new System.Windows.Forms.CheckBox();
+            this.chbSCP = new System.Windows.Forms.CheckBox();
             this.pbcLogoSAP2 = new System.Windows.Forms.PictureBox();
             this.pbRate = new System.Windows.Forms.ProgressBar();
             this.dtpFilterRateDate = new System.Windows.Forms.DateTimePicker();
@@ -55,13 +58,14 @@ namespace GUI
             this.chbDP = new System.Windows.Forms.CheckBox();
             this.chbWYM = new System.Windows.Forms.CheckBox();
             this.lblDescription1 = new System.Windows.Forms.Label();
-            this.chbDuracreto = new System.Windows.Forms.CheckBox();
+            this.chbDC = new System.Windows.Forms.CheckBox();
             this.dtpRateDate = new System.Windows.Forms.DateTimePicker();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblDescription2 = new System.Windows.Forms.Label();
             this.txtRate = new System.Windows.Forms.TextBox();
             this.pbxLogoGP2 = new System.Windows.Forms.PictureBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoGP1)).BeginInit();
@@ -72,7 +76,6 @@ namespace GUI
             // 
             // pnLogin
             // 
-            this.pnLogin.Controls.Add(this.pbLogin);
             this.pnLogin.Controls.Add(this.lblSerie);
             this.pnLogin.Controls.Add(this.lblHost);
             this.pnLogin.Controls.Add(this.txtUserSAP2);
@@ -82,18 +85,11 @@ namespace GUI
             this.pnLogin.Controls.Add(this.lblUserSAP2);
             this.pnLogin.Controls.Add(this.btnLogin);
             this.pnLogin.Controls.Add(this.pbxLogoGP1);
+            this.pnLogin.Controls.Add(this.pbLogin);
             this.pnLogin.Location = new System.Drawing.Point(2, 2);
             this.pnLogin.Name = "pnLogin";
-            this.pnLogin.Size = new System.Drawing.Size(579, 498);
+            this.pnLogin.Size = new System.Drawing.Size(699, 498);
             this.pnLogin.TabIndex = 46;
-            // 
-            // pbLogin
-            // 
-            this.pbLogin.Location = new System.Drawing.Point(217, 421);
-            this.pbLogin.Name = "pbLogin";
-            this.pbLogin.Size = new System.Drawing.Size(142, 20);
-            this.pbLogin.TabIndex = 74;
-            this.pbLogin.UseWaitCursor = true;
             // 
             // lblSerie
             // 
@@ -120,7 +116,7 @@ namespace GUI
             // txtUserSAP2
             // 
             this.txtUserSAP2.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtUserSAP2.Location = new System.Drawing.Point(216, 220);
+            this.txtUserSAP2.Location = new System.Drawing.Point(277, 220);
             this.txtUserSAP2.Name = "txtUserSAP2";
             this.txtUserSAP2.Size = new System.Drawing.Size(143, 22);
             this.txtUserSAP2.TabIndex = 71;
@@ -133,7 +129,7 @@ namespace GUI
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExit.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnExit.Location = new System.Drawing.Point(216, 458);
+            this.btnExit.Location = new System.Drawing.Point(277, 458);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(143, 30);
             this.btnExit.TabIndex = 65;
@@ -157,7 +153,7 @@ namespace GUI
             this.lblVersion.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.lblVersion.Location = new System.Drawing.Point(535, 478);
+            this.lblVersion.Location = new System.Drawing.Point(651, 478);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(37, 13);
             this.lblVersion.TabIndex = 41;
@@ -167,7 +163,7 @@ namespace GUI
             // 
             this.lblUserSAP2.AutoSize = true;
             this.lblUserSAP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserSAP2.Location = new System.Drawing.Point(214, 198);
+            this.lblUserSAP2.Location = new System.Drawing.Point(275, 198);
             this.lblUserSAP2.Name = "lblUserSAP2";
             this.lblUserSAP2.Size = new System.Drawing.Size(95, 16);
             this.lblUserSAP2.TabIndex = 39;
@@ -181,7 +177,7 @@ namespace GUI
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnLogin.Location = new System.Drawing.Point(216, 254);
+            this.btnLogin.Location = new System.Drawing.Point(277, 254);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(143, 30);
             this.btnLogin.TabIndex = 36;
@@ -192,15 +188,28 @@ namespace GUI
             // pbxLogoGP1
             // 
             this.pbxLogoGP1.Image = global::GUI.Properties.Resources.logo_gp;
-            this.pbxLogoGP1.Location = new System.Drawing.Point(167, 21);
+            this.pbxLogoGP1.Location = new System.Drawing.Point(223, 21);
             this.pbxLogoGP1.Name = "pbxLogoGP1";
             this.pbxLogoGP1.Size = new System.Drawing.Size(239, 78);
             this.pbxLogoGP1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxLogoGP1.TabIndex = 35;
             this.pbxLogoGP1.TabStop = false;
             // 
+            // pbLogin
+            // 
+            this.pbLogin.Location = new System.Drawing.Point(278, 421);
+            this.pbLogin.Name = "pbLogin";
+            this.pbLogin.Size = new System.Drawing.Size(142, 20);
+            this.pbLogin.TabIndex = 74;
+            this.pbLogin.UseWaitCursor = true;
+            // 
             // pnTasa
             // 
+            this.pnTasa.Controls.Add(this.checkBox1);
+            this.pnTasa.Controls.Add(this.verticalSeparator1);
+            this.pnTasa.Controls.Add(this.chbESMV);
+            this.pnTasa.Controls.Add(this.chbINVP);
+            this.pnTasa.Controls.Add(this.chbSCP);
             this.pnTasa.Controls.Add(this.pbcLogoSAP2);
             this.pnTasa.Controls.Add(this.pbRate);
             this.pnTasa.Controls.Add(this.dtpFilterRateDate);
@@ -214,7 +223,7 @@ namespace GUI
             this.pnTasa.Controls.Add(this.chbDP);
             this.pnTasa.Controls.Add(this.chbWYM);
             this.pnTasa.Controls.Add(this.lblDescription1);
-            this.pnTasa.Controls.Add(this.chbDuracreto);
+            this.pnTasa.Controls.Add(this.chbDC);
             this.pnTasa.Controls.Add(this.dtpRateDate);
             this.pnTasa.Controls.Add(this.btnUpdate);
             this.pnTasa.Controls.Add(this.lblTitle);
@@ -223,13 +232,52 @@ namespace GUI
             this.pnTasa.Controls.Add(this.pbxLogoGP2);
             this.pnTasa.Location = new System.Drawing.Point(2, 2);
             this.pnTasa.Name = "pnTasa";
-            this.pnTasa.Size = new System.Drawing.Size(579, 498);
+            this.pnTasa.Size = new System.Drawing.Size(699, 498);
             this.pnTasa.TabIndex = 43;
+            // 
+            // verticalSeparator1
+            // 
+            this.verticalSeparator1.BackColor = System.Drawing.Color.Gainsboro;
+            this.verticalSeparator1.Location = new System.Drawing.Point(396, 155);
+            this.verticalSeparator1.Name = "verticalSeparator1";
+            this.verticalSeparator1.Size = new System.Drawing.Size(1, 275);
+            this.verticalSeparator1.TabIndex = 73;
+            this.verticalSeparator1.Text = "verticalSeparator1";
+            // 
+            // chbESMV
+            // 
+            this.chbESMV.AutoSize = true;
+            this.chbESMV.Location = new System.Drawing.Point(26, 382);
+            this.chbESMV.Name = "chbESMV";
+            this.chbESMV.Size = new System.Drawing.Size(209, 20);
+            this.chbESMV.TabIndex = 72;
+            this.chbESMV.Text = "Escuela Santa Maria del Valle";
+            this.chbESMV.UseVisualStyleBackColor = true;
+            // 
+            // chbINVP
+            // 
+            this.chbINVP.AutoSize = true;
+            this.chbINVP.Location = new System.Drawing.Point(26, 408);
+            this.chbINVP.Name = "chbINVP";
+            this.chbINVP.Size = new System.Drawing.Size(142, 20);
+            this.chbINVP.TabIndex = 71;
+            this.chbINVP.Text = "Inversiones Platino";
+            this.chbINVP.UseVisualStyleBackColor = true;
+            // 
+            // chbSCP
+            // 
+            this.chbSCP.AutoSize = true;
+            this.chbSCP.Location = new System.Drawing.Point(26, 356);
+            this.chbSCP.Name = "chbSCP";
+            this.chbSCP.Size = new System.Drawing.Size(165, 20);
+            this.chbSCP.TabIndex = 70;
+            this.chbSCP.Text = "Servicios Corporativos";
+            this.chbSCP.UseVisualStyleBackColor = true;
             // 
             // pbcLogoSAP2
             // 
             this.pbcLogoSAP2.Image = global::GUI.Properties.Resources.logo_sap;
-            this.pbcLogoSAP2.Location = new System.Drawing.Point(234, 456);
+            this.pbcLogoSAP2.Location = new System.Drawing.Point(307, 456);
             this.pbcLogoSAP2.Name = "pbcLogoSAP2";
             this.pbcLogoSAP2.Size = new System.Drawing.Size(99, 22);
             this.pbcLogoSAP2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -238,7 +286,7 @@ namespace GUI
             // 
             // pbRate
             // 
-            this.pbRate.Location = new System.Drawing.Point(217, 421);
+            this.pbRate.Location = new System.Drawing.Point(437, 356);
             this.pbRate.Name = "pbRate";
             this.pbRate.Size = new System.Drawing.Size(135, 20);
             this.pbRate.TabIndex = 67;
@@ -277,7 +325,7 @@ namespace GUI
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogout.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnLogout.Location = new System.Drawing.Point(431, 448);
+            this.btnLogout.Location = new System.Drawing.Point(546, 448);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(125, 30);
             this.btnLogout.TabIndex = 64;
@@ -298,7 +346,7 @@ namespace GUI
             // chbAMSA
             // 
             this.chbAMSA.AutoSize = true;
-            this.chbAMSA.Location = new System.Drawing.Point(26, 383);
+            this.chbAMSA.Location = new System.Drawing.Point(254, 275);
             this.chbAMSA.Name = "chbAMSA";
             this.chbAMSA.Size = new System.Drawing.Size(67, 20);
             this.chbAMSA.TabIndex = 62;
@@ -308,7 +356,7 @@ namespace GUI
             // chbINOPSA
             // 
             this.chbINOPSA.AutoSize = true;
-            this.chbINOPSA.Location = new System.Drawing.Point(26, 356);
+            this.chbINOPSA.Location = new System.Drawing.Point(254, 222);
             this.chbINOPSA.Name = "chbINOPSA";
             this.chbINOPSA.Size = new System.Drawing.Size(79, 20);
             this.chbINOPSA.TabIndex = 61;
@@ -318,7 +366,7 @@ namespace GUI
             // chbSXXI
             // 
             this.chbSXXI.AutoSize = true;
-            this.chbSXXI.Location = new System.Drawing.Point(26, 410);
+            this.chbSXXI.Location = new System.Drawing.Point(254, 249);
             this.chbSXXI.Name = "chbSXXI";
             this.chbSXXI.Size = new System.Drawing.Size(82, 20);
             this.chbSXXI.TabIndex = 60;
@@ -338,7 +386,7 @@ namespace GUI
             // chbDP
             // 
             this.chbDP.AutoSize = true;
-            this.chbDP.Location = new System.Drawing.Point(26, 275);
+            this.chbDP.Location = new System.Drawing.Point(26, 249);
             this.chbDP.Name = "chbDP";
             this.chbDP.Size = new System.Drawing.Size(149, 20);
             this.chbDP.TabIndex = 58;
@@ -348,7 +396,7 @@ namespace GUI
             // chbWYM
             // 
             this.chbWYM.AutoSize = true;
-            this.chbWYM.Location = new System.Drawing.Point(26, 248);
+            this.chbWYM.Location = new System.Drawing.Point(26, 222);
             this.chbWYM.Name = "chbWYM";
             this.chbWYM.Size = new System.Drawing.Size(128, 20);
             this.chbWYM.TabIndex = 57;
@@ -365,20 +413,20 @@ namespace GUI
             this.lblDescription1.TabIndex = 56;
             this.lblDescription1.Text = "Empresas con tasa de cambio:";
             // 
-            // chbDuracreto
+            // chbDC
             // 
-            this.chbDuracreto.AutoSize = true;
-            this.chbDuracreto.Location = new System.Drawing.Point(26, 221);
-            this.chbDuracreto.Name = "chbDuracreto";
-            this.chbDuracreto.Size = new System.Drawing.Size(88, 20);
-            this.chbDuracreto.TabIndex = 55;
-            this.chbDuracreto.Text = "Duracreto";
-            this.chbDuracreto.UseVisualStyleBackColor = true;
+            this.chbDC.AutoSize = true;
+            this.chbDC.Location = new System.Drawing.Point(26, 275);
+            this.chbDC.Name = "chbDC";
+            this.chbDC.Size = new System.Drawing.Size(88, 20);
+            this.chbDC.TabIndex = 55;
+            this.chbDC.Text = "Duracreto";
+            this.chbDC.UseVisualStyleBackColor = true;
             // 
             // dtpRateDate
             // 
             this.dtpRateDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpRateDate.Location = new System.Drawing.Point(312, 221);
+            this.dtpRateDate.Location = new System.Drawing.Point(437, 221);
             this.dtpRateDate.Name = "dtpRateDate";
             this.dtpRateDate.Size = new System.Drawing.Size(139, 22);
             this.dtpRateDate.TabIndex = 54;
@@ -392,7 +440,7 @@ namespace GUI
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnUpdate.Location = new System.Drawing.Point(312, 302);
+            this.btnUpdate.Location = new System.Drawing.Point(437, 302);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(114, 30);
             this.btnUpdate.TabIndex = 50;
@@ -405,7 +453,7 @@ namespace GUI
             this.lblTitle.AutoSize = true;
             this.lblTitle.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(97, 111);
+            this.lblTitle.Location = new System.Drawing.Point(157, 111);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(338, 20);
             this.lblTitle.TabIndex = 49;
@@ -416,7 +464,7 @@ namespace GUI
             // 
             this.lblDescription2.AutoSize = true;
             this.lblDescription2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescription2.Location = new System.Drawing.Point(309, 152);
+            this.lblDescription2.Location = new System.Drawing.Point(434, 152);
             this.lblDescription2.MaximumSize = new System.Drawing.Size(250, 0);
             this.lblDescription2.Name = "lblDescription2";
             this.lblDescription2.Size = new System.Drawing.Size(247, 54);
@@ -426,7 +474,7 @@ namespace GUI
             // txtRate
             // 
             this.txtRate.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtRate.Location = new System.Drawing.Point(312, 260);
+            this.txtRate.Location = new System.Drawing.Point(437, 260);
             this.txtRate.Name = "txtRate";
             this.txtRate.Size = new System.Drawing.Size(139, 22);
             this.txtRate.TabIndex = 47;
@@ -434,23 +482,32 @@ namespace GUI
             // pbxLogoGP2
             // 
             this.pbxLogoGP2.Image = global::GUI.Properties.Resources.logo_gp;
-            this.pbxLogoGP2.Location = new System.Drawing.Point(167, 21);
+            this.pbxLogoGP2.Location = new System.Drawing.Point(223, 21);
             this.pbxLogoGP2.Name = "pbxLogoGP2";
             this.pbxLogoGP2.Size = new System.Drawing.Size(239, 78);
             this.pbxLogoGP2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxLogoGP2.TabIndex = 46;
             this.pbxLogoGP2.TabStop = false;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(254, 302);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(112, 20);
+            this.checkBox1.TabIndex = 74;
+            this.checkBox1.Text = "Autos Aliados";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // RateScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(583, 502);
-            this.Controls.Add(this.pnLogin);
+            this.ClientSize = new System.Drawing.Size(702, 502);
             this.Controls.Add(this.pnTasa);
+            this.Controls.Add(this.pnLogin);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(601, 549);
             this.MinimumSize = new System.Drawing.Size(601, 549);
             this.Name = "RateScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -487,7 +544,7 @@ namespace GUI
         private System.Windows.Forms.CheckBox chbDP;
         private System.Windows.Forms.CheckBox chbWYM;
         private System.Windows.Forms.Label lblDescription1;
-        private System.Windows.Forms.CheckBox chbDuracreto;
+        private System.Windows.Forms.CheckBox chbDC;
         private System.Windows.Forms.DateTimePicker dtpRateDate;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Label lblTitle;
@@ -500,6 +557,11 @@ namespace GUI
         private System.Windows.Forms.Label lblHost;
         private System.Windows.Forms.Label lblSerie;
         private System.Windows.Forms.ProgressBar pbLogin;
+        private System.Windows.Forms.CheckBox chbSCP;
+        private System.Windows.Forms.CheckBox chbESMV;
+        private System.Windows.Forms.CheckBox chbINVP;
+        private VerticalSeparator verticalSeparator1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

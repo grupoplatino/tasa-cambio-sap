@@ -1,16 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
 using CredentialManagement;
 using BE;
 using LN;
-using System.Web;
 
 namespace GUI
 {
@@ -20,8 +17,9 @@ namespace GUI
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
         private readonly Dictionary<string, csCompanies> Companies;
-        private static string initialDB = "SBO_DP";
+        private static string initialDB = "TEST_DC_1104";
 
+        private string _SLDServer;
         private string _serverBD;
         private string _userBD;
         private string _pwBD;
@@ -32,30 +30,39 @@ namespace GUI
         {
             InitializeComponent();
 
-            /*Companies = new Dictionary<string, csCompanies>
-            {
-                { "DC_0215", new csCompanies("DC_0215", "Duracreto", chbDuracreto) },
-                { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
-                { "DP_0601", new csCompanies("DP_0601", "Distribuidora Platino", chbDP) },
-                { "TP_TEST_TOMMY", new csCompanies("TP_TEST_TOMMY", "Transportes Platino", chbTP) },
-                { "TEST_IP2103", new csCompanies("TEST_IP2103", "Inmobiliaria Platino", chbIP) },
-                { "INOPSA_TEST_TOMMY", new csCompanies("INOPSA_TEST_TOMMY", "INOPSA", chbINOPSA) },
-                { "SIGLO_TEST_TOMMY", new csCompanies("SIGLO_TEST_TOMMY", "SIGLO XXI", chbSXXI) }
-            };*/
-
             Companies = new Dictionary<string, csCompanies>
             {
-                { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDuracreto) },
+                { "TEST_DC_1104", new csCompanies("TEST_DC_1104", "Duracreto", chbDC) }
+                /*{ "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
+                { "TEST_TP_1504", new csCompanies("TEST_TP_1504", "Transportes Platino", chbTP) },
+                { "IP_TEST_TOMMY", new csCompanies("IP_TEST_TOMMY", "Inmobiliaria Platino", chbIP) },
+                { "SBO_CP_T1", new csCompanies("SBO_CP_T1", "Servicios Corporativos", chbSCP) }*/
+            };
+
+            /*Companies = new Dictionary<string, csCompanies>
+            {
+                { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDC) },
                 { "SBO_WILLIAM_Y_MOLINA", new csCompanies("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
                 { "SBO_DP", new csCompanies("SBO_DP", "Distribuidora Platino", chbDP) },
                 { "SBO_TRANSPORTE_PLATINO", new csCompanies("SBO_TRANSPORTE_PLATINO", "Transportes Platino", chbTP) },
                 { "SBO_INMOBILIARIA_PLATINO", new csCompanies("SBO_INMOBILIARIA_PLATINO", "Inmobiliaria Platino", chbIP) },
                 { "SBO_INOPSA", new csCompanies("SBO_INOPSA", "INOPSA", chbINOPSA) },
                 { "SBO_AMSA", new csCompanies("SBO_AMSA", "AMSA", chbAMSA) },
-                { "SBO_SPS_SIGLO_XXI", new csCompanies("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) }
-            };
+                { "SBO_SPS_SIGLO_XXI", new csCompanies("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) },
+                { "SBO_CORPORATIVO_PLATINO", new csCompanies("SBO_CORPORATIVO_PLATINO", "Servicios Corporativos", chbSCP) },
+                { "INVERSIONES_PLATINO", new csCompanies("INVERSIONES_PLATINO", "Inversiones Platino", chbINVP) },
+                { "SBO_ESMV", new csCompanies("SBO_ESMV", "Escuela Santa Maria del Valle", chbESMV) }
+            };*/
 
             WriteLog("Se inicia la aplicación.");
+
+            VerticalSeparator separator = new VerticalSeparator
+            {
+                Height = 200,
+                Location = new Point(150, 50)
+            };
+
+            Controls.Add(separator);
 
             lblHost.Text = Environment.MachineName;
             lblSerie.Text = GetSeries();
@@ -98,7 +105,10 @@ namespace GUI
                 using (var cred = new Credential { Target = "TasaCambio_Server" })
                 {
                     if (cred.Load())
-                        _serverBD = cred.Username;
+                    {
+                        _SLDServer = cred.Username;
+                        _serverBD = cred.Password;
+                    }
                 }
             }
             catch (Exception ex)
@@ -113,6 +123,7 @@ namespace GUI
             {
                 csCompany objCompany = new csCompany
                 {
+                    SLDServer = _SLDServer,
                     ServerBD = _serverBD,
                     UserBD = _userBD,
                     PwBD = _pwBD,
@@ -185,11 +196,21 @@ namespace GUI
         {
             try
             {
-                csORTT objORTT = new csORTT();
+                csORTT objORTT = new csORTT
+                {
+                    Currency = string.Empty,
+                    RateDate = DateTime.MinValue,
+                    Rate = 0,
+                    DataSource = '\0',
+                    UserSign = 0,
+                    Update = false
+                };
+
                 objORTT.Currency = "USD";
                 objORTT.RateDate = dtpFilterRateDate.Value;
 
                 bool hasRate = oSAP.GetRate(ref objORTT);
+
                 UpdateCheckboxes(bd, hasRate);
             }
             catch (Exception ex)
@@ -432,20 +453,20 @@ namespace GUI
                 return;
             }
 
-            bool hostExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text, txtUserSAP2.Text));
-            if (!hostExist)
+            bool userExist = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
+            if (!userExist)
             {
-                ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
                 EnableControls();
 
                 return;
             }
 
-            bool userExist = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
-            if (!userExist)
+            bool hostExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text, txtUserSAP2.Text));
+            if (!hostExist)
             {
-                ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 WriteLog($"Se intentó iniciar sesión con el usuario: {txtUserSAP2.Text}, host: {lblHost.Text}, y serie: {lblSerie.Text}");
                 EnableControls();
 
@@ -463,7 +484,7 @@ namespace GUI
             txtRate.Enabled = false;
             btnUpdate.Enabled = false;
             btnUpdate.BackColor = Color.LightGray;
-            chbDuracreto.Enabled = false;
+            chbDC.Enabled = false;
             chbWYM.Enabled = false;
             chbDP.Enabled = false;
             chbTP.Enabled = false;
@@ -471,17 +492,21 @@ namespace GUI
             chbINOPSA.Enabled = false;
             chbAMSA.Enabled = false;
             chbSXXI.Enabled = false;
+            chbSCP.Enabled = false;
+            chbINVP.Enabled = false;
+            chbESMV.Enabled = false;
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DisconnectDB();
+            //DisconnectDB();
             WriteLog("Se sale de la aplicación.");
             Application.Exit();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
+            DisconnectDB();
             WriteLog("Se cierra la sesión.");
             pnTasa.Hide();
             pnLogin.Show();
