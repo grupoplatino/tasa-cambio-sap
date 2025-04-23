@@ -166,6 +166,33 @@ namespace GUI
             }
         }
 
+        private void GetRate(string bd)
+        {
+            try
+            {
+                csORTT objORTT = new csORTT
+                {
+                    Currency = string.Empty,
+                    RateDate = DateTime.MinValue,
+                    Rate = 0,
+                    DataSource = '\0',
+                    UserSign = 0,
+                    Update = false
+                };
+
+                objORTT.Currency = "USD";
+                objORTT.RateDate = dtpFilterRateDate.Value;
+
+                bool hasRate = oSAP.GetRate(ref objORTT);
+
+                UpdateCheckboxes(bd, hasRate);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void UpdateRate(string bd)
         {
             try
@@ -195,33 +222,6 @@ namespace GUI
             {
                 DisconnectDB();
                 WriteLog($"Se desconectó de {bd}");
-            }
-        }
-
-        private void GetRate(string bd)
-        {
-            try
-            {
-                csORTT objORTT = new csORTT
-                {
-                    Currency = string.Empty,
-                    RateDate = DateTime.MinValue,
-                    Rate = 0,
-                    DataSource = '\0',
-                    UserSign = 0,
-                    Update = false
-                };
-
-                objORTT.Currency = "USD";
-                objORTT.RateDate = dtpFilterRateDate.Value;
-
-                bool hasRate = oSAP.GetRate(ref objORTT);
-
-                UpdateCheckboxes(bd, hasRate);
-            }
-            catch (Exception ex)
-            {
-                ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -379,74 +379,6 @@ namespace GUI
         }
 
         //Eventos
-        private async void btnUpdate_Click(object sender, EventArgs e)
-        {
-            List<string> bds = new List<string> { };
-
-            foreach (var company in Companies)
-            {
-                if (company.Value.checkBoxDB.Checked && company.Value.checkBoxDB.Enabled)
-                    bds.Add(company.Key);
-            }
-
-            if (dtpRateDate.Value.Date < DateTime.Now.Date)
-            {
-                ShowMessage("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(txtRate.Text))
-            {
-                ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (!decimal.TryParse(txtRate.Text, out _))
-            {
-                ShowMessage("El campo de tasa debe ser un valor numérico decimal.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (bds.Count == 0)
-            {
-                ShowMessage("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            
-            DisableControls();
-
-            foreach (var bd in bds)
-            {
-                try
-                {
-                    await Task.Run(() => ConnectDB(bd));
-                    await Task.Run(() => UpdateRate(bd));
-                }
-                catch (Exception ex)
-                {
-                    ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            dtpFilterRateDate.Value = dtpRateDate.Value;
-            txtRate.Text = "";
-
-            await Task.Run(() => GetRateSimplified());
-
-            EnableControls();
-        }
-
-        private async void btnValidate_Click(object sender, EventArgs e)
-        {
-            DisableControls();
-
-            await Task.Run(() => GetRateSimplified());
-
-            EnableControls();
-
-            WriteLog($"Se valida la tasa para el {dtpFilterRateDate.Value.Date}");
-        }
-
         private async void btnLogin_Click(object sender, EventArgs e)
         {
             if (txtUserSAP2.Text == "")
@@ -511,11 +443,86 @@ namespace GUI
             DisconnectDB();
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private async void btnValidate_Click(object sender, EventArgs e)
         {
-            //DisconnectDB();
-            WriteLog("Se sale de la aplicación.");
-            Application.Exit();
+            DisableControls();
+
+            await Task.Run(() => GetRateSimplified());
+
+            EnableControls();
+
+            WriteLog($"Se valida la tasa para el {dtpFilterRateDate.Value.Date}");
+        }
+
+        private async void btnUpdate_Click(object sender, EventArgs e)
+        {
+            string rate = txtRate.Text;
+            string date = dtpRateDate.Value.ToString("yyyy-MM-dd");
+
+            if (dtpRateDate.Value.Date < DateTime.Now.Date)
+            {
+                ShowMessage("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(txtRate.Text))
+            {
+                ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(txtRate.Text, out _))
+            {
+                ShowMessage("El campo de tasa debe ser un valor numérico decimal.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            List<string> bds = new List<string> { };
+            foreach (var company in Companies)
+            {
+                if (company.Value.checkBoxDB.Checked && company.Value.checkBoxDB.Enabled)
+                    bds.Add(company.Key);
+            }
+
+            if (bds.Count == 0)
+            {
+                ShowMessage("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            System.Windows.Forms.DialogResult result = MessageBox.Show(
+                $"¿Está seguro de establecer la tasa de cambio '{rate}' para la fecha '{date}' en las sociedades seleccionadas?",
+                "Confirmación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result != System.Windows.Forms.DialogResult.Yes)
+            {
+                return;
+            }
+
+            DisableControls();
+
+            foreach (var bd in bds)
+            {
+                try
+                {
+                    await Task.Run(() => ConnectDB(bd));
+                    await Task.Run(() => UpdateRate(bd));
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            dtpFilterRateDate.Value = dtpRateDate.Value;
+            txtRate.Text = "";
+
+            await Task.Run(() => GetRateSimplified());
+
+            EnableControls();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -524,6 +531,13 @@ namespace GUI
             pnTasa.Hide();
             pnLogin.Show();
             txtUserSAP2.Text = "";
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            //DisconnectDB();
+            WriteLog("Se sale de la aplicación.");
+            Application.Exit();
         }
     }
 }
