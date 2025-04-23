@@ -17,7 +17,7 @@ namespace GUI
         private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
         private readonly Dictionary<string, csCompanies> Companies;
-        private static string initialDB = "TEST_DC_1104";
+        private static string initialDB = "SBO_DP";
 
         private string _SLDServer;
         private string _serverBD;
@@ -30,13 +30,14 @@ namespace GUI
         {
             InitializeComponent();
 
+            oSAP.CleanRecordset();
+
             Companies = new Dictionary<string, csCompanies>
             {
-                { "TEST_DC_1104", new csCompanies("TEST_DC_1104", "Duracreto", chbDC) }
-                /*{ "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
-                { "TEST_TP_1504", new csCompanies("TEST_TP_1504", "Transportes Platino", chbTP) },
                 { "IP_TEST_TOMMY", new csCompanies("IP_TEST_TOMMY", "Inmobiliaria Platino", chbIP) },
-                { "SBO_CP_T1", new csCompanies("SBO_CP_T1", "Servicios Corporativos", chbSCP) }*/
+                { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
+                { "TEST_DC_1104", new csCompanies("TEST_DC_1104", "Duracreto", chbDC) },
+                { "TEST_TP_1504", new csCompanies("TEST_TP_1504", "Transportes Platino", chbTP) },
             };
 
             /*Companies = new Dictionary<string, csCompanies>
@@ -190,6 +191,11 @@ namespace GUI
             {
                 ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                DisconnectDB();
+                WriteLog($"Se desconectó de {bd}");
+            }
         }
 
         private void GetRate(string bd)
@@ -282,10 +288,16 @@ namespace GUI
                     string bd = company.Key;
                     ConnectDB(bd);
                     GetRate(bd);
+                    WriteLog("Se obtuvo la tasa de " + bd);
                 }
                 catch (Exception ex)
                 {
                     ShowMessage(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    DisconnectDB();
+                    WriteLog("Se desconectó de " + company.Key);
                 }
             }
         }
@@ -495,6 +507,8 @@ namespace GUI
             chbSCP.Enabled = false;
             chbINVP.Enabled = false;
             chbESMV.Enabled = false;
+
+            DisconnectDB();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -506,7 +520,6 @@ namespace GUI
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            DisconnectDB();
             WriteLog("Se cierra la sesión.");
             pnTasa.Hide();
             pnLogin.Show();

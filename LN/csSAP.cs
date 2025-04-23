@@ -101,44 +101,30 @@ namespace LN
         {
             try
             {
+                CleanRecordset();
+
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
-                int howmany = 0;
-
-                howmany = oRecordSet.RecordCount;
-
-                try
-                {
-                    oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date);
-                }
-                catch
-                {
-                    CleanRecordset();
-                    return false;
-                }
-
-                howmany = oRecordSet.RecordCount;
+                oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date);
 
                 if (oRecordSet.RecordCount == 0 || oRecordSet.Fields.Item(0).Value == null)
                 {
-                    CleanRecordset();
                     return false;
                 }
 
                 double rate;
                 if (!double.TryParse(oRecordSet.Fields.Item(0).Value.ToString(), out rate) || rate <= 0)
                 {
-                    CleanRecordset();
                     return false;
                 }
 
                 objORTT.Rate = rate;
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return false;
             }
             finally
             {
@@ -152,6 +138,8 @@ namespace LN
 
             try
             {
+                CleanRecordset();
+
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
                 string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
@@ -177,6 +165,8 @@ namespace LN
 
             try
             {
+                CleanRecordset();
+
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
                 string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
@@ -201,13 +191,28 @@ namespace LN
             return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}";
         }
 
-        private void CleanRecordset()
+        private int cleanCount = 0;
+        public void CleanRecordset()
         {
-            if (oRecordSet != null)
+            try
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet);
-                oRecordSet = null;
-                GC.Collect();
+                if (oRecordSet != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet);
+                    oRecordSet = null;
+                }
+
+                cleanCount++;
+
+                if (cleanCount >= 10)
+                {
+                    GC.Collect();
+                    cleanCount = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
