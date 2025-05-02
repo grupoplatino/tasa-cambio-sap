@@ -41,7 +41,8 @@
             this.pbxLogoGP1 = new System.Windows.Forms.PictureBox();
             this.pbLogin = new System.Windows.Forms.ProgressBar();
             this.pnTasa = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chbAA = new System.Windows.Forms.CheckBox();
+            this.verticalSeparator1 = new GUI.VerticalSeparator();
             this.chbESMV = new System.Windows.Forms.CheckBox();
             this.chbINVP = new System.Windows.Forms.CheckBox();
             this.chbSCP = new System.Windows.Forms.CheckBox();
@@ -65,7 +66,6 @@
             this.lblDescription2 = new System.Windows.Forms.Label();
             this.txtRate = new System.Windows.Forms.TextBox();
             this.pbxLogoGP2 = new System.Windows.Forms.PictureBox();
-            this.verticalSeparator1 = new GUI.VerticalSeparator();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoGP1)).BeginInit();
@@ -205,7 +205,7 @@
             // 
             // pnTasa
             // 
-            this.pnTasa.Controls.Add(this.checkBox1);
+            this.pnTasa.Controls.Add(this.chbAA);
             this.pnTasa.Controls.Add(this.verticalSeparator1);
             this.pnTasa.Controls.Add(this.chbESMV);
             this.pnTasa.Controls.Add(this.chbINVP);
@@ -235,15 +235,24 @@
             this.pnTasa.Size = new System.Drawing.Size(709, 498);
             this.pnTasa.TabIndex = 43;
             // 
-            // checkBox1
+            // chbAA
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(263, 302);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(112, 20);
-            this.checkBox1.TabIndex = 74;
-            this.checkBox1.Text = "Autos Aliados";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chbAA.AutoSize = true;
+            this.chbAA.Location = new System.Drawing.Point(263, 302);
+            this.chbAA.Name = "chbAA";
+            this.chbAA.Size = new System.Drawing.Size(112, 20);
+            this.chbAA.TabIndex = 74;
+            this.chbAA.Text = "Autos Aliados";
+            this.chbAA.UseVisualStyleBackColor = true;
+            // 
+            // verticalSeparator1
+            // 
+            this.verticalSeparator1.BackColor = System.Drawing.Color.Gainsboro;
+            this.verticalSeparator1.Location = new System.Drawing.Point(407, 155);
+            this.verticalSeparator1.Name = "verticalSeparator1";
+            this.verticalSeparator1.Size = new System.Drawing.Size(1, 275);
+            this.verticalSeparator1.TabIndex = 73;
+            this.verticalSeparator1.Text = "verticalSeparator1";
             // 
             // chbESMV
             // 
@@ -490,15 +499,6 @@
             this.pbxLogoGP2.TabIndex = 46;
             this.pbxLogoGP2.TabStop = false;
             // 
-            // verticalSeparator1
-            // 
-            this.verticalSeparator1.BackColor = System.Drawing.Color.Gainsboro;
-            this.verticalSeparator1.Location = new System.Drawing.Point(407, 155);
-            this.verticalSeparator1.Name = "verticalSeparator1";
-            this.verticalSeparator1.Size = new System.Drawing.Size(1, 275);
-            this.verticalSeparator1.TabIndex = 73;
-            this.verticalSeparator1.Text = "verticalSeparator1";
-            // 
             // RateScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -561,7 +561,7 @@
         private System.Windows.Forms.CheckBox chbESMV;
         private System.Windows.Forms.CheckBox chbINVP;
         private VerticalSeparator verticalSeparator1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chbAA;
     }
 }
 

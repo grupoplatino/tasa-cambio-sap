@@ -32,15 +32,15 @@ namespace GUI
 
             oSAP.CleanRecordset();
 
-            Companies = new Dictionary<string, csCompanies>
+            /*Companies = new Dictionary<string, csCompanies>
             {
                 { "IP_TEST_TOMMY", new csCompanies("IP_TEST_TOMMY", "Inmobiliaria Platino", chbIP) },
                 { "WYM_TEST", new csCompanies("WYM_TEST", "William & Molina", chbWYM) },
                 { "TEST_DC_1104", new csCompanies("TEST_DC_1104", "Duracreto", chbDC) },
                 { "TEST_TP_1504", new csCompanies("TEST_TP_1504", "Transportes Platino", chbTP) },
-            };
+            };*/
 
-            /*Companies = new Dictionary<string, csCompanies>
+            Companies = new Dictionary<string, csCompanies>
             {
                 { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDC) },
                 { "SBO_WILLIAM_Y_MOLINA", new csCompanies("SBO_WILLIAM_Y_MOLINA", "William & Molina", chbWYM) },
@@ -52,8 +52,9 @@ namespace GUI
                 { "SBO_SPS_SIGLO_XXI", new csCompanies("SBO_SPS_SIGLO_XXI", "Siglo XXI", chbSXXI) },
                 { "SBO_CORPORATIVO_PLATINO", new csCompanies("SBO_CORPORATIVO_PLATINO", "Servicios Corporativos", chbSCP) },
                 { "INVERSIONES_PLATINO", new csCompanies("INVERSIONES_PLATINO", "Inversiones Platino", chbINVP) },
-                { "SBO_ESMV", new csCompanies("SBO_ESMV", "Escuela Santa Maria del Valle", chbESMV) }
-            };*/
+                { "SBO_ESMV", new csCompanies("SBO_ESMV", "Escuela Santa Maria del Valle", chbESMV) },
+                { "SBO_AUTOS_ALIADOS", new csCompanies("SBO_AUTOS_ALIADOS", "Autos Aliados", chbAA) }
+            };
 
             WriteLog("Se inicia la aplicación.");
 
@@ -439,6 +440,7 @@ namespace GUI
             chbSCP.Enabled = false;
             chbINVP.Enabled = false;
             chbESMV.Enabled = false;
+            chbAA.Enabled = false;
 
             DisconnectDB();
         }
