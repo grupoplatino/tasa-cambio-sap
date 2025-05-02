@@ -1,7 +1,11 @@
-# Tasa de Cambio SAP
+<div align="center">
+  <h1>Tasa de Cambio SAP</h1>
+  <p>La aplicación <strong>Tasa de Cambio SAP<strong> está diseñada para gestionar y actualizar las tasas de cambio en diferentes sociedades de SAP Business One de manera automatizada. Permite la validación y actualización de tasas de cambio de manera global para múltiples empresas, optimizando los procesos financieros y reduciendo el tiempo empleado en tareas manuales.</p>
+  <img src="https://img.shields.io/badge/versión-1.0.0-blue">
+  <img src="https://img.shields.io/github/languages/top/tommysvs/tasa-cambio-sap">
+</div>
 
-## Descripción del proyecto
-La aplicación **Tasa de Cambio SAP** está diseñada para gestionar y actualizar las tasas de cambio en diferentes sociedades de SAP Business One de manera automatizada. Permite la validación y actualización de tasas de cambio de manera global para múltiples empresas, optimizando los procesos financieros y reduciendo el tiempo empleado en tareas manuales. 
+---
 
 ## Tabla de Contenido
 - [Características principales](#características-principales)
