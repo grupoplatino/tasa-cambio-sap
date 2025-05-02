@@ -3,6 +3,18 @@
 ## Descripción del proyecto
 La aplicación **Tasa de Cambio SAP** está diseñada para gestionar y actualizar las tasas de cambio en diferentes sociedades de SAP Business One de manera automatizada. Permite la validación y actualización de tasas de cambio de manera global para múltiples empresas, optimizando los procesos financieros y reduciendo el tiempo empleado en tareas manuales. 
 
+## Tabla de Contenido
+- [Características principales](#características-principales)
+- [Requisitos previos](#requisitos-previos)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Arquitectura del proyecto](#arquitectura-del-proyecto)
+  - [Backend (`BE`)](#1-backend-be)
+  - [Lógica de negocio (`LN`)](#2-lógica-de-negocio-ln)
+  - [Interfaz gráfica (`GUI`)](#3-interfaz-gráfica-gui)
+- [Detalles técnicos](#detalles-técnicos)
+  - [Métodos clave](#métodos-clave)
+
 ## Características principales
 - **Gestión centralizada:** Actualización de tasas de cambio para varias empresas desde una única interfaz.
 - **Validación en tiempo real:** Verifica las tasas de cambio existentes antes de realizar actualizaciones.
