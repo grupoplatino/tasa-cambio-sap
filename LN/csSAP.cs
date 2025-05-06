@@ -20,7 +20,7 @@ namespace LN
             {
                 if (oCompany == null)
                 {
-                    oCompany = new Company();
+                    oCompany = new Company(); // Inicializa el objeto Company
                 }
 
                 if (!oCompany.Connected) // Valida si el objeto oCompany no tiene ya una conexion activa
@@ -39,15 +39,15 @@ namespace LN
                     oCompany.DbServerType = BoDataServerTypes.dst_HANADB;
                     oCompany.language = BoSuppLangs.ln_Spanish_La;
 
-                    iRet = oCompany.Connect(); // Se conecta a SAP
+                    iRet = oCompany.Connect(); // Almacena el resultado de la conexion en iRet si la conexion es exitosa, iRet sera 0, si no, sera diferente de 0
 
-                    if (iRet == 0)
+                    if (iRet == 0) 
                     {
-                        return true;
+                        return true; // Retorna true si la conexion es exitosa
                     }
                     else
                     {
-                        oCompany.GetLastError(out iErrCod, out sErrMsg);
+                        oCompany.GetLastError(out iErrCod, out sErrMsg); // Obtiene el codigo y mensaje de error de la conexion de SAP
                         throw new Exception($"Error {iErrCod}: {sErrMsg}");
                     }
                 }
@@ -69,11 +69,11 @@ namespace LN
                 if (oCompany != null && oCompany.Connected) // Valida si el objeto oCompany tiene una conexion activa
                 {
                     oCompany.Disconnect(); // Desconecta de SAP
-                    return true;
+                    return true; // Retorna true si la desconexion es exitosa
                 }
                 else
                 {
-                    return false;
+                    return false; // Retorna false si no hay conexion activa
                 }
             }
             catch (Exception ex)
@@ -89,7 +89,7 @@ namespace LN
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge); // Se obtiene el objeto SBObob
                 oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date, objORTT.Rate); // Se establece la tasa de cambio mediante el objeto SBObob y el método SetCurrencyRate
 
-                return true;
+                return true; // Retorna true si la tasa de cambio se establece correctamente
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace LN
             }
             catch (Exception)
             {
-                return false;
+                return false; // Retorna false si ocurre una excepción para no interrumpir el flujo del programa
             }
             finally
             {
@@ -188,7 +188,7 @@ namespace LN
 
         public string GetErrorMessage(Exception ex) // Mejor manejo de errores
         {
-            return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}";
+            return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}"; // Retorna el mensaje de error y la traza de la pila
         }
 
         private int cleanCount = 0; // Contador para el garbage collector

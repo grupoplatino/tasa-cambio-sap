@@ -286,7 +286,7 @@ namespace GUI
 
         private void GetRateSimplified() // Metodo simplificado para obtener la tasa de cambio y reutilizar el código
         {
-            foreach (var company in Companies)
+            foreach (var company in Companies) // Recorre el diccionario de empresas
             {
                 try
                 {
