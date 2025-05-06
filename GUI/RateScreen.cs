@@ -13,18 +13,18 @@ namespace GUI
 {
     public partial class RateScreen : Form
     {
-        public csSAP oSAP = new csSAP();
-        private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio");
-        private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
-        private readonly Dictionary<string, csCompanies> Companies;
-        private static string initialDB = "SBO_DP";
+        public csSAP oSAP = new csSAP(); // Instancia de la clase SAP
+        private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio"); // Se utiliza el %appdata% del usuario
+        private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt"); // Se crea un log por día
+        private readonly Dictionary<string, csCompanies> Companies; // Diccionario de empresas, se utiliza para validar la tasa de cambio
+        private static string initialDB = "SBO_DP"; // Base de datos inicial, se utiliza para validar el usuario
 
-        private string _SLDServer;
-        private string _serverBD;
-        private string _userBD;
-        private string _pwBD;
-        private string _userSAP;
-        private string _pwSAP;
+        private string _SLDServer; // Servidor SLD de la base de datos
+        private string _serverBD; // Servidor de la base de datos
+        private string _userBD; // Usuario de HANA
+        private string _pwBD; // Contraseña de HANA
+        private string _userSAP; // Usuario de SAP
+        private string _pwSAP; // Contraseña de SAP
 
         public RateScreen()
         {
@@ -32,6 +32,7 @@ namespace GUI
 
             oSAP.CleanRecordset();
 
+            // Bases de datos de prueba
             /*Companies = new Dictionary<string, csCompanies>
             {
                 { "IP_TEST_TOMMY", new csCompanies("IP_TEST_TOMMY", "Inmobiliaria Platino", chbIP) },
@@ -40,6 +41,7 @@ namespace GUI
                 { "TEST_TP_1504", new csCompanies("TEST_TP_1504", "Transportes Platino", chbTP) },
             };*/
 
+            // Bases de datos productivas
             Companies = new Dictionary<string, csCompanies>
             {
                 { "SBO_DURACRETO1", new csCompanies("SBO_DURACRETO1", "Duracreto", chbDC) },
@@ -58,6 +60,7 @@ namespace GUI
 
             WriteLog("Se inicia la aplicación.");
 
+            // Se crea un separador vertical para la pantalla de login
             VerticalSeparator separator = new VerticalSeparator
             {
                 Height = 200,
@@ -66,6 +69,7 @@ namespace GUI
 
             Controls.Add(separator);
 
+            // Se inicializan los controles
             lblHost.Text = Environment.MachineName;
             lblSerie.Text = GetSeries();
 
@@ -81,8 +85,8 @@ namespace GUI
             LoadCredentials();
         }
 
-        //Métodos principales
-        private void LoadCredentials()
+        // Métodos principales
+        private void LoadCredentials() // Carga las credenciales de la base de datos y del usuario SAP desde el almacén de credenciales de Windows
         {
             try
             {
@@ -119,7 +123,7 @@ namespace GUI
             }
         }
 
-        private bool ConnectDB(string bd)
+        private bool ConnectDB(string bd) // Conecta a la base de datos de SAP/HANA
         {
             try
             {
@@ -135,9 +139,9 @@ namespace GUI
                     PwSAP = _pwSAP
                 };
 
-                if (oSAP.ConnectSAP(objCompany))
+                if (oSAP.ConnectSAP(objCompany)) // Se conecta a la base de datos de SAP
                 {
-                    string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015");
+                    string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015"); // Se cambia el puerto de la base de datos de SAP a HANA
                     csConnection.StartConnection(Server, objCompany.UserBD, objCompany.PwBD, bd);
                     return true;
                 }
@@ -154,7 +158,7 @@ namespace GUI
             }
         }
 
-        private void DisconnectDB()
+        private void DisconnectDB() // Desconecta de la base de datos
         {
             try
             {
@@ -167,7 +171,7 @@ namespace GUI
             }
         }
 
-        private void GetRate(string bd)
+        private void GetRate(string bd) // Obtiene la tasa de cambio de la base de datos
         {
             try
             {
@@ -184,9 +188,9 @@ namespace GUI
                 objORTT.Currency = "USD";
                 objORTT.RateDate = dtpFilterRateDate.Value;
 
-                bool hasRate = oSAP.GetRate(ref objORTT);
+                bool hasRate = oSAP.GetRate(ref objORTT); // Valida si tiene tasa de cambio para la base de datos 
 
-                UpdateCheckboxes(bd, hasRate);
+                UpdateCheckboxes(bd, hasRate); // Actualiza los checkboxes de las empresas
             }
             catch (Exception ex)
             {
@@ -194,7 +198,7 @@ namespace GUI
             }
         }
 
-        private void UpdateRate(string bd)
+        private void UpdateRate(string bd) // Actualiza la tasa de cambio en la base de datos
         {
             try
             {
@@ -206,9 +210,9 @@ namespace GUI
                 if(Companies.ContainsKey(bd))
                 {
                     csCompanies company = Companies[bd];
-                    string bd_name = company.nameDB;
+                    string bd_name = company.nameDB; // Nombre de la base de datos
 
-                    if (oSAP.AddRate(ref objORTT))
+                    if (oSAP.AddRate(ref objORTT)) // Agrega la tasa de cambio a la base de datos
                     {
                         ShowMessage($"Se agregó la tasa exitosamente para {bd_name}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         WriteLog($"Se agregó la tasa exitosamente de {bd_name} para el {dtpRateDate.Value.Date}.");
@@ -226,16 +230,16 @@ namespace GUI
             }
         }
 
-        //Métodos auxiliares
-        private void ShowMessage(string message, string title, MessageBoxButtons button, MessageBoxIcon icon)
+        // Métodos auxiliares
+        private void ShowMessage(string message, string title, MessageBoxButtons button, MessageBoxIcon icon) // Muestra un mensaje en la pantalla
         {
             if (InvokeRequired)
-                Invoke(new Action(() => MessageBox.Show(this, message, title, button, icon)));
+                Invoke(new Action(() => MessageBox.Show(this, message, title, button, icon))); //  Invoca el método en el hilo de la interfaz de usuario
             else
                 MessageBox.Show(this, message, title, button, icon);
         }
 
-        private void TxtRate_KeyPress(object sender, KeyPressEventArgs e)
+        private void TxtRate_KeyPress(object sender, KeyPressEventArgs e) // Valida que el campo de tasa solo acepte números y un punto decimal
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
             {
@@ -248,7 +252,7 @@ namespace GUI
             }
         }
 
-        private string GetSeries()
+        private string GetSeries() // Obtiene el número de serie de la computadora
         {
             string series = string.Empty;
 
@@ -263,7 +267,7 @@ namespace GUI
             return series;
         }
 
-        private void WriteLog(string log)
+        private void WriteLog(string log) // Escribe un log en el archivo de texto
         {
             try
             {
@@ -280,7 +284,7 @@ namespace GUI
             }
         }
 
-        private void GetRateSimplified()
+        private void GetRateSimplified() // Metodo simplificado para obtener la tasa de cambio y reutilizar el código
         {
             foreach (var company in Companies)
             {
@@ -303,20 +307,20 @@ namespace GUI
             }
         }
 
-        private void UpdateCheckboxes(string bd, bool hasRate)
+        private void UpdateCheckboxes(string bd, bool hasRate) // Actualiza los checkboxes de las empresas
         {
             Invoke(new Action(() => {
                 if (Companies.ContainsKey(bd))
                 {
                     csCompanies company = Companies[bd];
 
-                    company.checkBoxDB.Checked = hasRate;
-                    company.checkBoxDB.Enabled = !hasRate;
+                    company.checkBoxDB.Checked = hasRate; // Marca el checkbox si tiene tasa de cambio
+                    company.checkBoxDB.Enabled = !hasRate; // Deshabilita el checkbox si tiene tasa de cambio
                 }
             }));
         }
 
-        private void EnableControls()
+        private void EnableControls() // Habilita los controles de la pantalla
         {
             pbRate.Visible = false;
             pbLogin.Visible = false;
@@ -342,7 +346,7 @@ namespace GUI
             }
         }
 
-        private void DisableControls()
+        private void DisableControls() // Deshabilita los controles de la pantalla
         {
             pbRate.Style = ProgressBarStyle.Marquee;
             pbLogin.Style = ProgressBarStyle.Marquee;
@@ -355,7 +359,7 @@ namespace GUI
             DisableAllControls(this);
         }
 
-        private void DisableAllControls(Control parent)
+        private void DisableAllControls(Control parent) // Método recursivo para deshabilitar todos los controles
         {
             foreach (Control control in parent.Controls)
             {
@@ -374,13 +378,13 @@ namespace GUI
                 }
                 else if (control.HasChildren)
                 {
-                    DisableAllControls(control);
+                    DisableAllControls(control); //  Llamada recursiva para controles que contienen otros controles
                 }
             }
         }
 
-        //Eventos
-        private async void btnLogin_Click(object sender, EventArgs e)
+        // Eventos
+        private async void btnLogin_Click(object sender, EventArgs e) // Inicia sesión en la aplicación
         {
             if (txtUserSAP2.Text == "")
             {
@@ -390,7 +394,7 @@ namespace GUI
 
             DisableControls();
 
-            bool isConnected = await Task.Run(() => ConnectDB(initialDB));
+            bool isConnected = await Task.Run(() => ConnectDB(initialDB)); // Conecta a la base de datos inicial para validar el usuario
             if (!isConnected)
             {
                 ShowMessage("No se pudo conectar a la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -398,7 +402,7 @@ namespace GUI
                 return;
             }
 
-            bool userExist = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text));
+            bool userExist = await Task.Run(() => oSAP.ValidateUser(txtUserSAP2.Text)); // Valida si el usuario existe en SAP
             if (!userExist)
             {
                 ShowMessage("El usuario no existe o no tiene permisos para utilizar la aplicación.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -408,7 +412,8 @@ namespace GUI
                 return;
             }
 
-            bool hostExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text, txtUserSAP2.Text));
+            // Valida si el hostname de la computadora esta en el campo de usuario de U_Host en el usuario de SAP
+            bool hostExist = await Task.Run(() => oSAP.ValidateComputer(lblHost.Text, txtUserSAP2.Text)); 
             if (!hostExist)
             {
                 ShowMessage("No se puede utilizar la aplicación en esta computadora.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -418,12 +423,14 @@ namespace GUI
                 return;
             }
 
+            // Cambia de panel de login al gestor de la tasa
             pnLogin.Hide();
             pnTasa.Show();
 
             WriteLog($"Se inició sesión con el usuario de {txtUserSAP2.Text}");
             EnableControls();
 
+            // Deshabilita los controles de la pantalla
             lblDescription2.ForeColor = Color.Gray;
             dtpRateDate.Enabled = false;
             txtRate.Enabled = false;
@@ -442,38 +449,38 @@ namespace GUI
             chbESMV.Enabled = false;
             chbAA.Enabled = false;
 
-            DisconnectDB();
+            DisconnectDB(); // Desconecta de la base de datos inicial
         }
 
-        private async void btnValidate_Click(object sender, EventArgs e)
+        private async void btnValidate_Click(object sender, EventArgs e) // Valida la tasa de cambio
         {
             DisableControls();
 
-            await Task.Run(() => GetRateSimplified());
+            await Task.Run(() => GetRateSimplified()); // Obtiene la tasa de cambio de todas las bases de datos
 
             EnableControls();
 
             WriteLog($"Se valida la tasa para el {dtpFilterRateDate.Value.Date}");
         }
 
-        private async void btnUpdate_Click(object sender, EventArgs e)
+        private async void btnUpdate_Click(object sender, EventArgs e) // Actualiza la tasa de cambio
         {
             string rate = txtRate.Text;
             string date = dtpRateDate.Value.ToString("yyyy-MM-dd");
 
-            if (dtpRateDate.Value.Date < DateTime.Now.Date)
+            if (dtpRateDate.Value.Date < DateTime.Now.Date) // Valida que la fecha no sea anterior a hoy
             {
                 ShowMessage("La fecha no puede ser anterior a hoy.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (string.IsNullOrEmpty(txtRate.Text))
+            if (string.IsNullOrEmpty(txtRate.Text)) // Valida que el campo de tasa no esté vacío
             {
                 ShowMessage("El campo de tasa no puede ir vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!decimal.TryParse(txtRate.Text, out _))
+            if (!decimal.TryParse(txtRate.Text, out _)) // Valida que el campo de tasa sea un número decimal
             {
                 ShowMessage("El campo de tasa debe ser un valor numérico decimal.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -483,10 +490,10 @@ namespace GUI
             foreach (var company in Companies)
             {
                 if (company.Value.checkBoxDB.Checked && company.Value.checkBoxDB.Enabled)
-                    bds.Add(company.Key);
+                    bds.Add(company.Key); // Agrega la base de datos a la lista si el checkbox está marcado
             }
 
-            if (bds.Count == 0)
+            if (bds.Count == 0) // Valida que al menos una base de datos esté seleccionada
             {
                 ShowMessage("Se tiene que elegir al menos una empresa.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -497,7 +504,7 @@ namespace GUI
                 "Confirmación",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
-            );
+            ); // Muestra un mensaje de confirmación
 
             if (result != System.Windows.Forms.DialogResult.Yes)
             {
@@ -506,12 +513,12 @@ namespace GUI
 
             DisableControls();
 
-            foreach (var bd in bds)
+            foreach (var bd in bds) // Recorre la lista de bases de datos seleccionadas
             {
                 try
                 {
-                    await Task.Run(() => ConnectDB(bd));
-                    await Task.Run(() => UpdateRate(bd));
+                    await Task.Run(() => ConnectDB(bd)); // Conecta a la base de datos de SAP
+                    await Task.Run(() => UpdateRate(bd)); // Actualiza la tasa de cambio en la base de datos y se desconecta de SAP
                 }
                 catch (Exception ex)
                 {
@@ -522,22 +529,25 @@ namespace GUI
             dtpFilterRateDate.Value = dtpRateDate.Value;
             txtRate.Text = "";
 
-            await Task.Run(() => GetRateSimplified());
+            await Task.Run(() => GetRateSimplified()); // Obtiene la tasa de cambio de todas las bases de datos luego de actualizar la tasa en las empresas seleccionadas
 
             EnableControls();
         }
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e) // Cambia de panel de la pantalla de gestor de tasa a la de login
         {
+            // No hace falta poner la funcion de desconectar de la base de datos, ya que se desconecta al actualizar la tasa y validarla
+
             WriteLog("Se cierra la sesión.");
             pnTasa.Hide();
             pnLogin.Show();
             txtUserSAP2.Text = "";
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e) // Cierra la aplicación
         {
-            //DisconnectDB();
+            // No hace falta poner la funcion de desconectar de la base de datos, ya que se desconecta al actualizar la tasa y validarla
+
             WriteLog("Se sale de la aplicación.");
             Application.Exit();
         }

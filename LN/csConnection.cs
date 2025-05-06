@@ -8,7 +8,7 @@ namespace LN
         public static string ConString = "";
         public static OdbcConnection HanaCnn;
 
-        public static void StartConnection(string servidor, string user, string pw, string bd)
+        public static void StartConnection(string servidor, string user, string pw, string bd) // Se inicializa la conexión a HANA
         {
             try
             {
@@ -18,7 +18,7 @@ namespace LN
 
                 try
                 {
-                    HanaCnn.Open();
+                    HanaCnn.Open(); // Se abre la conexión a HANA
 
                     if (HanaCnn.State.Equals(0))
                         throw new Exception("Error de conexión HANA");
