@@ -116,7 +116,7 @@
             // txtUserSAP2
             // 
             this.txtUserSAP2.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtUserSAP2.Location = new System.Drawing.Point(280, 220);
+            this.txtUserSAP2.Location = new System.Drawing.Point(278, 220);
             this.txtUserSAP2.Name = "txtUserSAP2";
             this.txtUserSAP2.Size = new System.Drawing.Size(143, 22);
             this.txtUserSAP2.TabIndex = 71;
@@ -129,7 +129,7 @@
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExit.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnExit.Location = new System.Drawing.Point(280, 458);
+            this.btnExit.Location = new System.Drawing.Point(278, 458);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(143, 30);
             this.btnExit.TabIndex = 65;
@@ -163,7 +163,7 @@
             // 
             this.lblUserSAP2.AutoSize = true;
             this.lblUserSAP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserSAP2.Location = new System.Drawing.Point(278, 198);
+            this.lblUserSAP2.Location = new System.Drawing.Point(276, 198);
             this.lblUserSAP2.Name = "lblUserSAP2";
             this.lblUserSAP2.Size = new System.Drawing.Size(95, 16);
             this.lblUserSAP2.TabIndex = 39;
@@ -177,7 +177,7 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnLogin.Location = new System.Drawing.Point(280, 254);
+            this.btnLogin.Location = new System.Drawing.Point(278, 254);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(143, 30);
             this.btnLogin.TabIndex = 36;
@@ -197,7 +197,7 @@
             // 
             // pbLogin
             // 
-            this.pbLogin.Location = new System.Drawing.Point(281, 421);
+            this.pbLogin.Location = new System.Drawing.Point(279, 421);
             this.pbLogin.Name = "pbLogin";
             this.pbLogin.Size = new System.Drawing.Size(142, 20);
             this.pbLogin.TabIndex = 74;
@@ -463,11 +463,11 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(160, 111);
+            this.lblTitle.Location = new System.Drawing.Point(180, 111);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(338, 20);
+            this.lblTitle.Size = new System.Drawing.Size(293, 20);
             this.lblTitle.TabIndex = 49;
-            this.lblTitle.Text = "Actualización de tasa de cambio global";
+            this.lblTitle.Text = "Sistema de tasa de cambio global";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblDescription2
@@ -511,7 +511,7 @@
             this.MinimumSize = new System.Drawing.Size(731, 549);
             this.Name = "RateScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Actualización de tasa de cambio global";
+            this.Text = "Sistema de tasa de cambio global";
             this.pnLogin.ResumeLayout(false);
             this.pnLogin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogoSAP1)).EndInit();
