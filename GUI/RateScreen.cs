@@ -14,7 +14,8 @@ namespace GUI
     public partial class RateScreen : Form
     {
         public csSAP oSAP = new csSAP(); // Instancia de la clase SAP
-        private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio"); // Se utiliza el %appdata% del usuario
+        private static string logDirectory = @"\\192.168.1.101\b1_shf\LogDataTC"; // Ruta de la carpeta de logs en el servidor compartido
+        //private static string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasaCambio"); // Se utiliza el %appdata% del usuario
         private static string logPath = Path.Combine(logDirectory, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt"); // Se crea un log por día
         private readonly Dictionary<string, csCompanies> Companies; // Diccionario de empresas, se utiliza para validar la tasa de cambio
         private static string initialDB = "SBO_DP"; // Base de datos inicial, se utiliza para validar el usuario
