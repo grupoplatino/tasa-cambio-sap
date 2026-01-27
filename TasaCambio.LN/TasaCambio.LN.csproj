@@ -87,9 +87,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BE\BE.csproj">
+    <ProjectReference Include="..\TasaCambio.BE\TasaCambio.BE.csproj">
       <Project>{85706c10-7b48-4143-9f85-bdcc040656a7}</Project>
-      <Name>BE</Name>
+      <Name>TasaCambio.BE</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

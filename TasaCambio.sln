@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.35826.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36705.20 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE", "BE\BE.csproj", "{85706C10-7B48-4143-9F85-BDCC040656A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasaCambio.BE", "TasaCambio.BE\TasaCambio.BE.csproj", "{85706C10-7B48-4143-9F85-BDCC040656A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LN", "LN\LN.csproj", "{AD921D21-BE1B-4D37-9A61-0B1F6F1B1781}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasaCambio.LN", "TasaCambio.LN\TasaCambio.LN.csproj", "{AD921D21-BE1B-4D37-9A61-0B1F6F1B1781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{946C7109-4B9B-4005-AB6D-06D1CC0BD966}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasaCambio.GUI", "TasaCambio.GUI\TasaCambio.GUI.csproj", "{946C7109-4B9B-4005-AB6D-06D1CC0BD966}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasaCambio.Job", "TasaCambio.Job\TasaCambio.Job.csproj", "{75F97928-8748-4917-A93A-8477CD74548D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,18 @@ Global
 		{946C7109-4B9B-4005-AB6D-06D1CC0BD966}.Release|x64.Build.0 = Release|x64
 		{946C7109-4B9B-4005-AB6D-06D1CC0BD966}.Release|x86.ActiveCfg = Release|x86
 		{946C7109-4B9B-4005-AB6D-06D1CC0BD966}.Release|x86.Build.0 = Release|x86
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|x64.Build.0 = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Debug|x86.Build.0 = Debug|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|x64.ActiveCfg = Release|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|x64.Build.0 = Release|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|x86.ActiveCfg = Release|Any CPU
+		{75F97928-8748-4917-A93A-8477CD74548D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

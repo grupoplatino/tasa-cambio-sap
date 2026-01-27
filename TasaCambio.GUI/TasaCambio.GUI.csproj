@@ -173,13 +173,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BE\BE.csproj">
+    <ProjectReference Include="..\TasaCambio.BE\TasaCambio.BE.csproj">
       <Project>{85706c10-7b48-4143-9f85-bdcc040656a7}</Project>
-      <Name>BE</Name>
+      <Name>TasaCambio.BE</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LN\LN.csproj">
+    <ProjectReference Include="..\TasaCambio.LN\TasaCambio.LN.csproj">
       <Project>{ad921d21-be1b-4d37-9a61-0b1f6f1b1781}</Project>
-      <Name>LN</Name>
+      <Name>TasaCambio.LN</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
