@@ -51,13 +51,19 @@ namespace TasaCambioJob
 
                 if (string.IsNullOrWhiteSpace(originDb))
                 {
-                    WriteLog("No hay una empresa inicial configurada. Se aborta el job.");
+                    WriteLog("No hay una empresa inicial configurada.\nSe aborta el job.");
                     return;
                 }
 
                 WriteLog("Inicia job Tasa de Cambio.");
 
-                GetRate(originDb);
+                bool hasOriginRate = GetRate(originDb);
+
+                if (!hasOriginRate)
+                {
+                    WriteLog("No se encontró tasa en la base de origen.\nSe aborta el job.");
+                    return;
+                }
 
                 foreach (var bd in dbList)
                 {
@@ -154,14 +160,15 @@ namespace TasaCambioJob
             }
         }
 
-        private void GetRate(string bd)
+        private bool GetRate(string bd)
         {
+            bool hasRate = false;
             try
             {
                 if (!ConnectDB(bd))
                 {
                     WriteLog($"No se pudo conectar a {bd}");
-                    return;
+                    return false;
                 }
 
                 var objORTT = new csORTT
@@ -170,26 +177,30 @@ namespace TasaCambioJob
                     RateDate = DateTime.Today,
                     Rate = 0,
                     DataSource = '\0',
-                    UserSign = 0,                    Update = false
+                    UserSign = 0,
+                    Update = false
                 };
 
-                bool hasRate = oSAP.GetRate(ref objORTT);
+                hasRate = oSAP.GetRate(ref objORTT);
                 _exchangeRateUSD = objORTT.Rate;
 
                 if (hasRate)
                     WriteLog($"\nTasa encontrada en {bd}: {objORTT.Rate} (fecha {objORTT.RateDate:d})");
                 else
-                    WriteLog($"\n existe tasa en {bd} para la fecha {objORTT.RateDate:d}");
+                    WriteLog($"\nNo existe tasa en {bd} para la fecha {objORTT.RateDate:d}");
             }
             catch (Exception ex)
             {
                 WriteLog("\nError al obtener la tasa de cambio: " + ex.Message);
+                hasRate = false;
             }
             finally
             {
                 DisconnectDB();
                 WriteLog($"Desconectado de {bd}\n");
             }
+
+            return hasRate;
         }
 
         private void UpdateRate(string bd)

@@ -6,24 +6,24 @@ namespace LN
 {
     public class csSAP
     {
-        public static Company oCompany; // Objeto para manejar la conexión a SAP
-        public static SBObob oSBObob; // Objeto para manejar operaciones de SAP
-        public static Recordset oRecordSet; // Objeto para manejar recordsets
-        public static Users oUsers; // Objeto para manejar usuarios de SAP
-        public static int iRet = 0; // Variable para almacenar el resultado de la conexión
-        public static int iErrCod = 0; // Variable para almacenar el código de error
-        public static string sErrMsg = ""; // Variable para almacenar el mensaje de error
+        public static Company oCompany;
+        public static SBObob oSBObob;
+        public static Recordset oRecordSet;
+        public static Users oUsers;
+        public static int iRet = 0;
+        public static int iErrCod = 0;
+        public static string sErrMsg = "";
 
-        public bool ConnectSAP(csCompany objCompany) // Conecta a SAP
+        public bool ConnectSAP(csCompany objCompany)
         {
             try
             {
                 if (oCompany == null)
                 {
-                    oCompany = new Company(); // Inicializa el objeto Company
+                    oCompany = new Company();
                 }
 
-                if (!oCompany.Connected) // Valida si el objeto oCompany no tiene ya una conexion activa
+                if (!oCompany.Connected)
                 {
                     oCompany.SLDServer = objCompany.SLDServer;
                     oCompany.Server = objCompany.ServerBD;
@@ -43,11 +43,11 @@ namespace LN
 
                     if (iRet == 0) 
                     {
-                        return true; // Retorna true si la conexion es exitosa
+                        return true;
                     }
                     else
                     {
-                        oCompany.GetLastError(out iErrCod, out sErrMsg); // Obtiene el codigo y mensaje de error de la conexion de SAP
+                        oCompany.GetLastError(out iErrCod, out sErrMsg);
                         throw new Exception($"Error {iErrCod}: {sErrMsg}");
                     }
                 }
@@ -62,18 +62,18 @@ namespace LN
             }
         }
 
-        public bool DisconnectSAP(csCompany objCompany) // Desconecta de SAP
+        public bool DisconnectSAP(csCompany objCompany)
         {
             try
             {
-                if (oCompany != null && oCompany.Connected) // Valida si el objeto oCompany tiene una conexion activa
+                if (oCompany != null && oCompany.Connected) 
                 {
-                    oCompany.Disconnect(); // Desconecta de SAP
-                    return true; // Retorna true si la desconexion es exitosa
+                    oCompany.Disconnect();
+                    return true;
                 }
                 else
                 {
-                    return false; // Retorna false si no hay conexion activa
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -82,11 +82,11 @@ namespace LN
             }
         }
 
-        public bool AddRate(ref csORTT objORTT) // Agrega la tasa de cambio
+        public bool AddRate(ref csORTT objORTT)
         {
             try
             {
-                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge); // Se obtiene el objeto SBObob
+                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date, objORTT.Rate); // Se establece la tasa de cambio mediante el objeto SBObob y el método SetCurrencyRate
 
                 return true; // Retorna true si la tasa de cambio se establece correctamente
@@ -97,14 +97,14 @@ namespace LN
             }
         }
 
-        public bool GetRate(ref csORTT objORTT) // Obtiene la tasa de cambio
+        public bool GetRate(ref csORTT objORTT)
         {
             try
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
 
-                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge); // Se obtiene el objeto SBObob
-                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset); // Se obtiene el objeto Recordset
+                oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
                 oRecordSet = oSBObob.GetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date); // Se obtiene la tasa de cambio mediante el objeto SBObob y el método GetCurrencyRate
 
@@ -119,7 +119,7 @@ namespace LN
                     return false;
                 }
 
-                objORTT.Rate = rate; // Se asigna la tasa de cambio al objeto csORTT
+                objORTT.Rate = rate;
                 return true;
             }
             catch (Exception)
@@ -128,23 +128,23 @@ namespace LN
             }
             finally
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
             }
         }
 
-        public bool ValidateUser(string usersap) // Valida si el usuario existe en SAP
+        public bool ValidateUser(string usersap)
         {
             bool exists = false;
 
             try
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
 
-                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset); // Se obtiene el objeto Recordset
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
                 string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
 
-                if (oRecordSet.RecordCount > 0) // Valida si el recordset tiene registros significando que el usuario existe
+                if (oRecordSet.RecordCount > 0)
                     exists = true;
             }
             catch (Exception ex)
@@ -153,25 +153,25 @@ namespace LN
             }
             finally
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
             }
 
             return exists;
         }
 
-        public bool ValidateComputer(string host, string usersap) // Valida si la combinacion de host y usuario existe en SAP
+        public bool ValidateComputer(string host, string usersap)
         {
             bool exists = false;
 
             try
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
 
-                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset); // Se obtiene el objeto Recordset
-                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'"; // Selecciona el usuario y host de la tabla OUSR
+                oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'";
                 oRecordSet.DoQuery(query);
 
-                if (oRecordSet.RecordCount > 0) // Valida si el recordset tiene registros significando que la combinacion existe
+                if (oRecordSet.RecordCount > 0)
                     exists = true;
             }
             catch (Exception ex)
@@ -180,25 +180,25 @@ namespace LN
             }
             finally
             {
-                CleanRecordset(); // Se limpia el recordset
+                CleanRecordset();
             }
 
             return exists;
         }
 
-        public string GetErrorMessage(Exception ex) // Mejor manejo de errores
+        public string GetErrorMessage(Exception ex)
         {
-            return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}"; // Retorna el mensaje de error y la traza de la pila
+            return $"Error: {ex.Message}\nStackTrace: {ex.StackTrace}";
         }
 
-        private int cleanCount = 0; // Contador para el garbage collector
-        public void CleanRecordset() // Para limpiar el recordset
+        private int cleanCount = 0;
+        public void CleanRecordset()
         {
             try
             {
                 if (oRecordSet != null)
                 {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet); // Libera el objeto COM
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet);
                     oRecordSet = null;
                 }
 

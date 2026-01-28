@@ -5,23 +5,22 @@ namespace LN
 {
     public class csConnection
     {
-        public static string ConString = ""; // Cadena de conexión a HANA
-        public static OdbcConnection HanaCnn; // Objeto para manejar la conexión a HANA
+        public static string ConString = ""; 
+        public static OdbcConnection HanaCnn; 
 
-        public static void StartConnection(string servidor, string user, string pw, string bd) // Se inicializa la conexión a HANA
+        public static void StartConnection(string servidor, string user, string pw, string bd)
         {
             try
             {
-                // Asigna los valores de conexión a la cadena de conexión de HANA
                 ConString = "DRIVER={HDBODBC};UID=" + user + ";PWD=" + pw + ";SERVERNODE=" + servidor + ";CS=" + bd;
 
                 HanaCnn = new OdbcConnection(ConString);
 
                 try
                 {
-                    HanaCnn.Open(); // Se abre la conexión a HANA
+                    HanaCnn.Open();
 
-                    if (HanaCnn.State.Equals(0)) // Se valida si la conexión se abrió correctamente
+                    if (HanaCnn.State.Equals(0))
                         throw new Exception("Error de conexión HANA");
                 }
                 catch (Exception ex)
