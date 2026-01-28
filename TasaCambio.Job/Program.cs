@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TasaCambio.Job
+namespace TasaCambioJob
 {
-    internal class Program
+    class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
+            try
+            {
+                new RateJob().Execute();
+                return 0;
+            }
+            catch
+            {
+                return 1;
+            }
         }
     }
 }
