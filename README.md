@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Tasa de Cambio SAP</h1>
   <p>La aplicación <strong>Tasa de Cambio SAP</strong> está diseñada para gestionar y actualizar las tasas de cambio en diferentes sociedades de SAP Business One de manera automatizada. Permite la validación y actualización de tasas de cambio de manera global para múltiples empresas, optimizando los procesos financieros y reduciendo el tiempo empleado en tareas manuales.</p>
-  <img src="https://img.shields.io/badge/versión-1.0.0-blue">
+  <img src="https://img.shields.io/badge/versión-1.0.1-blue">
   <img src="https://img.shields.io/github/languages/top/tommysvs/tasa-cambio-sap">
 </div>
 
@@ -13,11 +13,6 @@
 - [Instalación](#instalación)
 - [Uso](#uso)
 - [Arquitectura del proyecto](#arquitectura-del-proyecto)
-  - [Backend (`BE`)](#1-backend-be)
-  - [Lógica de negocio (`LN`)](#2-lógica-de-negocio-ln)
-  - [Interfaz gráfica (`GUI`)](#3-interfaz-gráfica-gui)
-- [Detalles técnicos](#detalles-técnicos)
-  - [Métodos clave](#métodos-clave)
 
 ## Características principales
 - **Gestión centralizada:** Actualización de tasas de cambio para varias empresas desde una única interfaz.
@@ -28,7 +23,7 @@
 
 ## Requisitos previos
 Antes de ejecutar la aplicación, asegúrate de contar con los siguientes requisitos:
-- **.NET Framework:** Versión 4.7.
+- **.NET Framework:** Versión 4.7.2.
 - **SAP Business One:** Instalado con las credenciales necesarias para acceso.
 - **Controladores ODBC:** Configurados para conectarse a bases de datos HANA.
 - **Visual Studio:** Para compilar y ejecutar el proyecto.
@@ -103,35 +98,7 @@ El proyecto utiliza una arquitectura de tres capas para garantizar modularidad y
    - `RateScreen.cs`: Pantalla principal para la gestión de tasas de cambio.
    - `VerticalSeparator.cs`: Control personalizado para separar visualmente secciones en la interfaz.
 
-## Detalles técnicos
-### Métodos clave
-A continuación, se destacan algunos métodos importantes implementados en el proyecto:
-
-#### `csSAP.cs`
-- **`ConnectSAP(csCompany objCompany)`**:
-  - Establece una conexión con SAP utilizando los datos de la compañía.
-  - Verifica la validez de las credenciales y retorna un `true` si la conexión es exitosa.
-
-- **`AddRate(ref csORTT objORTT)`**:
-  - Agrega una nueva tasa de cambio en SAP para una moneda y fecha específicas.
- 
-- **`GetRate(string currency, DateTime date)`**:
-  - Recupera la tasa de cambio actual para una moneda específica y una fecha determinada desde SAP.
-
-- **`ValidateUser(string usersap)`**:
-  - Verifica si el usuario especificado tiene permisos para acceder a la aplicación.
-
-#### `RateScreen.cs`
-- **`LoadCredentials()`**:
-  - Recupera automáticamente las credenciales almacenadas en el Administrador de Credenciales de Windows.
-
-- **`GetRate(string bd)`**:
-  - Recupera la tasa de cambio actual para la base de datos especificada.
-
-- **`UpdateRate(string bd)`**:
-  - Actualiza la tasa de cambio en la base de datos seleccionada basándose en la entrada del usuario.
-
-- **Eventos**:
-  - `btnLogin_Click`: Controla el inicio de sesión del usuario.
-  - `btnValidate_Click`: Valida las tasas actuales para las empresas seleccionadas.
-  - `btnUpdate_Click`: Realiza la actualización de las tasas ingresadas por el usuario.
+### 4. **Job automático (`Job`)**
+   Permite la actualización desatendida y programada de tasas de cambio:
+   - `Program.cs`: Punto de entrada del job automático.
+   - `RateJob.cs`: Clase principal que controla la lógica del proceso automatizado de actualización de tasas leyendo la configuración externa, cargando credenciales y gestionando el proceso en lote para todas las sociedades configuradas.
