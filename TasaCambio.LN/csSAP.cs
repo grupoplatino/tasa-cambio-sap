@@ -6,6 +6,30 @@ namespace LN
 {
     public class csSAP
     {
+        private const string QUERY_VALIDATE_USER_KEY = "QueryValidateUser";
+        private const string QUERY_VALIDATE_COMPUTER_KEY = "QueryValidateComputer";
+
+        private string EscapeSql(string value)
+        {
+            return value == null ? string.Empty : value.Replace("'", "''");
+        }
+
+        private string GetQueryTemplate(string key)
+        {
+            var cfg = csConfig.Load();
+            string template = null;
+            if (key == QUERY_VALIDATE_USER_KEY)
+                template = cfg.QueryValidateUser;
+            else if (key == QUERY_VALIDATE_COMPUTER_KEY)
+                template = cfg.QueryValidateComputer;
+
+            if (string.IsNullOrWhiteSpace(template))
+            {
+                throw new InvalidOperationException($"Required query template '{key}' is not configured in JSON config.");
+            }
+
+            return template;
+        }
         public static Company oCompany;
         public static SBObob oSBObob;
         public static Recordset oRecordSet;
@@ -18,6 +42,7 @@ namespace LN
         {
             try
             {
+                csLogger.Debug("ConnectSAP: starting connection");
                 if (oCompany == null)
                 {
                     oCompany = new Company();
@@ -43,11 +68,13 @@ namespace LN
 
                     if (iRet == 0) 
                     {
+                        csLogger.Debug("ConnectSAP: connected successfully");
                         return true;
                     }
                     else
                     {
                         oCompany.GetLastError(out iErrCod, out sErrMsg);
+                        csLogger.Debug($"ConnectSAP: error {iErrCod}: {sErrMsg}");
                         throw new Exception($"Error {iErrCod}: {sErrMsg}");
                     }
                 }
@@ -58,7 +85,8 @@ namespace LN
             }
             catch (Exception ex)
             {
-                throw ex;
+                csLogger.Debug($"ConnectSAP exception: {ex.Message}\n{ex.StackTrace}");
+                throw;
             }
         }
 
@@ -66,19 +94,23 @@ namespace LN
         {
             try
             {
+                csLogger.Debug("DisconnectSAP: starting");
                 if (oCompany != null && oCompany.Connected) 
                 {
                     oCompany.Disconnect();
+                    csLogger.Debug("DisconnectSAP: disconnected");
                     return true;
                 }
                 else
                 {
+                    csLogger.Debug("DisconnectSAP: no active connection");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                csLogger.Debug($"DisconnectSAP exception: {ex.Message}\n{ex.StackTrace}");
+                throw;
             }
         }
 
@@ -86,6 +118,7 @@ namespace LN
         {
             try
             {
+                csLogger.Debug($"AddRate: currency={objORTT.Currency} date={objORTT.RateDate:yyyy-MM-dd} rate={objORTT.Rate}");
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oSBObob.SetCurrencyRate(objORTT.Currency, objORTT.RateDate.Date, objORTT.Rate); // Se establece la tasa de cambio mediante el objeto SBObob y el método SetCurrencyRate
 
@@ -93,7 +126,8 @@ namespace LN
             }
             catch (Exception ex)
             {
-                throw ex;
+                csLogger.Debug($"AddRate exception: {ex.Message}");
+                throw;
             }
         }
 
@@ -103,6 +137,7 @@ namespace LN
             {
                 CleanRecordset();
 
+                csLogger.Debug($"GetRate: currency={objORTT.Currency} date={objORTT.RateDate:yyyy-MM-dd}");
                 oSBObob = (SBObob)oCompany.GetBusinessObject(BoObjectTypes.BoBridge);
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
 
@@ -124,6 +159,7 @@ namespace LN
             }
             catch (Exception)
             {
+                csLogger.Debug($"GetRate: exception retrieving rate for currency={objORTT.Currency} date={objORTT.RateDate:yyyy-MM-dd}");
                 return false; // Retorna false si ocurre una excepción para no interrumpir el flujo del programa
             }
             finally
@@ -141,7 +177,12 @@ namespace LN
                 CleanRecordset();
 
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"USER_CODE\" = '{usersap}'";
+                string safeUser = EscapeSql(usersap);
+                csLogger.Debug($"ValidateUser: loading template {QUERY_VALIDATE_USER_KEY}");
+                string template = GetQueryTemplate(QUERY_VALIDATE_USER_KEY);
+                csLogger.Debug($"ValidateUser: template loaded");
+                string query = string.Format(template, safeUser);
+                csLogger.Debug($"ValidateUser: executing query for user={usersap}");
                 oRecordSet.DoQuery(query);
 
                 if (oRecordSet.RecordCount > 0)
@@ -149,7 +190,8 @@ namespace LN
             }
             catch (Exception ex)
             {
-                throw ex;
+                csLogger.Debug($"ValidateUser exception: {ex.Message}");
+                throw;
             }
             finally
             {
@@ -168,7 +210,13 @@ namespace LN
                 CleanRecordset();
 
                 oRecordSet = (Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-                string query = $"SELECT \"USER_CODE\" FROM OUSR WHERE \"U_Host\" = '{host}' AND \"USER_CODE\" = '{usersap}'";
+                string safeHost = EscapeSql(host);
+                string safeUser = EscapeSql(usersap);
+                csLogger.Debug($"ValidateComputer: loading template {QUERY_VALIDATE_COMPUTER_KEY}");
+                string template = GetQueryTemplate(QUERY_VALIDATE_COMPUTER_KEY);
+                csLogger.Debug($"ValidateComputer: template loaded");
+                string query = string.Format(template, safeHost, safeUser);
+                csLogger.Debug($"ValidateComputer: executing query for host={host} user={usersap}");
                 oRecordSet.DoQuery(query);
 
                 if (oRecordSet.RecordCount > 0)
@@ -176,7 +224,8 @@ namespace LN
             }
             catch (Exception ex)
             {
-                throw ex;
+                csLogger.Debug($"ValidateComputer exception: {ex.Message}");
+                throw;
             }
             finally
             {

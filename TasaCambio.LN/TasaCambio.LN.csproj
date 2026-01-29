@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="csConnection.cs" />
     <Compile Include="csCompanies.cs" />
+    <Compile Include="csLogger.cs" />
     <Compile Include="csSAP.cs" />
     <Compile Include="csConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

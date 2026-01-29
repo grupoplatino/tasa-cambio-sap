@@ -39,7 +39,7 @@ namespace TasaCambioJob
 
                 if (companiesSource == null || companiesSource.Count == 0)
                 {
-                    WriteLog("No hay una lista de empresas configurada. Se aborta el job.");
+                    csLogger.Error("No hay una lista de empresas configurada. Se aborta el job.");
                     return;
                 }
 
@@ -51,17 +51,17 @@ namespace TasaCambioJob
 
                 if (string.IsNullOrWhiteSpace(originDb))
                 {
-                    WriteLog("No hay una empresa inicial configurada.\nSe aborta el job.");
+                    csLogger.Error("No hay una empresa inicial configurada.\nSe aborta el job.");
                     return;
                 }
 
-                WriteLog("Inicia job Tasa de Cambio.");
+                csLogger.Info("Inicia job Tasa de Cambio.");
 
                 bool hasOriginRate = GetRate(originDb);
 
                 if (!hasOriginRate)
                 {
-                    WriteLog("No se encontró tasa en la base de origen.\nSe aborta el job.");
+                    csLogger.Error("No se encontró tasa en la base de origen.\nSe aborta el job.");
                     return;
                 }
 
@@ -70,11 +70,11 @@ namespace TasaCambioJob
                     UpdateRate(bd);
                 }
 
-                WriteLog("Job finalizado.");
+                csLogger.Info("Job finalizado.");
             }
             catch (Exception ex)
             {
-                WriteLog("Fallo general: " + ex.Message + " - " + ex.StackTrace);
+                csLogger.Error("Fallo general: " + ex.Message + " - " + ex.StackTrace);
             }
         }
 
@@ -111,7 +111,7 @@ namespace TasaCambioJob
             }
             catch (Exception ex)
             {
-                WriteLog("Error cargando credenciales: " + ex.Message);
+                csLogger.Error("Error cargando credenciales: " + ex.Message);
             }
         }
 
@@ -135,6 +135,7 @@ namespace TasaCambioJob
                 {
                     string Server = objCompany.ServerBD.Replace("NDB@", "").Replace("30013", "30015");
                     csConnection.StartConnection(Server, objCompany.UserBD, objCompany.PwBD, bd);
+                    csLogger.Info($"Conectado a {bd}");
                     return true;
                 }
 
@@ -142,7 +143,7 @@ namespace TasaCambioJob
             }
             catch (Exception ex)
             {
-                WriteLog("Error al conectar a la base de datos: " + ex.Message);
+                csLogger.Error("Error al conectar a la base de datos: " + ex.Message);
                 return false;
             }
         }
@@ -156,7 +157,7 @@ namespace TasaCambioJob
             }
             catch (Exception ex)
             {
-                WriteLog("Error al desconectar de la base de datos: " + ex.Message);
+                csLogger.Error("Error al desconectar de la base de datos: " + ex.Message);
             }
         }
 
@@ -167,7 +168,7 @@ namespace TasaCambioJob
             {
                 if (!ConnectDB(bd))
                 {
-                    WriteLog($"No se pudo conectar a {bd}");
+                    csLogger.Error($"No se pudo conectar a {bd}");
                     return false;
                 }
 
@@ -185,19 +186,19 @@ namespace TasaCambioJob
                 _exchangeRateUSD = objORTT.Rate;
 
                 if (hasRate)
-                    WriteLog($"\nTasa encontrada en {bd}: {objORTT.Rate} (fecha {objORTT.RateDate:d})");
+                    csLogger.Info($"Tasa encontrada en {bd}: {objORTT.Rate} (fecha {objORTT.RateDate:d})");
                 else
-                    WriteLog($"\nNo existe tasa en {bd} para la fecha {objORTT.RateDate:d}");
+                    csLogger.Info($"No existe tasa en {bd} para la fecha {objORTT.RateDate:d}");
             }
             catch (Exception ex)
             {
-                WriteLog("\nError al obtener la tasa de cambio: " + ex.Message);
+                csLogger.Error("Error al obtener la tasa de cambio: " + ex.Message);
                 hasRate = false;
             }
             finally
             {
                 DisconnectDB();
-                WriteLog($"Desconectado de {bd}\n");
+                csLogger.Info($"Desconectado de {bd}");
             }
 
             return hasRate;
@@ -209,7 +210,7 @@ namespace TasaCambioJob
             {
                 if (!ConnectDB(bd))
                 {
-                    WriteLog($"No se pudo conectar a {bd}");
+                    csLogger.Error($"No se pudo conectar a {bd}");
                     return;
                 }
 
@@ -226,44 +227,18 @@ namespace TasaCambioJob
                 bool updated = oSAP.AddRate(ref objORTT);
 
                 if (updated)
-                    WriteLog($"Tasa actualizada en {bd}: {objORTT.Rate} (fecha {objORTT.RateDate:d})");
+                    csLogger.Info($"Tasa actualizada en {bd}: {objORTT.Rate} (fecha {objORTT.RateDate:d})");
                 else
-                    WriteLog($"No se pudo actualizar la tasa en {bd} para la fecha {objORTT.RateDate:d}");
+                    csLogger.Error($"No se pudo actualizar la tasa en {bd} para la fecha {objORTT.RateDate:d}");
             }
             catch (Exception ex)
             {
-                WriteLog("Error al actualizar la tasa de cambio: " + ex.Message);
+                csLogger.Error($"Error al actualizar la tasa en {bd}: " + ex.Message);
             }
             finally
             {
                 DisconnectDB();
-                WriteLog($"Desconectado de {bd}\n");
-            }
-        }
-
-        private static void WriteLog(string log)
-        {
-            try
-            {
-                if (_externalConfig != null && !string.IsNullOrWhiteSpace(_externalConfig.LogDirectory))
-                {
-                    string logDir = _externalConfig.LogDirectory;
-                    string logPath = Path.Combine(logDir, $"LogTasaCambio_{DateTime.Now:yyyyMMdd}.txt");
-                    var dir = Path.GetDirectoryName(logPath);
-                    if (!string.IsNullOrWhiteSpace(dir)) Directory.CreateDirectory(dir);
-                    using (StreamWriter writer = new StreamWriter(logPath, true))
-                    {
-                        writer.WriteLine($"{DateTime.Now}: {log}");
-                    }
-                }
-            }
-            catch
-            {
-                // Ignorar errores de logging
-            }
-            finally
-            {
-                Console.WriteLine(log);
+                csLogger.Info($"Desconectado de {bd}");
             }
         }
     }

@@ -20,6 +20,9 @@ namespace LN
         public string OriginDB { get; set; } = string.Empty;
         public string InitialDB { get; set; } = string.Empty;
         public string LogDirectory { get; set; } = string.Empty;
+        // Optional query templates that can be stored in the JSON config for security
+        public string QueryValidateUser { get; set; } = string.Empty;
+        public string QueryValidateComputer { get; set; } = string.Empty;
 
         private const string ConfigFileName = "exchange_config.json";
 
@@ -42,6 +45,8 @@ namespace LN
                 cfg.OriginDB = j["OriginDB"]?.ToObject<string>() ?? string.Empty;
                 cfg.InitialDB = j["InitialDB"]?.ToObject<string>() ?? string.Empty;
                 cfg.LogDirectory = j["LogDirectory"]?.ToObject<string>() ?? string.Empty;
+                cfg.QueryValidateUser = j["QueryValidateUser"]?.ToObject<string>() ?? string.Empty;
+                cfg.QueryValidateComputer = j["QueryValidateComputer"]?.ToObject<string>() ?? string.Empty;
 
                 bool useTestVal = cfg.UseTest ?? true;
                 bool loadFull = cfg.UseGUI ?? false;
